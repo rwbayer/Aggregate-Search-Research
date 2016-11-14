@@ -1,0 +1,424 @@
+/*GENERAL*/
+
+body{
+	font-family: arial,sans-serif;
+	font-size: small;
+	background: #eee;
+}
+
+a img{
+	border:none;
+}
+
+.container{
+	width: 950px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input[type=text] {
+	padding:5px; 
+	border:2px 
+	solid #999; 
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	height: 20px;
+	font-size: 1em;
+}
+
+input[type=password] {
+	padding:5px; 
+	border:2px 
+	solid #999; 
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	height: 20px;
+	font-size: 1em;
+}
+
+input[type=select] {
+	height: 20px;
+	font-size:1em;
+}
+
+input[type=text]:focus{
+	border-color:#333;
+}
+
+input[type=submit]#submitbutton
+{
+	padding:5px 15px;
+	background:#00cc00;
+	border:0 none transparent;
+	cursor:pointer;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	font-size: medium;
+	color: #fff;
+	-webkit-user-select: none;
+	height: 30px;
+}
+
+input[type=submit].verticalLabel
+{
+	background: transparent;
+	border: none;
+	cursor:pointer;
+	font-size: medium;
+	color: -webkit-link;
+}
+
+div.links
+{
+	border-bottom: 1px solid lightgray;
+}
+
+input[type=submit].verticalLabel:hover
+{
+	color: -webkit-activelink;
+}
+
+input[type=button]:hover{
+	border-color: #000;
+}
+
+#options {
+	display: inline-block;
+	height: 25px;
+}
+
+#options.hidden{
+	display: none;
+}
+
+label.css-radio-label {
+	padding:5px 20px;
+	background:#888888;
+	border-width:2px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	cursor:pointer;
+	font-size: medium;
+	color: #fff;
+	height: 30px;
+	margin: 2px;
+}
+
+input[type=radio].css-radio {
+    position:absolute;
+    top:-50px;
+}
+
+input[type=radio].css-radio:checked + label.css-radio-label {
+    background-color:#00cc00;
+    color:#ffffff;
+}
+
+input[type=radio].css-radio2 {
+	display: none;
+}
+
+input[type=radio].css-radio2 + label.css-radio2-label {
+	padding-left:26px;
+	height:21px; 
+	display:inline-block;
+	line-height:21px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size:medium;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+input[type=radio].css-radio2.hidden + label.css-radio2-label.hidden {
+	display: none;
+}
+
+input[type=radio].css-radio2:checked + label.css-radio2-label {
+	background-position: 0 -21px;
+}
+label.css-radio2-label {
+	margin-left: 10px;
+	background-image: url(radio2.png);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+input[type=checkbox].css-checkbox {
+	display:none;
+}
+
+input[type=checkbox].css-checkbox + label.css-checkbox-label {
+	padding-left:29px;
+	height:22px; 
+	display:inline-block;
+	line-height:22px;
+	background-repeat:no-repeat;
+	background-position: 0 0;
+	font-size: medium;
+	vertical-align:middle;
+	cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-checkbox-label {
+	background-position: 0 -22px;
+}
+
+label.css-checkbox-label
+{
+	background-image:url(checkbox.png);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin-left: 10px;
+}
+
+.whitecontainer{
+	background-color: #fff;
+	width: 700px;
+	margin: auto;
+	padding: 20px;
+	padding-bottom: 50px;
+	border-width:2px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.hidden{
+	display: none;
+}
+
+
+.left{
+	float: left;
+}
+
+.right{
+	float: right;
+}
+
+.error{
+	font-size: small;
+	color: #4DB1C0;
+}
+
+.interfaceRow{
+	clear: both;
+}
+
+.image
+{
+	display: inline-block;
+	margin: 2px;
+}
+
+.video
+{
+	display: inline-block;
+	margin: 2px;
+}
+
+.interfacefeedbackoption{
+	width: 20%;
+	float: left;
+}
+
+.interfacefeedback{
+	width: 680px;
+}
+
+.mainContainer{
+	width: 700px;
+	margin: auto;
+}
+
+.interfaceChoice{
+	width: 700px;
+	margin: auto;
+	
+}
+
+.interface{
+	float: left;
+	margin: auto;
+	padding: 20px;
+}
+
+
+.topBar{
+   position:fixed !important;
+   top:0 !important;
+   left:0 !important;
+   width:100% !important;
+   height:25px !important;
+   background-color:black !important;
+   font-size: small !important;
+   color: #ffffff !important;
+   z-index:1;
+}
+
+.topLink{
+	padding: 5px;
+	color: #eee;
+}
+
+.topLink a{
+	padding: 5px;
+	color: #eee;
+	text-decoration: none;
+}
+
+.topLink a:hover{
+	background-color: #333;
+}
+
+.topContainer{
+	width: 950px;
+	margin: auto;
+}
+
+.topText{
+	width: 700px;
+	text-align: center;
+	font-size: x-large;
+	padding-top: 20px;
+	padding-bottom: 50px;
+	margin: auto;
+	cursor: default;
+}
+
+
+.smallText{
+	padding: 5px;
+	padding-top: 10px;
+	font-size: small;
+}
+
+.login{
+	width: 400px;
+	margin: auto;
+}
+
+.questionnaire{
+	font-size: medium;
+	width: 680px;
+	margin: auto;
+}
+
+
+
+.interfaceName{
+	margin-left: 10px;
+	cursor: default;
+}
+
+.instruction{
+	font-size: x-large;
+	cursor: default;
+}
+
+.permia{
+	font-size: large;
+	padding-top: 3px;
+	cursor: default;
+}
+
+.centerText{
+	text-align: center;
+}
+
+.left-indent{
+	padding-left: 10px;
+}
+
+.headerContainer{
+	background-color:#eee;
+	margin-top: 60px;
+
+	padding: 5px;
+	height: 80px;
+	font-size: large;
+	margin-left: auto;
+	margin-right: auto;
+
+}
+
+.separator{
+	background-color: rgba(0,0,0,0.07);
+	border-width: 0;
+	color: rgba(0,0,0,0.07);
+	height: 1px;
+	width: 700px;
+	margin-top: 3px;
+}
+
+.separator-text{
+	color: #808080;
+	margin-top: 15px;
+	margin-bottom: 0px;
+	font-size: small;
+}
+
+.separator-text-top{
+	margin-bottom: 0px;
+	font-size: 18px;
+	color: #808080;
+}
+
+.separator-text-bottom{
+	margin-bottom: 10px;
+	font-size: small;
+}
+
+.separator-dynamic{
+	background-color: rgba(0,0,0,0.07);
+	border-width: 0;
+	color: rgba(0,0,0,0.07);
+	height: 1px;
+	width: 700px;
+}
+
+.separator-dynamic-text{
+	color: #808080;
+	padding-top: 15px;
+	padding-bottom: 10px;
+	font-size: small;
+}
+
+.separator-dynamic-text-top{
+	padding-bottom: 5px;
+	font-size: 18px;
+	color: #808080;
+}
+
+.separator-dynamic-top{
+	padding-top: 10px;
+	font-size: small;
+}
+
+.more-results{
+	padding-top: 10px;
+	padding-bottom: 0px;
+	font-size: 16px;
+}
+
+.more-results a{
+	text-decoration: none;
+}
+
+.more-results a:hover{
+	text-decoration: underline;
+}
+
+.extra-results{
+	background-color: #fff !important;
+	max-width: 700px;
+	width: 700px;
+}

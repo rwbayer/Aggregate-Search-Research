@@ -1,0 +1,355 @@
+
+
+/* RESULTS INDIVIDUAL */
+
+.box1{
+	width: 930px;
+	min-height: 450px;
+	padding: 10px;
+	vertical-align: top;
+	float: left;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	direction:ltr;
+}
+
+.box2{
+	width: 430px;
+	min-height: 450px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	float: left;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	direction:ltr;
+}
+
+.box3{
+	width: 430px;
+	min-height: 350px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	float: left;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	direction:ltr;
+}
+
+.box4{
+	width: 430px;
+	min-height: 350px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	float: left;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	direction:ltr;
+}
+
+.header{
+	font-size: medium;
+	font-weight:bold;
+	display: inline;
+	float: left;
+}
+
+.header2{ /* for interleaved interface */
+	font-size: medium;
+	font-weight:bold;
+	padding-bottom: 15px;
+}
+
+.resultlistitem{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	max-width: 520px;
+	word-wrap: break-word;
+	clear: left;
+}
+
+.box1 .resultlistitem{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	max-width: 700px;
+	word-wrap: break-word;
+}
+
+.resultlistitem a{
+	text-decoration: none;
+	font-size: 125%;
+}
+
+.resultlistitem a:hover{
+	text-decoration: underline;
+}
+
+.url{
+	color: #388222;
+}
+
+.leftbox{
+	clear: left;
+}
+
+.pagination{
+	margin-top: 20px;
+	margin-left: 55px;
+	width: 200px;
+	height: 50px;
+}
+
+.next{
+	margin-left: 15px;
+}
+
+.previous{
+	margin-left: 25px;
+}
+
+.edit{
+	margin-left: 5px;
+	font-size: small;
+	color: #000000;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.translatedQueryValues{
+	display: inline;
+	float: left;
+	padding-bottom: 15px;
+}
+
+
+
+.queries{
+	float: left;
+	padding-right: 5px;
+}
+
+.editAll{
+	font-size: small;
+	color: #000000;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-top: 2px;
+	float: left;
+}
+
+.header a{
+	margin-left: 5px;
+	font-size: small;
+	color: #000000;
+}
+
+.editPanel{
+	display: none;
+	min-height: 40px;
+	padding: 5px;
+	padding-top: 10px;
+	background: #ddd;
+}
+
+.editPanel input[type='text']{
+	width: 280px;
+}
+
+.alternatives{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	font-family: helvetica, arial,sans-serif;
+	display: inline;
+}
+
+.Alternatives2{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	font-family: helvetica, arial,sans-serif;
+	float: left;
+}
+
+.alternative{
+	padding-right: 10px;
+	font-weight: normal;
+	display: inline;
+}
+
+
+#submitEdits{
+	clear: both;
+}
+
+.editSubmit{
+	clear: both;
+}
+
+.AlternativeTitle{
+	padding-top: 10px;
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	display: inline;
+}
+
+.translationAlternatives{
+	padding: 10px;
+	display: inline;
+}
+
+.hidden{
+	display: none;
+}
+
+.editPanel2{
+	display: none;
+	min-height: 40px;
+	padding: 10px;
+	background: #eee;
+	clear: both;
+}
+
+.alternativetranslations2{
+	clear: both;
+	padding-bottom: 10px;
+	display: inline;
+}
+
+.editPanel2Input{
+	float: left;
+	clear: left;
+}
+
+.alternative2{
+	padding-left:5px;
+	padding-top: 8px;
+	font-weight: bold;
+	float: left;
+}
+
+.alternative2 div{
+	float: left;
+}
+
+.AlternativeTitle2{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	padding-right: 3px;
+}
+
+.merged{
+	width: 930px;
+	margin: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	min-height: 0px;
+}
+
+.merged .resultlistitem{
+	width: 700px;
+	max-width: 700px;
+	min-height: 0px;
+}
+
+.interleaved{
+	width: 930px;
+	min-height: 0px;
+	
+	padding: 10px;
+	margin: 0px;
+	
+	border-radius: 0px;
+}
+
+.loader{
+	clear:both;
+}
+
+.translatedResultsValues{
+	clear: both;
+	display: block;
+}
+
+.recommender .resultlistitem a{
+	font-size: small !important;
+}
+
+.recommender .snippet{
+	display: none !important;
+}
+
+
+.recommender .url{
+	display: none !important;
+}
+
+.recommender .pagination{
+	margin-left: 0px !important;
+	height: 10px !important;
+}
+
+.recommender .next{
+	margin-left: 0px !important;
+}
+
+.recommender .previous{
+	margin-left: 0px !important;
+}
+
+.recommender .editPanel input[type='text']{
+	width: 176px !important;
+	margin-bottom: 5px !important;
+}
+
+.recommender.checked .resultlistitem a{
+	font-size: 125% !important;
+}
+
+.recommender.checked .snippet{
+	display: block !important;
+}
+
+.recommender.checked .editPanel{
+	width: !important;
+}
+
+.recommender.checked .url{
+	display: block !important;
+}
+
+.recommender.checked .editPanel input[type='text']{
+	width: 320px !important;
+	margin-bottom: 5px !important;
+}
+
+.recommender.checked .pagination{
+	margin-left: 50px !important;
+	height: 50px !important;
+}
+
+.recommender.checked .next{
+	margin-left: 50px !important;
+}
+
+.recommender.checked .previous{
+	margin-left: 25px !important;
+}
+
+.resultContainer
+{
+	max-width: 650px;
+	display: none;
+}

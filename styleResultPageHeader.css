@@ -1,0 +1,71 @@
+
+
+/* RESULT PAGE HEADER */
+
+.headerContainerhidden{ /*if options are hidden, currently not used*/
+	background-color:#eee;
+	margin-top: 60px;
+
+	padding: 5px;
+	height: 30px;
+	font-size: large;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.headerContainernothidden{
+	background-color:#eee;
+	margin-top: 40px;
+
+	padding: 5px;
+	height: 30px;
+	font-size: large;
+	margin-left: auto;
+	margin-right: auto;
+	
+}
+
+/* RESULTS GENERAL */
+
+.resultContainerhidden{ /*if options are hidden, currently not used*/
+	margin-top: 10px;
+	border: 2px;
+	width: 950px;
+	overflow:hidden
+}
+
+.resultContainernothidden{
+	margin-top: 60px;
+	border: 2px;
+	width: 950px;
+	overflow:hidden
+}
+
+
+/* Sidebar interface */
+.recommender{
+	width: 200px !important;
+	min-height: 100px !important;
+	padding: 10px !important;
+	margin: 10px !important;
+	vertical-align: top !important;
+	float: right !important;
+	background: #fff !important;
+	-webkit-border-radius: 5px !important;
+	border-radius: 5px !important;
+	clear: right !important;
+}
+
+.recommender.checked{
+	width: 670px !important;
+	min-height: 350px !important;
+	padding: 10px !important;
+	margin: 10px !important;
+	vertical-align: top !important;
+	float: left !important;
+	background: #fff !important;
+	-webkit-border-radius: 5px !important;
+	border-radius: 5px !important;
+	clear: left !important;
+	/*position:absolute !important;*/
+}

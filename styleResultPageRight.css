@@ -1,0 +1,438 @@
+
+
+/* RESULTS INDIVIDUAL */
+
+.rtl.box1{
+	width: 930px;
+	min-height: 450px;
+	padding: 10px;
+	vertical-align: top;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: right;
+	overflow: hidden;
+	direction:ltr;
+}
+
+.rtl.box2{
+	width: 430px;
+	min-height: 450px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: right;
+	overflow: hidden;
+	direction:ltr;
+}
+
+.rtl.box3{
+	width: 430px;
+	min-height: 350px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: right;
+	overflow: hidden;
+	direction:ltr;
+}
+
+.box4.rtl{
+	width: 430px;
+	min-height: 350px;
+	padding: 10px;
+	margin: 10px;
+	vertical-align: top;
+	background: #fff;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	text-align: right; 
+	overflow: hidden;
+	direction:ltr;
+}
+
+.rtl .header{
+	font-size: medium;
+	font-weight:bold;
+	display: inline;
+	float: right;
+}
+
+.rtl .header span{
+	float: right;
+}
+
+.rtl .header2{
+	font-size: medium;
+	font-weight:bold;
+	display: inline;
+	float: right;
+}
+
+.rtl .header2 span{
+	float: right;
+}
+
+.rtl .edit{
+	padding-right: 10px;
+}
+
+.rtl #resultList{
+	float: right;
+}
+
+.rtl.box1 #resultList{
+	width: 930px;
+}
+
+.rtl.box2 #resultList{
+	width: 430px;
+}
+
+.rtl.box3 #resultList{
+	width: 430px;
+}
+
+.rtl.box4 #resultList{
+	width: 430px;
+}
+
+.rtl.box1 .resultlistitem{
+	width: 930px;
+}
+
+.rtl.box2 .resultlistitem{
+	width: 430px;
+}
+
+.rtl.box3 .resultlistitem{
+	width: 430px;
+}
+
+.rtl.box4 .resultlistitem{
+	width: 430px;
+}
+
+.rtl .separator-text{
+	float: right;
+}
+
+.rtl .separator{
+	float: right;
+	clear: both;
+}
+
+.rtl .resultlistitem{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	word-wrap: break-word;
+	clear: right;
+	float: right;
+}
+
+.rtl .box1 .resultlistitem{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	word-wrap: break-word;
+}
+
+
+.rtl .resultlistitem a{
+	text-decoration: none;
+	font-size: 125%;
+}
+
+.rtl .resultlistitem a:hover{
+	text-decoration: underline;
+}
+
+.rtl .title{
+	text-align: right;
+}
+
+.rtl .url{
+	color: #388222;
+	direction: ltr;
+	text-align: right;
+}
+
+.rtl .leftbox{
+	float: left;
+	clear: left;
+}
+
+.rtl .rightbox{
+	float: right;
+	clear: right;
+}
+
+.rtl .pagination{
+	margin-top: 20px;
+	margin-left: 75px;
+	width: 200px;
+	height: 50px;
+	float: right;
+}
+
+.rtl .next{
+	margin-left: 50px;
+}
+
+.rtl .previous{
+	margin-left: 25px;
+}
+
+.rtl .edit{
+	margin-left: 5px;
+	font-size: small;
+	color: #000000;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.rtl .translatedQueryValues{
+	display: inline;
+	float: left;
+	padding-bottom: 15px;
+}
+
+.rtl .queries{
+	padding-right: 5px;
+}
+
+.rtl .editAll{
+	font-size: small;
+	color: #000000;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-top: 2px;
+	padding-right: 15px;
+}
+
+.rtl .header a{
+	margin-left: 5px;
+	font-size: small;
+	color: #000000;
+}
+
+.rtl .editPanel{
+	display: none;
+	min-height: 40px;
+	padding: 5px;
+	padding-top: 10px;
+	background: #ddd;
+	overflow: hidden;
+	clear: right;
+}
+
+.rtl .editPanel *{
+	direction: rtl;
+	float: right;
+
+}
+
+.rtl .editPanel input[type='text']{
+	width: 280px;
+	clear: right;
+	
+}
+
+.rtl .editPanel input[type='submit']{
+	clear: left;
+}
+
+.rtl .alternatives{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	font-family: helvetica, arial,sans-serif;
+	display: inline;
+}
+
+.rtl .Alternatives2{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	font-family: helvetica, arial,sans-serif;
+	float: left;
+}
+
+.rtl .alternative{
+	padding-right: 10px;
+	padding-top:10px;
+	font-weight: normal;
+	display: inline;
+}
+
+.rtl .editSubmit{
+	margin-top: 2px !important;
+}
+
+
+
+.rtl #submitEdits{
+	clear: both;
+}
+
+.rtl .AlternativeTitle{
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+	display: inline;
+}
+
+.rtl .translationAlternatives{
+	padding: 10px;
+	display: inline;
+	clear: right;
+}
+
+.rtl .hidden{
+	display: none;
+}
+
+.rtl .editPanel2{
+	display: none;
+	min-height: 40px;
+	padding: 10px;
+	background: #eee;
+	clear: both;
+}
+
+.rtl .alternativetranslations2{
+	clear: both;
+	padding-bottom: 10px;
+	display: inline;
+}
+
+.rtl .editPanel2Input{
+	float: right;
+	clear: right;
+}
+
+.rtl .alternative2{
+	padding-left:5px;
+	padding-top: 0px;
+	font-weight: bold;
+	float: right;
+}
+
+.rtl .AlternativeTitle2{
+	padding-top: 10px;
+	font-size: medium;
+	text-decoration: none;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.rtl.merged{
+	width: 930px;
+	margin: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	min-height: 0px;
+}
+
+.rtl .merged .resultlistitem{
+	min-height: 0px;
+}
+
+.rtl .interleaved{
+	width: 930px;
+	min-height: 0px;
+	
+	padding: 10px;
+	margin: 0px;
+	
+	border-radius: 0px;
+}
+
+.rtl .loader{
+	clear:both;
+}
+
+.rtl .translatedResultsValues{
+	clear: both;
+	display: block;
+}
+
+.rtl .recommender .resultlistitem a{
+	font-size: small !important;
+}
+
+.rtl .recommender .snippet{
+	display: none !important;
+}
+
+.rtl .recommender .url{
+	display: none !important;
+}
+
+.rtl .recommender .pagination{
+	margin-left: 0px !important;
+	height: 10px !important;
+}
+
+.rtl .recommender .next{
+	margin-left: 0px !important;
+}
+
+.rtl .recommender .previous{
+	margin-left: 0px !important;
+}
+
+.rtl .recommender .editPanel input[type='text']{
+	width: 176px !important;
+	margin-bottom: 5px !important;
+}
+
+.rtl .recommender.checked .resultlistitem a{
+	font-size: 125% !important;
+}
+
+.rtl .recommender.checked .snippet{
+	display: block !important;
+}
+
+.rtl .recommender.checked .editPanel{
+	width: !important;
+}
+
+.rtl .recommender.checked .url{
+	display: block !important;
+}
+
+.rtl .recommender.checked .editPanel input[type='text']{
+	width: 320px !important;
+	margin-bottom: 5px !important;
+}
+
+.rtl .recommender.checked .pagination{
+	margin-left: 50px !important;
+	height: 50px !important;
+}
+
+.rtl .recommender.checked .next{
+	margin-left: 50px !important;
+}
+
+.rtl .recommender.checked .previous{
+	margin-left: 25px !important;
+}
+
+.rtl.recommender .resultlistitem{
+	width: 200px !important;
+}
+
+.rtl.recommender.checked .resultlistitem{
+	width: 670px !important;
+}
