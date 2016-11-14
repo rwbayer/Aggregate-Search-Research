@@ -155,32 +155,30 @@
 
 			function clickedSingleVertical(text, vertical)
 			{
-				$('.resultContainer').hide();
-
+				$('.resultContainer').html("");
+				console.log("In here with: " + vertical);
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
+					
 					var data = JSON.parse(returnedJSON);
+					console.log("In done with: ");
+					console.dir(data);
 					if (data.source == "Web")
 					{
-						var divIdentifier = "#".concat(data.i).concat(".webResults");
+						var divIdentifier = "webResults";
 					}
 					else if (data.source == "Image")
 					{
-						var divIdentifier = "#".concat(data.i).concat(".imageResults");
+						var divIdentifier = "imageResults";
 					}
 					else if (data.source == "Video")
 					{
-						var divIdentifier = "#".concat(data.i).concat(".videoResults");
+						var divIdentifier = "videoResults";
 					}
 					else if (data.source == "News")
 					{
-						var divIdentifier = "#".concat(data.i).concat(".newsResults");
+						var divIdentifier = "newsResults";
 					}
-					$(divIdentifier).html(data.data);
-					
-					// clear all others
-					$("#2").html("");
-					$("#3").html("");
-					$("#4").html("");
+					$('.resultContainer').html('<div id="' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
 
 					showResults();
 				});
@@ -326,24 +324,20 @@
 				<?php
 					for($i=1; $i<5; $i++)
 					{
+
+						if ($i != 1)
+						{
+							echo("<hr>");
+						}
+
 						$currentSource = ${"source" . $i};
 			
 						if ($currentSource == "Web")
 						{
-							if ($i != 1)
-							{
-								echo("<hr>");
-							}
-
 							echo "<div id='" . $i . "' class='webResults vertical'></div>";
 						}
 						else if ($currentSource == "Image")
 						{
-							if ($i != 1)
-							{
-								echo("<hr>");
-							}
-
 							if ($_SESSION['interface'] == 'blended')
 							{
 								echo("<h1>Image results for " . $text . "</h1>");
@@ -353,28 +347,18 @@
 						}
 						else if ($currentSource == "Video")
 						{
-							if ($i != 1)
-							{
-								echo("<hr>");
-							}
-
 							if ($_SESSION['interface'] == 'blended')
 							{
-								echo("<hr><h1>Video results for " . $text . "</h1>");
+								echo("<h1>Video results for " . $text . "</h1>");
 							}
 
 							echo "<div id='" . $i . "' class='videoResults vertical'></div>";
 						}
 						else if ($currentSource == "News")
 						{
-							if ($i != 1)
-							{
-								echo("<hr>");
-							}
-							
 							if ($_SESSION['interface'] == 'blended')
 							{
-								echo("<hr><h1>News results for " . $text . "</h1>");
+								echo("<h1>News results for " . $text . "</h1>");
 							}
 
 							echo "<div id='" . $i . "' class='newsResults vertical'></div>";
