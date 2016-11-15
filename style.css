@@ -59,23 +59,34 @@ input[type=submit]#submitbutton
 	height: 30px;
 }
 
-input[type=submit].verticalLabel
+.verticalLabel
 {
 	background: transparent;
 	border: none;
 	cursor:pointer;
 	font-size: medium;
-	color: -webkit-link;
+	color: gray;
+}
+
+.verticalLabel.selected
+{
+	font-weight: bold;
+	text-decoration: underline;
+	color: #000000;
 }
 
 div.links
 {
 	border-bottom: 1px solid lightgray;
+	margin-left: -7px;
+	padding-bottom: 8px;
+	margin-bottom: 5px;
 }
 
-input[type=submit].verticalLabel:hover
+.verticalLabel:hover
 {
-	color: -webkit-activelink;
+	color: #000000;
+	cursor: pointer;
 }
 
 input[type=button]:hover{
@@ -342,8 +353,7 @@ label.css-checkbox-label
 	background-color:#eee;
 	margin-top: 60px;
 
-	padding: 5px;
-	height: 80px;
+	height: 100px;
 	font-size: large;
 	margin-left: auto;
 	margin-right: auto;
@@ -421,4 +431,21 @@ label.css-checkbox-label
 	background-color: #fff !important;
 	max-width: 700px;
 	width: 700px;
+}
+
+h1
+{
+	font-weight: normal;
+	color: #001ba0;
+}
+
+h1 a
+{
+	text-decoration: none;
+}
+
+h1 a:hover
+{
+	text-decoration: underline;
+	cursor: pointer;
 }

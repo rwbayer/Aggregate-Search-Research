@@ -85,6 +85,7 @@
 	    'data' => $data,
 	    'source' => $_REQUEST["source"],
 	    'i' => $_REQUEST["i"],
+	    'searchText' => $_REQUEST["searchText"]
 	  ];
 
 	exit(json_encode($returnObject));

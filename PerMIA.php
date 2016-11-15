@@ -75,7 +75,7 @@
 		
 		if($_SESSION['interface']=='panel')
 		{
-			echo("<style>.vertical{display:inline-block; max-width:500px; vertical-align:top;} div.resultContainer{width:1050px;max-width:1100px;}</style>");
+			echo("<style>.vertical{display:inline-block; max-width:500px; vertical-align:top;} div.resultContainer{width:1050px;max-width:1100px;} #box2, #box4{border: 1px solid lightgray; border-radius: 8px; padding:8px; margin: 0px 15px 15px 15px;}</style>");
 
 		}
 	}
@@ -153,15 +153,20 @@
 		<script src="Javascript/jquery-1.11.0.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
 
+			function clickedVerticalHeading(text, vertical)
+			{
+				var elementString = '.verticalLabel[value="' + vertical + '"]';
+				$(elementString).trigger('click');
+			}
+
 			function clickedSingleVertical(text, vertical)
 			{
 				$('.resultContainer').html("");
-				console.log("In here with: " + vertical);
+
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
-					console.log("In done with: ");
-					console.dir(data);
+
 					if (data.source == "Web")
 					{
 						var divIdentifier = "webResults";
@@ -178,7 +183,7 @@
 					{
 						var divIdentifier = "newsResults";
 					}
-					$('.resultContainer').html('<div id="' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
 
 					showResults();
 				});
@@ -215,22 +220,30 @@
 				
 				if (data.source == "Web")
 				{
-					var divIdentifier = "#".concat(data.i).concat(".webResults");
+					var divIdentifier = "#box".concat(data.i).concat(".webResults");
 				}
 				else if (data.source == "Image")
 				{
-					var divIdentifier = "#".concat(data.i).concat(".imageResults");
+					var divIdentifier = "#box".concat(data.i).concat(".imageResults");
 				}
 				else if (data.source == "Video")
 				{
-					var divIdentifier = "#".concat(data.i).concat(".videoResults");
+					var divIdentifier = "#box".concat(data.i).concat(".videoResults");
 				}
 				else if (data.source == "News")
 				{
-					var divIdentifier = "#".concat(data.i).concat(".newsResults");
+					var divIdentifier = "#box".concat(data.i).concat(".newsResults");
 				}
 
-				$(divIdentifier).html(data.data);
+				if (data.source != "Web")
+				{
+					$(divIdentifier).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" +  data.searchText + "', '" + data.source + "')\">" + data.source + " results for <strong>" + data.searchText + "</strong></a></h1>" + data.data);
+				}
+				else
+				{
+					$(divIdentifier).html(data.data);
+				}
+
 				numberOfSourcesReturned++;
 
 				if (numberOfSourcesReturned == numberOfSourcesRequested)
@@ -247,6 +260,12 @@
 			$( document ).ready(function() 
 			{
 				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+			
+				$("body").on('click', '.verticalLabel', function()
+				{
+					$('.verticalLabel.selected').removeClass('selected');
+					$(this).addClass('selected');
+				});
 			});
 
 			//helper methods
@@ -297,8 +316,6 @@
 						?>
 						<input type="hidden" name="interface" value="<?php echo $_SESSION['interface']?>">
 						<input type="hidden" name="numResults1" value="<?php echo $_SESSION['numResults1']?>">
-						
-
 
 						<input type="text" style="width:500px;" id="searchText" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>">
 						<input type="submit" id='submitbutton' value="Search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -309,7 +326,7 @@
 							<?php
 								if (!($_SESSION['interface'] == 'tabbed'))
 								{
-									echo('<input type="submit" class="verticalLabel" value="All">');
+									echo('<input type="submit" class="verticalLabel selected" value="All">');
 								}
 							?>
 							<input type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Web')">
@@ -325,7 +342,7 @@
 					for($i=1; $i<5; $i++)
 					{
 
-						if ($i != 1)
+						if ($i != 1 && $_SESSION['interface'] == 'blended')
 						{
 							echo("<hr>");
 						}
@@ -334,34 +351,34 @@
 			
 						if ($currentSource == "Web")
 						{
-							echo "<div id='" . $i . "' class='webResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='webResults vertical'></div>";
 						}
 						else if ($currentSource == "Image")
 						{
 							if ($_SESSION['interface'] == 'blended')
 							{
-								echo("<h1>Image results for " . $text . "</h1>");
+								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'Image')\">Image results for <strong>" . $text . "</strong></a></h1>");
 							}
 
-							echo "<div id='" . $i . "' class='imageResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='imageResults vertical'></div>";
 						}
 						else if ($currentSource == "Video")
 						{
 							if ($_SESSION['interface'] == 'blended')
 							{
-								echo("<h1>Video results for " . $text . "</h1>");
+								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'Video')\">Video results for <strong>" . $text . "</strong></a></h1>");
 							}
 
-							echo "<div id='" . $i . "' class='videoResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='videoResults vertical'></div>";
 						}
 						else if ($currentSource == "News")
 						{
 							if ($_SESSION['interface'] == 'blended')
 							{
-								echo("<h1>News results for " . $text . "</h1>");
+								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'News')\">News results for <strong>" . $text . "</strong></a></h1>");
 							}
 
-							echo "<div id='" . $i . "' class='newsResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='newsResults vertical'></div>";
 						}
 					}
 				?>
