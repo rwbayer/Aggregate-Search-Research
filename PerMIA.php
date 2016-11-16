@@ -159,6 +159,126 @@
 				$(elementString).trigger('click');
 			}
 
+			function showNextWebResults(text, el)
+			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				var $active = $('.active');
+				$('.active').removeClass('active');
+				$active.parent().next().find('a').first().addClass('active');
+
+				var offset = numberOfWebResultsRequested + ((currentPage-1) * 10);
+				currentPage++;
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+					
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
+				});
+			}
+
+			function showPreviousWebResults(text)
+			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				var $active = $('.active');
+				$('.active').removeClass('active');
+				$active.parent().prev().find('a').first().addClass('active');
+
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+				currentPage--;
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+					
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
+				});
+			}
+
+			function showNumberWebResults(text)
+			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				var $active = $('.active');
+				$('.active').removeClass('active');
+				$active.parent().prev().find('a').first().addClass('active');
+
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+				currentPage--;
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+					
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
+				});
+			}
+
 			function clickedSingleVertical(text, vertical)
 			{
 				$('.resultContainer').html("");
@@ -191,10 +311,12 @@
 
 			var numberOfSourcesReturned = 0;
 			var numberOfSourcesRequested = 0;
+			var numberOfWebResultsRequested = 0;
+			var currentPage = 1;
 
 			function translateAndSearch(text, number_of_results1, number_of_results2, number_of_results3, number_of_results4, source1, source2, source3, source4, numberOfSourcesRequestedInit)
 			{
-				numberOfSourcesRequested = numberOfSourcesRequestedInit;
+				numberOfSourcesRequested = parseInt(numberOfSourcesRequestedInit);
 				if(text!='')
 				{
 					for (var i=1; i<5; i++)
@@ -205,9 +327,18 @@
 						var numResultsString = "number_of_results".concat(i);
 						var numResults = eval(numResultsString);
 
+						var offset = 0;
+
+						if (source == "Web")
+						{
+							console.log("Num results: " + numResults);
+							numberOfWebResultsRequested += parseInt(numResults);
+							offset = parseInt(numberOfWebResultsRequested);
+						}
+
 						if (source != null && source != "")
 						{
-							$.post("search.php", { searchText: text, market: "en-US", results: numResults, offset: 0, source: source, i:i}).done(function( data ) {
+							$.post("search.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
 								parseResponse(data);
 							}); 
 						}
@@ -255,10 +386,12 @@
 			var showResults = function()
 			{
 				$('.resultContainer').show();
+				$('.footer').show();
 			}
 			
 			$( document ).ready(function() 
 			{
+				$('.footer').hide();
 				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
 			
 				$("body").on('click', '.verticalLabel', function()
@@ -355,29 +488,14 @@
 						}
 						else if ($currentSource == "Image")
 						{
-							if ($_SESSION['interface'] == 'blended')
-							{
-								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'Image')\">Image results for <strong>" . $text . "</strong></a></h1>");
-							}
-
 							echo "<div id='box" . $i . "' class='imageResults vertical'></div>";
 						}
 						else if ($currentSource == "Video")
 						{
-							if ($_SESSION['interface'] == 'blended')
-							{
-								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'Video')\">Video results for <strong>" . $text . "</strong></a></h1>");
-							}
-
 							echo "<div id='box" . $i . "' class='videoResults vertical'></div>";
 						}
 						else if ($currentSource == "News")
 						{
-							if ($_SESSION['interface'] == 'blended')
-							{
-								echo("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" .  htmlspecialchars($text, ENT_QUOTES) . "', 'News')\">News results for <strong>" . $text . "</strong></a></h1>");
-							}
-
 							echo "<div id='box" . $i . "' class='newsResults vertical'></div>";
 						}
 					}
@@ -386,7 +504,20 @@
 				
 				
 			</div>
-			
+		</div>
+
+		<div class="footer">
+			<ul class="pagination">
+			  <li><a onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">«</a></li>
+			  <li><a class="active" href="#">1</a></li>
+			  <li><a href="#">2</a></li>
+			  <li><a href="#">3</a></li>
+			  <li><a href="#">4</a></li>
+			  <li><a href="#">5</a></li>
+			  <li><a href="#">6</a></li>
+			  <li><a href="#">7</a></li>
+			  <li><a onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">»</a></li>
+			</ul>
 		</div>
 	</body>
 </html>
