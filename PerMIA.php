@@ -168,8 +168,8 @@
 				$('.active').removeClass('active');
 				$active.parent().next().find('a').first().addClass('active');
 
-				var offset = numberOfWebResultsRequested + ((currentPage-1) * 10);
 				currentPage++;
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
 				console.log("Offset is: " + offset);
 
@@ -208,8 +208,8 @@
 				$('.active').removeClass('active');
 				$active.parent().prev().find('a').first().addClass('active');
 
-				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 				currentPage--;
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
 
 				console.log("Offset is: " + offset);
 
