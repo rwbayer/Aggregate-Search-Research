@@ -159,7 +159,7 @@
 				$(elementString).trigger('click');
 			}
 
-			function showNextWebResults(text, el)
+			function showNextWebResults(text)
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
@@ -239,17 +239,20 @@
 				});
 			}
 
-			function showNumberWebResults(text)
+			function showPageOfWebResults(text, el)
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
-				var $active = $('.active');
-				$('.active').removeClass('active');
-				$active.parent().prev().find('a').first().addClass('active');
+				console.dir(el);
+				console.log("el: " + $(el).text());
 
+				var numberSelected = parseInt($(el).text());
+				$('.active').removeClass('active');
+				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
+
+				currentPage = numberSelected;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
-				currentPage--;
 
 				console.log("Offset is: " + offset);
 
@@ -510,13 +513,13 @@
 			<ul class="pagination">
 			  <li><a onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">«</a></li>
 			  <li><a class="active" href="#">1</a></li>
-			  <li><a href="#">2</a></li>
-			  <li><a href="#">3</a></li>
-			  <li><a href="#">4</a></li>
-			  <li><a href="#">5</a></li>
-			  <li><a href="#">6</a></li>
-			  <li><a href="#">7</a></li>
-			  <li><a onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">»</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">2</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">3</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">4</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">5</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">6</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">7</a></li>
+			  <li><a onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">»</a></li>
 			</ul>
 		</div>
 	</body>
