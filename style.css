@@ -478,4 +478,16 @@ ul.pagination li a.active
     color: white;
 }
 
-ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+ul.pagination li a:hover:not(.active):not(.disabled) {background-color: #ddd; cursor:pointer;}
+
+#livesearch
+{
+	background-color: #FFFFFF;
+	position: absolute;
+    width: 510px;
+   	margin-top: -2px;
+}
+#livesearch a
+{
+	display: block;
+}

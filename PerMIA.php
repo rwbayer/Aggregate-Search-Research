@@ -1,7 +1,6 @@
 <?php 
 	$extras_visibility = '';
 	
-	
 	header('Content-Type: text/html; charset=utf-8');
 
 	echo "<!DOCTYPE html PUBLIC '-//W3C//DTD HTML 4.01//EN'>";
@@ -171,6 +170,15 @@
 				currentPage++;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
+				if (currentPage == 2)
+				{
+					$("a.prev").removeClass('disabled');
+				}
+				if  (currentPage == 7)
+				{
+					$("a.next").addClass('disabled');
+				}
+
 				console.log("Offset is: " + offset);
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
@@ -201,6 +209,12 @@
 
 			function showPreviousWebResults(text)
 			{
+				if (currentPage == 1)
+				{
+					return;
+				}
+
+
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
@@ -210,6 +224,16 @@
 
 				currentPage--;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
+
+				if (currentPage == 1)
+				{
+					javascript:window.location.reload();
+					$("a.prev").addClass('disabled');
+				}
+				if  (currentPage == 6)
+				{
+					$("a.next").removeClass('disabled');
+				}
 
 				console.log("Offset is: " + offset);
 
@@ -253,6 +277,16 @@
 
 				currentPage = numberSelected;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+
+				if  (currentPage == 7)
+				{
+					$("a.next").addClass('disabled');
+				}
+				else
+				{
+					$("a.prev").removeClass('disabled');
+					$("a.next").removeClass('disabled');
+				}
 
 				console.log("Offset is: " + offset);
 
@@ -404,6 +438,22 @@
 				});
 			});
 
+			function showResult(str)
+			{
+				if (str.length==0)
+				{ 
+					document.getElementById("livesearch").innerHTML="";
+				    document.getElementById("livesearch").style.border="0px";
+				    return;
+				}
+				console.log("String: " + str);
+				$.post("suggestions.php", { searchText: str }).done(function( responseText ) {
+					console.log("response text: " + responseText);
+					document.getElementById("livesearch").innerHTML=  responseText;
+      				document.getElementById("livesearch").style.border = "2px solid #333";
+				});
+			}
+
 			//helper methods
 			function htmlspecialchars(string){
 				return string
@@ -453,14 +503,14 @@
 						<input type="hidden" name="interface" value="<?php echo $_SESSION['interface']?>">
 						<input type="hidden" name="numResults1" value="<?php echo $_SESSION['numResults1']?>">
 
-						<input type="text" style="width:500px;" id="searchText" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>">
+						<input type="text" style="width:500px;" id="searchText" autocomplete="off" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>" onkeyup="showResult(this.value)">
 						<input type="submit" id='submitbutton' value="Search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-					
-						
+						<div id="livesearch"></div>
+
 						<br/><br/>	
 						<div class="links">
 							<?php
-								if (!($_SESSION['interface'] == 'tabbed'))
+								if (!($_SESSION['interface'] == 'tabbed') || !($_SESSION['interface'] == 'blended'))
 								{
 									echo('<input type="submit" class="verticalLabel selected" value="All">');
 								}
@@ -511,15 +561,15 @@
 
 		<div class="footer">
 			<ul class="pagination">
-			  <li><a onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">«</a></li>
-			  <li><a class="active" href="#">1</a></li>
+			  <li><a class="prev disabled" onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')" >«</a></li>
+			  <li><a class="active" onclick="javascript:window.location.reload();">1</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">2</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">3</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">4</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">5</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">6</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">7</a></li>
-			  <li><a onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">»</a></li>
+			  <li><a class="next" onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">»</a></li>
 			</ul>
 		</div>
 	</body>
