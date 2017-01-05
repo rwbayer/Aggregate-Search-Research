@@ -179,8 +179,6 @@
 					$("a.next").addClass('disabled');
 				}
 
-				console.log("Offset is: " + offset);
-
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
@@ -235,8 +233,6 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				console.log("Offset is: " + offset);
-
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
@@ -268,9 +264,6 @@
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
-				console.dir(el);
-				console.log("el: " + $(el).text());
-
 				var numberSelected = parseInt($(el).text());
 				$('.active').removeClass('active');
 				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
@@ -287,8 +280,6 @@
 					$("a.prev").removeClass('disabled');
 					$("a.next").removeClass('disabled');
 				}
-
-				console.log("Offset is: " + offset);
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
 					
@@ -374,7 +365,6 @@
 
 						if (source == "Web")
 						{
-							console.log("Num results: " + numResults);
 							numberOfWebResultsRequested += parseInt(numResults);
 							offset = parseInt(numberOfWebResultsRequested);
 						}
@@ -446,10 +436,11 @@
 				$("body").on('click', 'a.suggestionLink', function(event)
 				{
 					event.preventDefault();
-					console.log($(this).text());
 					clickedSearchSuggestion($(this).text());
 				});
 			});
+
+
 
 			function showResult(str)
 			{
@@ -459,9 +450,7 @@
 				    document.getElementById("livesearch").style.border="0px";
 				    return;
 				}
-				console.log("String: " + str);
 				$.post("suggestions.php", { searchText: str }).done(function( responseText ) {
-					console.log("response text: " + responseText);
 					document.getElementById("livesearch").innerHTML=  responseText;
       				document.getElementById("livesearch").style.border = "2px solid #333";
 				});
