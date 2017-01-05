@@ -1,7 +1,5 @@
 <?php 
-	$_SESSION['experiment'] = false;
 	$extras_visibility = '';
-	
 	
 	header('Content-Type: text/html; charset=utf-8');
 
@@ -27,152 +25,116 @@
 	{
 		$_SESSION['interface'] = $_REQUEST["interface"];
 	}
-	
-	//setting up variables
-	$localised = $_SESSION['localised'];
-	$InterfaceLanguage = $_SESSION['InterfaceLanguage'];
-	
-	if($InterfaceLanguage=='ar-XA' || $InterfaceLanguage=='he-IL')
+
+	if(isset($_REQUEST["source1"]))
 	{
-		$interface_direction = 'rtl';
+		$_SESSION['source1'] = $_REQUEST["source1"];
+		if(isset($_REQUEST["numResults1"]))
+		{
+			$_SESSION['numResults1'] = $_REQUEST["numResults1"];
+		}
+	}
+	if(isset($_REQUEST["source2"]))
+	{
+		$_SESSION['source2'] = $_REQUEST["source2"];
+		if(isset($_REQUEST["numResults2"]))
+		{
+			$_SESSION['numResults2'] = $_REQUEST["numResults2"];
+		}
+	}
+	if(isset($_REQUEST["source3"]))
+	{
+		$_SESSION['source3'] = $_REQUEST["source3"];
+		if(isset($_REQUEST["numResults3"]))
+		{
+			$_SESSION['numResults3'] = $_REQUEST["numResults3"];
+		}
+	}
+	if(isset($_REQUEST["source4"]))
+	{
+		$_SESSION['source4'] = $_REQUEST["source4"];
+		if(isset($_REQUEST["numResults4"]))
+		{
+			$_SESSION['numResults4'] = $_REQUEST["numResults4"];
+		}
+	}
 		
-	}
-	else
-	{
-		$interface_direction = '';
-	}
-	
 	if($_SESSION['interface'])
 	{
 		if($_SESSION['interface']=='tabbed')
 		{
-			$option_type = 'radio';
-			$option_display = 'nothidden';
-			$display_style = 'merged';
+			// show tabs
+			echo("<style>div.resultContainer{width:100%;max-width:100%; margin-top:10px;}</style>");
 		}
 		
-		if($_SESSION['interface']=='dynamic')
+		if($_SESSION['interface']=='blended')
 		{
-			$option_type = 'radio';
-			$option_display = 'nothidden';
-			$display_style = 'merged';
-		}
-		
-		if($_SESSION['interface']=='non-blended-panel')
-		{
-			$option_type = 'checkbox';
-			$option_display = 'hidden';
-			$display_style = 'nonmerged';
+			// don't have to do anything
 		}
 		
 		if($_SESSION['interface']=='panel')
 		{
-			$option_type = 'checkbox';
-			$option_display = 'nothidden';
-			$display_style = 'nonmerged';
-		}
-		
-		if($_SESSION['interface']=='recommender')
-		{
-			$option_type = 'radio';
-			$option_display = 'nothidden';
-			$display_style = 'recommender';
-		}
-		
-	}
-	else
-	{
-		$option_type = 'checkbox';
-		$option_display = 'hidden';
-		$display_style = 'merged';
-	}
-	
-	$firstSearch = true;
+			echo("<style>.vertical{display:inline-block; max-width:500px; vertical-align:top;} div.resultContainer{width:1050px;max-width:1100px;} #box2, #box4{border: 1px solid lightgray; border-radius: 8px; padding:8px; margin: 0px 15px 15px 15px;}</style>");
 
-	//getting source type
-	if(isset($_REQUEST["source"]))
-	{
-		$source = $_REQUEST["source"];
-		
-		if($source=='Web')
-		{
-			$checkedweb='checked';
-		}
-		if($source=='News')
-		{
-			$checkednews='checked';
 		}
 	}
 	else
 	{
-		$checkedweb='checked';
+		// default to blended
 	}
 	
-	
-	
-	
-		$name1 = "language1";
-		$name2 = "language2";
-		$name3 = "language3";
-		$name4 = "language4";
+	$number_of_sources_requested = 0;
 		
-		if(isset($_REQUEST["language1"])  && $_REQUEST["language1"]!="")
-		{
-			$selected_language1 = $_REQUEST["language1"];
-			$checked1='checked';
-			++$number_of_boxes;
-		}
-		else
-		{
-			$selected_language1 = '';
-		}
+	if(isset($_SESSION['source1'])  && $_SESSION["source1"]!="")
+	{
+		$source1 = $_SESSION["source1"];
+		$number_of_results1 = $_SESSION["numResults1"];
+		$number_of_sources_requested++;
+	}
+	else
+	{
+		$source1 = '';
+		$number_of_results1 = 0;
+	}
 
-		if(isset($_REQUEST["language2"])  && $_REQUEST["language2"]!="")
-		{
-			$selected_language2 = $_REQUEST["language2"];
-			$checked2='checked';
-			++$number_of_boxes;
-		}
-		else
-		{
-			$selected_language2 = '';
-		}
+	if(isset($_SESSION["source2"])  && $_SESSION["source2"]!="")
+	{
+		$source2 = $_SESSION["source2"];
+		$number_of_results2 = $_SESSION["numResults2"];
+		$number_of_sources_requested++;
+	}
+	else
+	{
+		$source2 = '';
+		$number_of_results2 = 0;
+	}
 
-		if(isset($_REQUEST["language3"]) && $_REQUEST["language3"]!="")
-		{
-			$selected_language3 = $_REQUEST["language3"];
-			$checked3='checked';
-			++$number_of_boxes;
-		}
-		else
-		{
-			$selected_language3 = '';
-		}
+	if(isset($_SESSION["source3"]) && $_SESSION["source3"]!="")
+	{
+		$source3 = $_SESSION["source3"];
+		$number_of_results3 = $_SESSION["numResults3"];
+		$number_of_sources_requested++;
+	}
+	else
+	{
+		$source3 = '';
+		$number_of_results3 = 0;
+	}
 
-		if(isset($_REQUEST["language4"]) && $_REQUEST["language4"]!="")
-		{
-			$selected_language4 = $_REQUEST["language4"];
-			$checked4='checked';
-			++$number_of_boxes;
-		}
-		else
-		{
-			$selected_language4 = '';
-		}
-		
-		if($number_of_boxes==0 && $firstSearch )
-		{
-			$checked1='checked';
-			$checked2='checked';
-			$checked3='checked';
-			$checked4='checked';
-		}
-		
-
+	if(isset($_SESSION["source4"]) && $_SESSION["source4"]!="")
+	{
+		$source4 = $_SESSION["source4"];
+		$number_of_results4 = $_SESSION["numResults4"];
+		$number_of_sources_requested++;
+	}
+	else
+	{
+		$source4 = '';
+		$number_of_results4 = 0;
+	}
 	
 	if(isset($_REQUEST["searchText"]))
 	{
-		$firstSearch = false;
 		$text = $_REQUEST["searchText"];
 	}
 	else
@@ -188,146 +150,323 @@
 		<link rel="stylesheet" type="text/css" href="styleResultPageRight.css">
 		<link rel="stylesheet" type="text/css" href="styleResultPageHeader<?php echo $interface_direction;?>.css">
 		<script src="Javascript/jquery-1.11.0.min.js" type="text/javascript"></script>
-		<!-- <script src="src/iframeResizer.contentWindow.min.js" type="text/javascript"></script>-->
 		<script type="text/javascript">
-		
-			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
-		
-			function singleSearchOnNextPrevious(text, number_of_results, language, number, direction, source)
+
+			function clickedVerticalHeading(text, vertical)
 			{
-				if(number==1)
-				{
-					pagination1 = pagination1 + direction;
-					pagination = pagination1;
-				}
-				else if(number==2)
-				{
-					pagination2 = pagination2 + direction;
-					pagination = pagination2;
-				}
-				else if(number==3)
-				{
-					pagination3 = pagination3 + direction;
-					pagination = pagination3;
-				}
-				else if(number==4)
-				{
-					pagination4 = pagination4 + direction;
-					pagination = pagination4;
-				}
-				
-				offset=(pagination-1)*number_of_results;
-				
-				$(".next", $("#translatedQuery"+number)).hide();
-				$(".previous", $("#translatedQuery"+number)).hide();
-				$("#translatedResultsValues"+number).html('');
-				$("#translatedResultsValues"+number).html('<img src=\'images/ajax-loader.gif\'/>');
+				var elementString = '.verticalLabel[value="' + vertical + '"]';
+				$(elementString).trigger('click');
+			}
 
-				text = reverse_htmlspecialchars(text);
+			function showNextWebResults(text)
+			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
 
-				$.post( "search.php", { searchText: text, market: language, results: number_of_results, offset: offset, source: source} ).done(function( data ) {
+				var $active = $('.active');
+				$('.active').removeClass('active');
+				$active.parent().next().find('a').first().addClass('active');
+
+				currentPage++;
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+
+				if (currentPage == 2)
+				{
+					$("a.prev").removeClass('disabled');
+				}
+				if  (currentPage == 7)
+				{
+					$("a.next").addClass('disabled');
+				}
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
 					
-					$("#translatedResultsValues"+number).html(data);
-					$(".next", $("#translatedQuery"+number)).show();
-					if(pagination>1)
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
 					{
-						text = htmlspecialchars(text);
-						
-						$(".previous a", $("#translatedQuery"+number)).replaceWith("<a href=''>&lt; <?php echo $localised['Previous']?></a>");
-						previousString = "javascript:singleSearchOnNextPrevious(\""+text+"\","+number_of_results+",\""+language+"\","+number+","+(-1)+",'"+source+"')";
-						$(".previous a", $("#translatedQuery"+number)).attr('href', previousString);
-						
-						$(".previous", $("#translatedQuery"+number)).show();
+						var divIdentifier = "webResults";
 					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
 				});
 			}
-			
-			function singleSearchOnEditedTranslation(text, number_of_results, language, number, source)
+
+			function showPreviousWebResults(text)
 			{
-				if(number==1)
+				if (currentPage == 1)
 				{
-					pagination1 = 1;
+					return;
 				}
-				else if(number==2)
+
+
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				var $active = $('.active');
+				$('.active').removeClass('active');
+				$active.parent().prev().find('a').first().addClass('active');
+
+				currentPage--;
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
+
+				if (currentPage == 1)
 				{
-					pagination2 = 1;
+					javascript:window.location.reload();
+					$("a.prev").addClass('disabled');
 				}
-				else if(number==3)
+				if  (currentPage == 6)
 				{
-					pagination3 = 1;
+					$("a.next").removeClass('disabled');
 				}
-				else if(number==4)
-				{
-					pagination4 = 1;
-				}
-				
-				$(".next", $("#translatedQuery"+number)).hide();
-				$(".previous", $("#translatedQuery"+number)).hide();
-				$(".next", $("#translatedQuery"+number)).children('a').attr("href", "javascript:singleSearchOnNextPrevious(\""+htmlspecialchars(text)+"\","+number_of_results+",\""+language+"\","+number+","+1+",'"+source+"')");
-				$("#translatedResultsValues"+number).html('');
-				$("#translatedResultsValues"+number).html('<img src=\'images/ajax-loader.gif\'/>');
-				
-				$.post( "search.php", { searchText: text, market: language, results: number_of_results, offset: 0, source: source} ).done(function( data ) {
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
 					
-					$("#translatedResultsValues"+number).html(data);
-					$(".next", $("#translatedQuery"+number)).show();
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
 				});
 			}
-		
-			function translateAndSearch(text, number_of_results1, number_of_results2, number_of_results3, number_of_results4, language1, language2, language3, language4, source)
-			{	
-				console.log("In translate And Search");			
-				var boxnumber = 0;
-				
+
+			function showPageOfWebResults(text, el)
+			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				console.dir(el);
+				console.log("el: " + $(el).text());
+
+				var numberSelected = parseInt($(el).text());
+				$('.active').removeClass('active');
+				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
+
+				currentPage = numberSelected;
+				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+
+				if  (currentPage == 7)
+				{
+					$("a.next").addClass('disabled');
+				}
+				else
+				{
+					$("a.prev").removeClass('disabled');
+					$("a.next").removeClass('disabled');
+				}
+
+				console.log("Offset is: " + offset);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+					
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
+				});
+			}
+
+			function clickedSingleVertical(text, vertical)
+			{
+				$('.resultContainer').html("");
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
+					
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+
+					showResults();
+				});
+			}
+
+			function clickedSearchSuggestion(selectedText)
+			{
+    			document.getElementById('searchText').value = selectedText;
+    			document.getElementById("searchForm").submit();
+			}
+
+			var numberOfSourcesReturned = 0;
+			var numberOfSourcesRequested = 0;
+			var numberOfWebResultsRequested = 0;
+			var currentPage = 1;
+
+			function translateAndSearch(text, number_of_results1, number_of_results2, number_of_results3, number_of_results4, source1, source2, source3, source4, numberOfSourcesRequestedInit)
+			{
+				numberOfSourcesRequested = parseInt(numberOfSourcesRequestedInit);
 				if(text!='')
 				{
-							boxnumber++;
-							// addBoxOrientation(boxnumber, 'translatedQuery1');
-																					
-							$('#translatedQuery1').show();
-							
-							console.log("About to call");
-								$.post( "search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: source} ).done(function( data ) {
-									console.log("Called");
-									$("#translatedResultsValues1").html(data);
+					for (var i=1; i<5; i++)
+					{
+						var sourceString = "source".concat(i);
+						var source = eval(sourceString);
 
-									translatedQuery1 = htmlspecialchars(translatedQuery1);
-									
-									$(".next a", $("#translatedQuery1")).replaceWith("<a href=''><?php echo $localised['Next']?> &gt;</a>");
-									nextString = "javascript:singleSearchOnNextPrevious(\""+translatedQuery1+"\","+number_of_results1+",\""+language1+"\","+1+","+1+",'"+source+"')";
-									$(".next a", $("#translatedQuery1")).attr('href', nextString);
-								}); 
+						var numResultsString = "number_of_results".concat(i);
+						var numResults = eval(numResultsString);
+
+						var offset = 0;
+
+						if (source == "Web")
+						{
+							console.log("Num results: " + numResults);
+							numberOfWebResultsRequested += parseInt(numResults);
+							offset = parseInt(numberOfWebResultsRequested);
+						}
+
+						if (source != null && source != "")
+						{
+							$.post("search.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+								parseResponse(data);
+							}); 
+						}
+					}	
 				}
 			}
-			
-			
-			
-			$( document ).ready(function() {
+
+			var parseResponse = function(returnedJSON) {
+				var data = JSON.parse(returnedJSON);
 				
-				//recommender fix
-				$(".recommender.checked").insertBefore("#translatedQuery1");
-				//end recommender fix
-				
-				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $selected_language1 ?>','<?php echo $selected_language2 ?>','<?php echo $selected_language3 ?>','<?php echo $selected_language4 ?>', '<?php echo $source ?>');
+				if (data.source == "Web")
+				{
+					var divIdentifier = "#box".concat(data.i).concat(".webResults");
+				}
+				else if (data.source == "Image")
+				{
+					var divIdentifier = "#box".concat(data.i).concat(".imageResults");
+				}
+				else if (data.source == "Video")
+				{
+					var divIdentifier = "#box".concat(data.i).concat(".videoResults");
+				}
+				else if (data.source == "News")
+				{
+					var divIdentifier = "#box".concat(data.i).concat(".newsResults");
+				}
+
+				if (data.source != "Web")
+				{
+					$(divIdentifier).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" +  data.searchText + "', '" + data.source + "')\">" + data.source + " results for <strong>" + data.searchText + "</strong></a></h1>" + data.data);
+				}
+				else
+				{
+					$(divIdentifier).html(data.data);
+				}
+
+				numberOfSourcesReturned++;
+
+				if (numberOfSourcesReturned == numberOfSourcesRequested)
+				{
+					showResults();
+				}
+			};
+
+			var showResults = function()
+			{
+				$('.resultContainer').show();
+				$('.footer').show();
+			}
 			
-				$("*[type='radio']").change(function () {
-					$( "#submitbutton" ).trigger( "click" );
+			$( document ).ready(function() 
+			{
+				$('.footer').hide();
+				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+			
+				$("body").on('click', '.verticalLabel', function()
+				{
+					$('.verticalLabel.selected').removeClass('selected');
+					$(this).addClass('selected');
 				});
-				
-				$("*[type='checkbox']").change(function () {
-					$( "#submitbutton" ).trigger( "click" );
+
+				$("body").on('click', 'a.suggestionLink', function(event)
+				{
+					event.preventDefault();
+					console.log($(this).text());
+					clickedSearchSuggestion($(this).text());
 				});
-				
-				pagination1 = 1;
-				pagination2 = 1;
-				pagination3 = 1;
-				pagination4 = 1;
-				
 			});
-			
-		
-			
-			
+
+			function showResult(str)
+			{
+				if (str.length==0)
+				{ 
+					document.getElementById("livesearch").innerHTML="";
+				    document.getElementById("livesearch").style.border="0px";
+				    return;
+				}
+				console.log("String: " + str);
+				$.post("suggestions.php", { searchText: str }).done(function( responseText ) {
+					console.log("response text: " + responseText);
+					document.getElementById("livesearch").innerHTML=  responseText;
+      				document.getElementById("livesearch").style.border = "2px solid #333";
+				});
+			}
+
 			//helper methods
 			function htmlspecialchars(string){
 				return string
@@ -341,7 +480,7 @@
 			
 		</script>
 		<title>
-			PerMIA
+			Aggregate Search
 		</title>
 	</head>
 	<body>
@@ -359,72 +498,92 @@
 		
 		<div class='container'>
 			
-			<div class='headerContainer<?php echo $option_display?>'>
-				<form>
+			<div class='headerContainer'>
+				<form id="searchForm">
 					<div class='inputBoxes'>
-					<input type="hidden" name="interface" value="<?php echo $_SESSION['interface']?>">
-					<input type="text" style="width:500px;" id="searchText" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>">
-					<input type="submit" id='submitbutton' value="<?php echo $localised['Search']?>" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-					
-					&nbsp;&nbsp;<input type='radio' name='source' id='source1' value='Web' class='<?php echo $extras_visibility ;?> css-radio2 ' <?php echo $checkedweb ;?>><label for='source1' class='<?php echo $extras_visibility ;?> css-radio2-label'> <?php echo $localised['Web']?></label>
-					<input type='radio' name='source' id='source2' value='News' class='<?php echo $extras_visibility ;?> css-radio2 ' <?php echo $checkednews ;?>><label for='source2' class='<?php echo $extras_visibility ;?> css-radio2-label'><?php echo $localised['News']?></label>
-					
-					<br/><br/>
-					
-					<div id='options' class='<?php echo $option_display;?>'>						
-				<?php
-				
-				if($language1 != "")
-				{
-					echo '<input type="' . $option_type . '" name="' . htmlspecialchars($name1,ENT_QUOTES) . '" id="language1" value="' . $language1 . '" class="css-' . $option_type . '"' . $checked1 .'><label for="language1" class="css-' . $option_type . '-label">' . $_SESSION['language_codes'][$language1] . '</label>';
-				}
-				if($language2 != "")
-				{
-					echo '<input type="' . $option_type . '" name="' . htmlspecialchars($name2,ENT_QUOTES) . '" id="language2" value="' . $language2 . '" class="css-' . $option_type . '"' . $checked2 .'><label for="language2" class="css-' . $option_type . '-label">' . $_SESSION['language_codes'][$language2] . '</label>';
-				}
-				if($language3 != "")
-				{
-					echo '<input type="' . $option_type . '" name="' . htmlspecialchars($name3,ENT_QUOTES) . '" id="language3" value="' . $language3 . '" class="css-' . $option_type . '"' . $checked3 .'><label for="language3" class="css-' . $option_type . '-label">' . $_SESSION['language_codes'][$language3] . '</label>';
-				}
-				if($language4 != "")
-				{
-					echo '<input type="' . $option_type . '" name="' . htmlspecialchars($name4,ENT_QUOTES) . '" id="language4" value="' . $language4 . '" class="css-' . $option_type . '"' . $checked4 .'><label for="language4" class="css-' . $option_type . '-label">' . $_SESSION['language_codes'][$language4] . '</label>';
-				}
-				
-				
-				?>
-					</div>
-					
-					
-					
+						<?php 
+							if(!($_SESSION['interface']=='tabbed'))
+							{
+								echo('<input type="hidden" name="source1" value="' . $_SESSION['source1'] . '">');
+								echo('<input type="hidden" name="source2" value="' . $_SESSION['source2'] . '">');
+								echo('<input type="hidden" name="numResults2" value="' . $_SESSION['numResults2'] . '">');
+								echo('<input type="hidden" name="source3" value="' . $_SESSION['source3'] . '">');
+								echo('<input type="hidden" name="numResults3" value="' . $_SESSION['numResults3'] . '">');
+								echo('<input type="hidden" name="source4" value="' . $_SESSION['source4'] . '">');
+								echo('<input type="hidden" name="numResults4" value="' . $_SESSION['numResults4'] . '">');
+							}
+						?>
+						<input type="hidden" name="interface" value="<?php echo $_SESSION['interface']?>">
+						<input type="hidden" name="numResults1" value="<?php echo $_SESSION['numResults1']?>">
+
+						<input type="text" style="width:500px;" id="searchText" autocomplete="off" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>" onkeyup="showResult(this.value)">
+						<input type="submit" id='submitbutton' value="Search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+						<div id="livesearch"></div>
+
+						<br/><br/>	
+						<div class="links">
+							<?php
+								if (!($_SESSION['interface'] == 'tabbed') || !($_SESSION['interface'] == 'blended'))
+								{
+									echo('<input type="submit" class="verticalLabel selected" value="All">');
+								}
+							?>
+							<input type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Web')">
+							<input type="button" name="source1" class="verticalLabel" value="Image" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Image')">
+							<input type="button" name="source1" class="verticalLabel" value="Video" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Video')">
+							<input type="button" name="source1" class="verticalLabel" value="News" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'News')">
+						</div>
 					</div>
 				</form>
 			</div>
-			<div class='resultContainer<?php echo $option_display?>'>
+			<div class='resultContainer'>
 				<?php
-				
-				for($i=1;$i<5;$i++)
-				{
-					echo "<div id='translatedQuery" . $i . "' class='hidden box" . $number_of_boxes . " " . $display_style  . " " . ${"checked" . $i} ." " . ${"direction" . $i} . "'>" . 
-						"<div class='header'>" . 
-							"<div id='translatedQueryValue" . $i . "'  languagenumber='" . $i . "' language='" . ${'language'.$i} . "' class='query'></div>" . 
-						"</div>" . 
-						"<br/><br/>" . 
-						"<div id='translatedResultsValues" . $i . "'></div>" . 
-						"<div class='pagination'>" . 
-							"<div class='previous left'><a href=''></a></div>" . 
-							"<div class='next right'><a href=''></a></div>" . 
-						"</div>" . 
-					"</div>";
-				
-				}
-				
+					for($i=1; $i<5; $i++)
+					{
+
+						if ($i != 1 && $_SESSION['interface'] == 'blended')
+						{
+							echo("<hr>");
+						}
+
+						$currentSource = ${"source" . $i};
+			
+						if ($currentSource == "Web")
+						{
+							echo "<div id='box" . $i . "' class='webResults vertical'></div>";
+						}
+						else if ($currentSource == "Image")
+						{
+							echo "<div id='box" . $i . "' class='imageResults vertical'></div>";
+						}
+						else if ($currentSource == "Video")
+						{
+							echo "<div id='box" . $i . "' class='videoResults vertical'></div>";
+						}
+						else if ($currentSource == "News")
+						{
+							echo "<div id='box" . $i . "' class='newsResults vertical'></div>";
+						}
+					}
 				?>
 				
 				
 				
 			</div>
-			
+		</div>
+
+		<div class="footer">
+			<ul class="pagination">
+			  <li><a class="prev disabled" onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')" >«</a></li>
+			  <li><a class="active" onclick="javascript:window.location.reload();">1</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">2</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">3</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">4</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">5</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">6</a></li>
+			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">7</a></li>
+			  <li><a class="next" onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">»</a></li>
+			</ul>
 		</div>
 	</body>
 </html>

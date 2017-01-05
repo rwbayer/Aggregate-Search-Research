@@ -76,7 +76,7 @@
 	        {
 	        	foreach($group->searchSuggestions as $value)
 	        	{
-	        		$data .= '<a href="' . $value->url . '">';
+	        		$data .= '<a class="suggestionLink" href="">';
 		            $data .= $value->displayText;
 		            $data .= '</a>';
 	        	}
