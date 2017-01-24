@@ -312,7 +312,6 @@
 				$('.resultContainer').html("");
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
-					
 					var data = JSON.parse(returnedJSON);
 
 					if (data.source == "Web")
@@ -382,6 +381,7 @@
 			var parseResponse = function(returnedJSON) {
 				var data = JSON.parse(returnedJSON);
 				
+				console.log(data);
 				if (data.source == "Web")
 				{
 					var divIdentifier = "#box".concat(data.i).concat(".webResults");
