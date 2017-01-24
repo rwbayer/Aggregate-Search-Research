@@ -32,14 +32,23 @@
 
 	    $jsonobj = json_decode($response);
 
+	    $count == 0;
+
 	    foreach($jsonobj->suggestionGroups as $group)
 	    {
 	    	foreach($group->searchSuggestions as $value)
 	    	{
+	    		if ($count == 3)
+	    			break;
+
 	    		$data .= '<a class="suggestionLink" href="">';
 	            $data .= $value->displayText;
 	            $data .= '</a>';
+	            $count++;
 	    	}
+
+	    	if ($count == 3)
+	    		break;
 	    }
    	}
 	exit($data);
