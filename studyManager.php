@@ -42,7 +42,7 @@
   }
 
 	while ($row = mysql_fetch_assoc($result)) {
-		$_SESSION['taskId'] = $row['TaskID'];
+		$_SESSION['taskId'] = $row['Task_ID'];
 		// echo "\nRunning task #" . $_SESSION['taskId'] . " (type=" . $row['task_type'] . ").";
 		mysql_query("
 		    INSERT INTO AggSeaTaskPerformance
@@ -74,19 +74,19 @@
 			if ($row['System'] == PANEL) 
 			{
 				$_SESSION['recent_interface'] = PANEL;
-				header("Location: PerMIA.php?interface=panel&taskid=" . $_SESSION['taskId']);
+				header("Location: aggregate-search.php?interface=panel&taskid=" . $_SESSION['taskId']);
 				die();
 			} 
 			else if ($row['System'] == TABBED)
 			{
 				$_SESSION['recent_interface'] = TABBED;
-				header("Location: PerMIA.php?interface=tabbed&taskid=" . $_SESSION['taskId']);
+				header("Location: aggregate-search.php?interface=tabbed&taskid=" . $_SESSION['taskId']);
 				die();
 			} 
 			else if ($row['System'] == BLENDED)
 			{
 				$_SESSION['recent_interface'] = BLENDED;
-				header("Location: PerMIAil.php?interface=interleaved-dynamic&taskid=" . $_SESSION['taskId']);
+				header("Location: aggregate-search.php?interface=blended&taskid=" . $_SESSION['taskId']);
 				die();
 			} 
 		}
