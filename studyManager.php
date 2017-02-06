@@ -1,36 +1,39 @@
 <?php
 	include "config.php";
+	include "constants.php";
 	session_start();
 	$NUM_STUDIES = 50;
 
 	$con = mysql_connect($_DATABASEHOST, $_DATABASEUSER, $_DATABASEPASSWORD);
 	mysql_select_db($_DATABASE);
-	if ($_SESSION['studyPhase'] == -1) {
-		$query = "INSERT INTO UserLog (StudyId, init_time) VALUES ('" . $_SESSION['studyId'] . "' , NOW())";
+	if ($_SESSION['studyPhase'] == -1)
+	{
+		$query = "INSERT INTO AggSeaUserLog (Study_Id, Init_Time) VALUES ('" . $_SESSION['studyId'] . "' , NOW())";
 		mysql_query($query);
 		$_SESSION['userId'] = mysql_insert_id();
-		if($_SESSION['studyId'] == -1){
+		if ($_SESSION['studyId'] == -1)
+		{
 			$_SESSION['studyId'] = $_SESSION['userId'] % $NUM_STUDIES;
 		}
-		$query = "UPDATE UserLog SET StudyId= '" .$_SESSION['studyId'] ."' WHERE user_id ='".$_SESSION['userId']."' ";
+		$query = "UPDATE AggSeaUserLog SET Study_Id= '" .$_SESSION['studyId'] ."' WHERE User_Rd ='".$_SESSION['userId']."' ";
 		mysql_query($query);
   }
 
 	if ($_SESSION['studyId'] != -1 && $_SESSION['studyPhase'] != -1) {
 		mysql_query("
-		    UPDATE TaskPerformance SET
-				  task_end = NOW()
-			  WHERE user_id = " . $_SESSION['userId'] . " AND study_id = " .
-			    $_SESSION['studyId'] . " AND TaskID = " . $_SESSION['taskId'] . ";");
+		    UPDATE AggSeaTaskPerformance SET
+				  Task_End = NOW()
+			  WHERE User_ID = " . $_SESSION['userId'] . " AND Study_ID = " .
+			    $_SESSION['studyId'] . " AND Task_ID = " . $_SESSION['taskId'] . ";");
 		$_SESSION['studyPhase'] = $_SESSION['studyPhase'] + 1;
 	} else {
     $_SESSION['studyPhase'] = 1;
   }
 
 	$result = mysql_query(
-	    "SELECT * FROM Study WHERE study_id = " . $_SESSION['studyId'] .
-      " AND task_order = " . $_SESSION['studyPhase'] .
-			" ORDER BY task_order ASC");
+	    "SELECT * FROM AggSeaStudy WHERE Study_ID = " . $_SESSION['studyId'] .
+      " AND Task_Order = " . $_SESSION['studyPhase'] .
+			" ORDER BY Task_Order ASC");
   if (!mysql_num_rows($result)) {
 		//echo $_SESSION['userId'] . " " . $_SESSION['studyId'] . " " .
 		     //$_SESSION['studyPhase'] . " " . $_SESSION['taskId'] . " ALL DONE";
@@ -42,41 +45,50 @@
 		$_SESSION['taskId'] = $row['TaskID'];
 		// echo "\nRunning task #" . $_SESSION['taskId'] . " (type=" . $row['task_type'] . ").";
 		mysql_query("
-		    INSERT INTO TaskPerformance
-				  (user_id, study_id, TaskID, task_start)
+		    INSERT INTO AggSeaTaskPerformance
+				  (User_ID, Study_ID, Task_ID, Task_Start)
 			  VALUES (
 				  " . $_SESSION['userId'] . ", " .
 					$_SESSION['studyId'] . ", " .
 					$_SESSION['taskId'] . ", NOW());");
-		if ($row['task_type'] == "survey") {
-			if ($_SESSION['taskId'] == 13) {
+		if ($row['Task_Type'] == "survey") 
+		{
+			if ($_SESSION['taskId'] == CHECK_IN) 
+			{
 				header("Location: CheckIn.php");
 				die();
-			} else if($_SESSION['taskId'] == 14){
+			} 
+			else if($_SESSION['taskId'] == CONSENT)
+			{
 				header("Location: consentForm.php");
 				die();
-			} else {
+			} 
+			else 
+			{
 				header("Location: form.php?taskid=" . $_SESSION['taskId']);
 				die();
 			}
-		} else if ($row['task_type'] == "task") {
-			if ($row['system'] == 1) {
-				$_SESSION['recent_interface'] = 1;
+		} 
+		else if ($row['Task_Type'] == "task") 
+		{
+			if ($row['System'] == PANEL) 
+			{
+				$_SESSION['recent_interface'] = PANEL;
 				header("Location: PerMIA.php?interface=panel&taskid=" . $_SESSION['taskId']);
 				die();
-			} else if ($row['system'] == 2) {
-				$_SESSION['recent_interface'] = 2;
+			} 
+			else if ($row['System'] == TABBED)
+			{
+				$_SESSION['recent_interface'] = TABBED;
 				header("Location: PerMIA.php?interface=tabbed&taskid=" . $_SESSION['taskId']);
 				die();
-			} else if ($row['system'] == 3) {
-				$_SESSION['recent_interface'] = 3;
+			} 
+			else if ($row['System'] == BLENDED)
+			{
+				$_SESSION['recent_interface'] = BLENDED;
 				header("Location: PerMIAil.php?interface=interleaved-dynamic&taskid=" . $_SESSION['taskId']);
 				die();
-			} else if ($row['system'] == 4) {
-				$_SESSION['recent_interface'] = 4;
-				header("Location: PerMIAil.php?interface=non-blended-vertical&taskid=" . $_SESSION['taskId']);
-				die();
-			}
+			} 
 		}
 	}
 	session_destroy();

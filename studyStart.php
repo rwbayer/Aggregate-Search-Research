@@ -36,9 +36,9 @@ if(isset($_REQUEST["submitted"])) {
 					<div class='mainContainer'>
 						<form>
 							<p> Welcome to Aggregated Search study!</p>
-						  Enter StudyId, or -1 to choose automatically:</br>
+						  Enter StudyId (50), or -1 to choose automatically:</br>
 							<input id = "studyIdBox" name='study' type= "studyId" style='width:150px;' value="<?php echo $initialStudyId; ?>"/></br></br>
-							Enter Password:</br>
+							Enter Password: (hint: 8899)</br>
 							<input id = "pwdBox" name='password' type= "password" style='width:150px;' value=""/></br></br>
 								<input type="hidden" name="submitted" value="true">
 								<input type="submit" value="Save and get started!" action="">
