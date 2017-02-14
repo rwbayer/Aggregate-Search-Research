@@ -353,7 +353,7 @@ label.css-checkbox-label
 	background-color:#eee;
 	margin-top: 60px;
 
-	height: 100px;
+	height: 170px;
 	font-size: large;
 	margin-left: auto;
 	margin-right: auto;
@@ -490,4 +490,36 @@ ul.pagination li a:hover:not(.active):not(.disabled) {background-color: #ddd; cu
 #livesearch a
 {
 	display: block;
+}
+
+.taskDisplay
+{
+ 	display: block;
+  	height: 50px;
+	font-size: 15px;
+	width: auto;
+	float: left;
+}
+
+.practiceTaskDisplay
+{
+	padding-bottom: 5px;
+	color: red;
+	font-size: 20px;
+}
+
+#finish 
+{
+	text-decoration: none;
+	padding:6px 10px;
+	background:#fdd05e;
+	border:0 none transparent;
+	cursor:pointer;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	font-size: medium;
+	color: #fff;
+	-webkit-user-select: none;
+	max-height: 30px;
+	float: right;
 }
