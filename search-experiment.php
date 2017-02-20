@@ -176,6 +176,10 @@
 		<link rel="stylesheet" type="text/css" href="styleResultPageHeader<?php echo $interface_direction;?>.css">
 		<script src="Javascript/jquery-1.11.0.min.js" type="text/javascript"></script>
 		<script type="text/javascript">
+			
+			var favoriteBasket = [];
+
+			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 
 			function clickedVerticalHeading(text, vertical)
 			{
@@ -482,14 +486,52 @@
 			}
 
 			//helper methods
-			function htmlspecialchars(string){
+			function htmlspecialchars(string)
+			{
 				return string
 				         .replace(/&/g, "&amp;")
 				         .replace(/</g, "&lt;")
 				         .replace(/>/g, "&gt;")
 				         .replace(/"/g, "&quot;")
 				         .replace(/'/g, "&#039;");
-				}
+			}
+
+
+			$(document).on('click', '.favButton', function()
+			{
+				link = $(this).parent().children('a').attr('href');
+				language = $(this).parent().parent().attr('language');
+
+				title = $(this).text();
+				snippet= $(this).parent().parent().children('.snippet').text();
+				rank= $(this).parent().parent().attr('rank');
+
+				favoriteBasket.push({ type: 'favorite', link: link, language: language, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryid: "<?php echo $_SESSION['current_query'];?>"});
+
+				$(this).addClass("unFavButton");
+				$(this).removeClass("favButton");
+
+				console.log(favoriteBasket);
+
+			});
+
+			$(document).on('click', '.unFavButton', function()
+			{
+				link = $(this).parent().children('a').attr('href');
+				language = $(this).parent().parent().attr('language');
+
+				title = $(this).text();
+				snippet= $(this).parent().parent().children('.snippet').text();
+				rank= $(this).parent().parent().attr('rank');
+
+				// fix this so it removes the right one
+				favoriteBasket.splice(favoriteBasket.indexOf({ type: 'favorite', link: link, language: language, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryid: "<?php echo $_SESSION['current_query'];?>"}), 1);
+
+				$(this).addClass("favButton");
+				$(this).removeClass("unFavButton");
+
+				console.log(favoriteBasket);
+			});
 				
 			
 		</script>
@@ -520,7 +562,7 @@
 					echo "<br/>";
 				}
 
-				echo "<span class=taskDisplay>";
+				echo "<span class=taskDisplay><u>Task Description</u>:&nbsp;";
 
 				if($_SESSION['taskText'])
 				{

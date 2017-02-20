@@ -55,7 +55,10 @@
 	        	{
 	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'><a href="' . $value->Url . '" target="' . $target . '">';
 	            	$data .= strip_tags($value->Title);
-	            	$data .= '</a></div>';
+	            	$data .= '</a>';
+	            	$data .= '<a href="javascript:;" class="favButton">Relevant</a>';
+
+	            	$data .= '</div>';
 				
 					if($_REQUEST["source"]=="News")
 					{
