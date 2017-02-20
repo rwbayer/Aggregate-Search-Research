@@ -228,12 +228,14 @@ label.css-checkbox-label
 {
 	display: inline-block;
 	margin: 2px;
+	text-align: center;
 }
 
 .video
 {
 	display: inline-block;
 	margin: 2px;
+	text-align: center;
 }
 
 .interfacefeedbackoption{
@@ -524,7 +526,7 @@ ul.pagination li a:hover:not(.active):not(.disabled) {background-color: #ddd; cu
 	float: right;
 }
 
-.unFavButton
+a.unFavButton
 {
 	color: white;
 	background-color: green;
@@ -539,3 +541,29 @@ a.favButton
 	font-size: 90% !important;
 	float: right;
 }
+
+div.image a.favButton, div.image a.unFavButton, div.video a.favButton, div.video a.unFavButton
+{
+	float: none;
+}
+
+div.title a.title 
+{
+	overflow: hidden;
+	white-space: nowrap;
+	max-width: 440px;
+	display: block;
+	text-overflow: ellipsis;
+	float: left;
+}
+
+div.image a.image, div.video a.image
+{
+	display: block;
+}
+
+div.url
+{
+	clear: both;
+}
+

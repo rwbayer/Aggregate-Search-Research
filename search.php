@@ -41,19 +41,19 @@
 	        {
 	        	if ($_REQUEST["source"]=="Image")
 	        	{
-	        		$data .= '<div class=\'image\'><a href="' . $value->SourceUrl . '">';
+	        		$data .= '<div class=\'image\'><a class="image" href="' . $value->SourceUrl . '">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="150">';
-	            	$data .= '</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton">Relevant</a></div>';
 	        	}
 	        	else if ($_REQUEST["source"]=="Video")
 	        	{
-	        		$data .= '<div class=\'video\'><a href="' . $value->MediaUrl . '">';
+	        		$data .= '<div class=\'video\'><a class="image" href="' . $value->MediaUrl . '">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="160">';
-	            	$data .= '</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton">Relevant</a></div>';
 	        	}
 	        	else
 	        	{
-	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'><a href="' . $value->Url . '" target="' . $target . '">';
+	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'><a class="title" href="' . $value->Url . '" target="' . $target . '">';
 	            	$data .= strip_tags($value->Title);
 	            	$data .= '</a>';
 	            	$data .= '<a href="javascript:;" class="favButton">Relevant</a>';
