@@ -41,27 +41,27 @@
 	        {
 	        	if ($_REQUEST["source"]=="Image")
 	        	{
-	        		$data .= '<div class=\'image\'><a class="image" href="' . $value->SourceUrl . '">';
+	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="150">';
-	            	$data .= '</a><a href="javascript:;" class="favButton">Relevant</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="image">Relevant</a></div>';
 	        	}
 	        	else if ($_REQUEST["source"]=="Video")
 	        	{
-	        		$data .= '<div class=\'video\'><a class="image" href="' . $value->MediaUrl . '">';
+	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="160">';
-	            	$data .= '</a><a href="javascript:;" class="favButton">Relevant</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="video">Relevant</a></div>';
 	        	}
 	        	else
 	        	{
 	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'><a class="title" href="' . $value->Url . '" target="' . $target . '">';
 	            	$data .= strip_tags($value->Title);
 	            	$data .= '</a>';
-	            	$data .= '<a href="javascript:;" class="favButton">Relevant</a>';
-
-	            	$data .= '</div>';
+	            	
 				
 					if($_REQUEST["source"]=="News")
 					{
+						$data .= '<a href="javascript:;" class="favButton" vertical="news">Relevant</a>';
+	            		$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Source);
 						$news_date = urldecode($value->Date);
 						$year = substr($news_date,0, 4);
@@ -72,6 +72,8 @@
 					}
 					else
 					{
+						$data .= '<a href="javascript:;" class="favButton" vertical="web">Relevant</a>';
+						$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Url) . '</div>';
 					}
 					

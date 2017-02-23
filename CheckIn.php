@@ -9,27 +9,6 @@
 		//use $userId and $_SESSION['userId'] to make userId consistent across the flow
 		$userId = $_SESSION['userId'];
 
-		$language1 = $_REQUEST["language1"];
-		$language2 = $_REQUEST["language2"];
-		$language3 = $_REQUEST["language3"];
-		$language4 = $_REQUEST["language4"];
-		// echo $language1 . " " . $language2 ." ";
-
-		$language1readingproficiency = $_REQUEST["language1readingproficiency"];
-		$language2readingproficiency = $_REQUEST["language2readingproficiency"];
-		$language3readingproficiency = $_REQUEST["language3readingproficiency"];
-		$language4readingproficiency = $_REQUEST["language4readingproficiency"];
-
-		$language1writingproficiency = $_REQUEST["language1writingproficiency"];
-		$language2writingproficiency = $_REQUEST["language2writingproficiency"];
-		$language3writingproficiency = $_REQUEST["language3writingproficiency"];
-		$language4writingproficiency = $_REQUEST["language4writingproficiency"];
-
-		$language1listeningproficiency = $_REQUEST["language1listeningproficiency"];
-		$language2listeningproficiency = $_REQUEST["language2listeningproficiency"];
-		$language3listeningproficiency = $_REQUEST["language3listeningproficiency"];
-		$language4listeningproficiency = $_REQUEST["language4listeningproficiency"];
-
 		// echo 	$userId . ", " . $language1 . ", "  . $language2;
 
 		if($language1!="" && $language2!="" &&
@@ -47,34 +26,6 @@
 						 		 '$language4', '$language4readingproficiency', '$language4writingproficiency', '$language4listeningproficiency')";
 			mysql_query($query);
 			$message = mysql_error();
-
-			// 	//Language 1
-			// 	$query = "INSERT INTO Answers (id, question, user, response) VALUES (NULL, 'language1', '$username', '$language1')";
-			// 	//$query = "INSERT INTO `PERMIA`.`Answers` (`id`, `question`, `user`, `response`) VALUES (NULL, 'language1', '$username', '$language1')";
-			// 	mysql_query($query);
-			// 	$message = mysql_error();
-			//
-			// 	//Language 2
-			// 	$query = "INSERT INTO Answers (id, question, user, response) VALUES (NULL, 'language2', '$username', '$language2')";
-			// //$query = "INSERT INTO `PERMIA`.`Answers` (`id`, `question`, `user`, `response`) VALUES (NULL, 'language2', '$username', '$language2')";
-			// 	mysql_query($query);
-			// 	$message = mysql_error();
-			//
-			// 	//Language 3
-			// 	if($language3!="")
-			// 	{
-			// 		$query = "INSERT INTO Answers (id, question, user, response) VALUES (NULL, 'language3', '$username', '$language3')";
-			// 		mysql_query($query);
-			// 		$message = mysql_error();
-			// 	}
-			//
-			// 	//Language 4
-			// 	if($language4!="")
-			// 	{
-			// 		$query = "INSERT INTO Answers (id, question, user, response) VALUES (NULL, 'language4', '$username', '$language4')";
-			// 		mysql_query($query);
-			// 		$message = mysql_error();
-			// 	}
 		} else {
 			$message = '<div class="error">You must choose at least a first language (language 1) and a second language (language 2), as well as the corresponding proficiencies</div>';
 		}
@@ -83,62 +34,7 @@
 			mysql_close($con);
 
 			//$_SESSION['username']=$username;
-			$_SESSION['language1']=$language1;
-			$_SESSION['InterfaceLanguage']=Enlgish;
-			$_SESSION['language1readingproficiency']=$language1readingproficiency;
-			$_SESSION['language1writingproficiency']=$language1writingproficiency;
-			$_SESSION['language1listeningproficiency']=$language1listeningproficiency;
-			$_SESSION['language2']=$language2;
-			$_SESSION['language2readingproficiency']=$language2readingproficiency;
-			$_SESSION['language2writingproficiency']=$language2writingproficiency;
-			$_SESSION['language2listeningproficiency']=$language2listeningproficiency;
-			$_SESSION['language3']=$language3;
-			$_SESSION['language3readingproficiency']=$language3readingproficiency;
-			$_SESSION['language3writingproficiency']=$language3writingproficiency;
-			$_SESSION['language3listeningproficiency']=$language3listeningproficiency;
-			$_SESSION['language4']=$language4;
-			$_SESSION['language4readingproficiency']=$language4readingproficiency;
-			$_SESSION['language4writingproficiency']=$language4writingproficiency;
-			$_SESSION['language4listeningproficiency']=$language4listeningproficiency;
-
-			$language_codes = array(
-				"ar-XA" => "العربية",
-				"bg-BG" => "Български",
-				"zh-CN" => "中文",
-				"zh-HK" => "粵語",
-				"hr-HR" => "Hrvatski",
-				"cs-CZ" => "Čeština",
-				"da-DK" => "Dansk",
-				"nl-NL" => "Nederlands",
-				"en-US" => "English",
-				"et-EE" => "Eesti",
-				"fi-FI" => "Suomi",
-				"fr-FR" => "Français",
-				"de-DE" => "Deutsch",
-				"el-GR" => "Ελληνικά",
-				"he-IL" => "עברית",
-				"hu-HU" => "Magyar",
-				"it-IT" => "Italiano",
-				"ja-JP" => "日本語",
-				"ko-KR" => "한국어",
-				"lv-LV" => "Latviešu",
-				"lt-LT" => "Lietuvių",
-				"nb-NO" => "Norsk",
-				"pl-PL" => "Polski",
-				"pt-BR" => "Português",
-				"ro-RO" => "Română",
-				"ru-RU" => "Русский",
-				"sk-SK" => "Slovenčina",
-				"sl-SL" => "Slovenščina",
-				"es-ES" => "Español",
-				"sv-SE" => "Svenska",
-				"th-TH" => "ไทย",
-				"tr-TR" => "Türkçe",
-				"uk-UA" => "Українська",
-			);
-
 			$_SESSION['localised'] = $localised_en;
-			$_SESSION['language_codes'] = $language_codes;
 			header("Location: studyManager.php");
 			die();
 		}

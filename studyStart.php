@@ -3,7 +3,8 @@
 session_start();
 $initialStudyId = -1;
 
-if(isset($_REQUEST["submitted"])) {
+if(isset($_REQUEST["submitted"])) 
+{
 	if (intval($_REQUEST['password']) == 8899) {
 		$_SESSION['studyId'] = intval($_REQUEST['study']);
 		$_SESSION['studyPhase'] = -1;

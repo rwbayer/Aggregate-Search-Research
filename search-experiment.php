@@ -178,6 +178,7 @@
 		<script type="text/javascript">
 			
 			var favoriteBasket = [];
+			var singleVertical = "";
 
 			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 
@@ -340,6 +341,8 @@
 			{
 				$('.resultContainer').html("");
 
+				singleVertical = "All";
+
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					var data = JSON.parse(returnedJSON);
 
@@ -500,13 +503,12 @@
 			$(document).on('click', '.favButton', function()
 			{
 				link = $(this).parent().children('a').attr('href');
-				language = $(this).parent().parent().attr('language');
-
-				title = $(this).text();
+				title = $(this).parent().children('a').text();
 				snippet= $(this).parent().parent().children('.snippet').text();
-				rank= $(this).parent().parent().attr('rank');
+				rank = $(this).parent().parent().attr('rank');
+				vertical = $(this).attr('vertical');
 
-				favoriteBasket.push({ type: 'favorite', link: link, language: language, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryid: "<?php echo $_SESSION['current_query'];?>"});
+				favoriteBasket.push({ type: 'favorite', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
 
 				$(this).addClass("unFavButton");
 				$(this).removeClass("favButton");
@@ -518,21 +520,58 @@
 			$(document).on('click', '.unFavButton', function()
 			{
 				link = $(this).parent().children('a').attr('href');
-				language = $(this).parent().parent().attr('language');
-
 				title = $(this).text();
 				snippet= $(this).parent().parent().children('.snippet').text();
-				rank= $(this).parent().parent().attr('rank');
+				rank = $(this).parent().parent().attr('rank');
+				vertical = $(this).attr('vertical');
 
 				// fix this so it removes the right one
-				favoriteBasket.splice(favoriteBasket.indexOf({ type: 'favorite', link: link, language: language, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryid: "<?php echo $_SESSION['current_query'];?>"}), 1);
+				favoriteBasket.splice(favoriteBasket.indexOf({ type: 'favorite', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"}), 1);
 
 				$(this).addClass("favButton");
 				$(this).removeClass("unFavButton");
 
 				console.log(favoriteBasket);
 			});
-				
+
+			/************* Logging ***************/
+			
+			$(document).on('click', '#submitbutton', function()
+			{
+
+				searchQuery = $('#searchText').val();
+				var request = $.ajax({
+				  type: 'POST',
+				  url: 'Log.php',
+				  data: { type: 'query', searchQuery: searchQuery, currentinterface: singleVertical},
+				  dataType: "html",
+				  async: false
+				});
+
+				request.done(function( msg ) {
+					;
+				});
+
+			});
+
+			$(document).on('click', '#finish', function()
+			{
+				setCookie("basket", "", 365);
+				for (var i = 0; i < favoriteBasket.length; i++) {
+					var request = $.ajax({
+					  type: 'POST',
+					  url: 'Log.php',
+					  data: { type: favoriteBasket[i].type, link: favoriteBasket[i].link, vertical: favoriteBasket[i].vertical, title: favoriteBasket[i].title, snippet: favoriteBasket[i].snippet, rank: favoriteBasket[i].rank, currentinterface: favoriteBasket[i].currentinterface, queryId: favoriteBasket[i].queryId},
+					  dataType: "html",
+					  async:false
+					});
+					request.done(function( msg ) {
+					});
+				}
+				window.location.href = "studyManager.php";
+			});	
+
+			/********* End Logging *************/
 			
 		</script>
 		<title>
@@ -603,7 +642,8 @@
 						<br/><br/>	
 						<div class="links">
 							<?php
-								if (!($_SESSION['interface'] == 'tabbed') || !($_SESSION['interface'] == 'blended'))
+								// || !($_SESSION['interface'] == 'blended')
+								if (!($_SESSION['interface'] == 'tabbed'))
 								{
 									echo('<input type="submit" class="verticalLabel selected" value="All">');
 								}
