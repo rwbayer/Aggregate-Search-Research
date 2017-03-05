@@ -55,8 +55,9 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "Insert into LinkLogEx (UserID, interface, QueryId, link, language, title, snippet, rank, timestamp) Values('" . $userID . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $language . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW())";
-		if (!mysql_query($query)) {
+		$query = "INSERT INTO AggSeaLinkLog (User_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
+		if (!mysql_query($query)) 
+		{
 			$query .= mysql_error();
 		}
 	}

@@ -41,25 +41,26 @@
 	        {
 	        	if ($_REQUEST["source"]=="Image")
 	        	{
-	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '">';
+	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '" vertical="image">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="150">';
 	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="image">Relevant</a></div>';
 	        	}
 	        	else if ($_REQUEST["source"]=="Video")
 	        	{
-	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '">';
+	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '" vertical="video">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="160">';
 	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="video">Relevant</a></div>';
 	        	}
 	        	else
 	        	{
-	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'><a class="title" href="' . $value->Url . '" target="' . $target . '">';
-	            	$data .= strip_tags($value->Title);
-	            	$data .= '</a>';
+	        		$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
 	            	
 				
 					if($_REQUEST["source"]=="News")
 					{
+						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="news">';
+	            		$data .= strip_tags($value->Title);
+	            		$data .= '</a>';
 						$data .= '<a href="javascript:;" class="favButton" vertical="news">Relevant</a>';
 	            		$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Source);
@@ -72,6 +73,9 @@
 					}
 					else
 					{
+						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="web">';
+	            		$data .= strip_tags($value->Title);
+	            		$data .= '</a>';
 						$data .= '<a href="javascript:;" class="favButton" vertical="web">Relevant</a>';
 						$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Url) . '</div>';

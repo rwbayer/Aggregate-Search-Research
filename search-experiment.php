@@ -364,7 +364,7 @@
 			{
 				$('.resultContainer').html("");
 
-				currentinterface = vertical;
+				currentinterface = vertical.toLowerCase();
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					var data = JSON.parse(returnedJSON);
@@ -385,7 +385,7 @@
 					{
 						var divIdentifier = "newsResults";
 					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
 					showResults();
 				});
@@ -625,8 +625,8 @@
 			$(document).on('click contextmenu', 'a', function()
 			{
 				link = $(this).attr('href');
-				
-				vertical = $(this).parent().parent().parent().parent().attr('vertical');
+				vertical = $(this).attr('vertical');
+
 				var json_strings = JSON.stringify(favoriteBasket);
 				console.log("Link: " + link + " Vertical: " + vertical + " JSON: " + json_strings);
 				setCookie("basket", "", 365);
@@ -634,12 +634,23 @@
 
 				if(vertical != undefined)
 				{
-					title = $(this).text();
-					snippet = $(this).parent().parent().children('.snippet').text();
-					rank = $(this).parent().parent().attr('rank');;
+					// know its a result link
+					if (vertical == "web" || vertical == "news")
+					{
+						title = $(this).text();
+						snippet= $(this).parent().parent().children('.snippet').text();
+						rank = $(this).parent().parent().attr('rank');
+					}
+					else if (vertical == "image" || vertical == "video")
+					{
+						title = $(this).children('img').attr('src');
+						snippet= "";
+						rank = $(this).parent().attr('rank');
+					}
 				}
 				else
 				{
+					// some other link on the page...
 					title = '';
 					snippet = '';
 					rank = '';
