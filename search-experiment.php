@@ -363,6 +363,7 @@
 			function clickedSingleVertical(text, vertical)
 			{
 				$('.resultContainer').html("");
+				$('.footer').hide();
 
 				currentinterface = vertical.toLowerCase();
 
