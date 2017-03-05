@@ -178,9 +178,32 @@
 		<script type="text/javascript">
 			
 			var favoriteBasket = [];
-			var singleVertical = "";
 
 			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
+
+			function setCookie(cname, cvalue, exdays) 
+			{
+			    var d = new Date();
+			    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+			    var expires = "expires="+d.toUTCString();
+			    document.cookie = cname + "=" + cvalue + "; " + expires;
+			}
+
+			function getCookie(cname) 
+			{
+			    var name = cname + "=";
+			    var ca = document.cookie.split(';');
+			    for(var i = 0; i < ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0) == ' ') {
+			            c = c.substring(1);
+			        }
+			        if (c.indexOf(name) == 0) {
+			            return c.substring(name.length, c.length);
+			        }
+			    }
+			    return "";
+			}
 
 			function clickedVerticalHeading(text, vertical)
 			{
@@ -341,7 +364,7 @@
 			{
 				$('.resultContainer').html("");
 
-				singleVertical = "All";
+				currentinterface = vertical;
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					var data = JSON.parse(returnedJSON);
@@ -450,13 +473,54 @@
 
 			var showResults = function()
 			{
+				var favs = $('.favButton');
+				console.log("favs: ");
+				console.log(favs);
+				console.log("fav basket: ");
+				console.log(favoriteBasket);
+				for (var d = 0; d < favs.length; d++) {
+					console.log()
+					for (var k = 0; k < favoriteBasket.length; k++) 
+					{
+						if ($(favs[d]).attr('vertical') == "web" || $(favs[d]).attr('vertical') == "news")
+						{
+							if ($(favs[d]).parent().children('a.title').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
+							{
+								$(favs[d]).addClass("unFavButton");
+								$(favs[d]).removeClass("favButton");
+								break;
+							}
+						}
+						else if ($(favs[d]).attr('vertical') == "image" || $(favs[d]).attr('vertical') == "video")
+						{
+							if ($(favs[d]).parent().children('a.image').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
+							{
+								$(favs[d]).addClass("unFavButton");
+								$(favs[d]).removeClass("favButton");
+								break;
+							}
+						}
+					}
+				}
+
 				$('.resultContainer').show();
 				$('.footer').show();
 			}
 			
-			$( document ).ready(function() 
+			$(document).ready(function() 
 			{
 				$('.footer').hide();
+
+				var json_string = getCookie("basket");
+				if (json_string === "") 
+				{
+					favoriteBasket = [];
+				} 
+				else 
+				{
+					favoriteBasket = JSON.parse(json_string);
+				}
+				
 				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
 			
 				$("body").on('click', '.verticalLabel', function()
@@ -502,11 +566,22 @@
 
 			$(document).on('click', '.favButton', function()
 			{
-				link = $(this).parent().children('a').attr('href');
-				title = $(this).parent().children('a').text();
-				snippet= $(this).parent().parent().children('.snippet').text();
-				rank = $(this).parent().parent().attr('rank');
 				vertical = $(this).attr('vertical');
+
+				if (vertical == "web" || vertical == "news")
+				{
+					link = $(this).parent().children('a.title').attr('href');
+					title = $(this).parent().children('a.title').text();
+					snippet= $(this).parent().parent().children('.snippet').text();
+					rank = $(this).parent().parent().attr('rank');
+				}
+				else if (vertical == "image" || vertical == "video")
+				{
+					link = $(this).parent().children('a.image').attr('href');
+					title = $(this).parent().children('a.image').children('img').attr('src');
+					snippet= "";
+					rank = $(this).parent().attr('rank');
+				}
 
 				favoriteBasket.push({ type: 'favorite', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
 
@@ -519,11 +594,22 @@
 
 			$(document).on('click', '.unFavButton', function()
 			{
-				link = $(this).parent().children('a').attr('href');
-				title = $(this).text();
-				snippet= $(this).parent().parent().children('.snippet').text();
-				rank = $(this).parent().parent().attr('rank');
 				vertical = $(this).attr('vertical');
+
+				if (vertical == "web" || vertical == "news")
+				{
+					link = $(this).parent().children('a.title').attr('href');
+					title = $(this).parent().children('a.title').text();
+					snippet= $(this).parent().parent().children('.snippet').text();
+					rank = $(this).parent().parent().attr('rank');
+				}
+				else if (vertical == "image" || vertical == "video")
+				{
+					link = $(this).parent().children('a.image').attr('href');
+					title = $(this).parent().children('a.image').children('img').attr('src');
+					snippet= "";
+					rank = $(this).parent().attr('rank');
+				}
 
 				// fix this so it removes the right one
 				favoriteBasket.splice(favoriteBasket.indexOf({ type: 'favorite', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"}), 1);
@@ -536,14 +622,50 @@
 
 			/************* Logging ***************/
 			
+			$(document).on('click contextmenu', 'a', function()
+			{
+				link = $(this).attr('href');
+				
+				vertical = $(this).parent().parent().parent().parent().attr('vertical');
+				var json_strings = JSON.stringify(favoriteBasket);
+				console.log("Link: " + link + " Vertical: " + vertical + " JSON: " + json_strings);
+				setCookie("basket", "", 365);
+				setCookie("basket", json_strings, 365);
+
+				if(vertical != undefined)
+				{
+					title = $(this).text();
+					snippet = $(this).parent().parent().children('.snippet').text();
+					rank = $(this).parent().parent().attr('rank');;
+				}
+				else
+				{
+					title = '';
+					snippet = '';
+					rank = '';
+				}
+
+				var request = $.ajax({
+				  type: 'POST',
+				  url: 'Log.php',
+				  data: { type: 'link', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface},
+				  dataType: "html",
+				  async:false
+				});
+
+				request.done(function( msg ) {
+				});
+			});
+
 			$(document).on('click', '#submitbutton', function()
 			{
 
 				searchQuery = $('#searchText').val();
+				
 				var request = $.ajax({
 				  type: 'POST',
 				  url: 'Log.php',
-				  data: { type: 'query', searchQuery: searchQuery, currentinterface: singleVertical},
+				  data: { type: 'query', searchQuery: searchQuery, currentinterface: currentinterface},
 				  dataType: "html",
 				  async: false
 				});
@@ -557,7 +679,8 @@
 			$(document).on('click', '#finish', function()
 			{
 				setCookie("basket", "", 365);
-				for (var i = 0; i < favoriteBasket.length; i++) {
+				for (var i = 0; i < favoriteBasket.length; i++) 
+				{
 					var request = $.ajax({
 					  type: 'POST',
 					  url: 'Log.php',
@@ -670,19 +793,19 @@
 			
 						if ($currentSource == "Web")
 						{
-							echo "<div id='box" . $i . "' class='webResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='webResults vertical' vertical='web'></div>";
 						}
 						else if ($currentSource == "Image")
 						{
-							echo "<div id='box" . $i . "' class='imageResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='imageResults vertical' vertical='image'></div>";
 						}
 						else if ($currentSource == "Video")
 						{
-							echo "<div id='box" . $i . "' class='videoResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='videoResults vertical' vertical='video'></div>";
 						}
 						else if ($currentSource == "News")
 						{
-							echo "<div id='box" . $i . "' class='newsResults vertical'></div>";
+							echo "<div id='box" . $i . "' class='newsResults vertical' vertical='news'></div>";
 						}
 					}
 				?>

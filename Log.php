@@ -8,8 +8,8 @@
 	}
 	header('Content-Type: text/html; charset=utf-8');
 
-	mysql_set_charset('utf8', $con);
-	mysql_query("SET NAMES utf8");
+	// mysql_set_charset('utf8', $con);
+	// mysql_query("SET NAMES utf8");
 	mysql_select_db($_DATABASE);
 
 	$userID = $_SESSION['userId'];
@@ -22,7 +22,7 @@
 		$searchQuery = mysql_real_escape_string ($_REQUEST["searchQuery"]);
 		$currentinterface = $_REQUEST["currentinterface"];
 
-		$query = "INSERT INTO AggSeaQueryLog (User_ID, Interface, Current_Interface, Search_Query, Timestamp) Values('" . $userID . "','" . $interface . "','" $currentinterface . "','" . $searchQuery . "' , NOW())";
+		$query = "INSERT INTO AggSeaQueryLog (User_ID, Interface, Current_Interface, Search_Query, Time) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
@@ -48,7 +48,7 @@
 	{
 		$QueryId = $_SESSION['current_query'];
 		$link = mysql_real_escape_string ($_REQUEST["link"]);
-		$language = $_REQUEST["language"];
+		$vertical = $_REQUEST["vertical"];
 		$title = mysql_real_escape_string ($_REQUEST["title"]);
 		$snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
 		$rank = $_REQUEST["rank"];
@@ -71,8 +71,8 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO FavoriteLogEx (User_ID, Interface, Query_Id, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES (" .
-		    $userID . ",'" . $currentinterface . "'," . $QueryId . ",'" .
+		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES (" .
+		    $userID . ",'" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
 				$link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
 				$rank . "', NOW())";
 		
