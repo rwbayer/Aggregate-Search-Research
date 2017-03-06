@@ -207,8 +207,36 @@
 
 			function clickedVerticalHeading(text, vertical)
 			{
-				var elementString = '.verticalLabel[value="' + vertical + '"]';
-				$(elementString).trigger('click');
+				$('.resultContainer').html("");
+				$('.footer').hide();
+
+				logNavigationChange("vertical heading", currentinterface, vertical.toLowerCase(), 1);
+
+				currentinterface = vertical.toLowerCase();
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
+					var data = JSON.parse(returnedJSON);
+
+					if (data.source == "Web")
+					{
+						var divIdentifier = "webResults";
+					}
+					else if (data.source == "Image")
+					{
+						var divIdentifier = "imageResults";
+					}
+					else if (data.source == "Video")
+					{
+						var divIdentifier = "videoResults";
+					}
+					else if (data.source == "News")
+					{
+						var divIdentifier = "newsResults";
+					}
+					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+					showResults();
+				});
 			}
 
 			function showNextWebResults(text)
@@ -222,6 +250,9 @@
 
 				currentPage++;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+
+				logNavigationChange("show next", currentinterface, "paginated", currentPage);
+				currentinterface = "paginated";
 
 				if (currentPage == 2)
 				{
@@ -265,7 +296,6 @@
 					return;
 				}
 
-
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
@@ -274,13 +304,23 @@
 				$active.parent().prev().find('a').first().addClass('active');
 
 				currentPage--;
+				
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
 
 				if (currentPage == 1)
 				{
+					logNavigationChange("show previous", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
+					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
+
 					javascript:window.location.reload();
 					$("a.prev").addClass('disabled');
 				}
+				else
+				{
+					logNavigationChange("show previous", currentinterface, "paginated", currentPage);
+					currentinterface = "paginated";
+				}
+
 				if  (currentPage == 6)
 				{
 					$("a.next").removeClass('disabled');
@@ -318,6 +358,8 @@
 				$('.footer').hide();
 
 				var numberSelected = parseInt($(el).text());
+				logNavigationChange("show specific", currentinterface, "web", numberSelected);
+				currentinterface = "paginated";
 				$('.active').removeClass('active');
 				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
 
@@ -365,6 +407,7 @@
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
+				logNavigationChange("single vertical", currentinterface, vertical.toLowerCase(), 1);
 				currentinterface = vertical.toLowerCase();
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
@@ -648,25 +691,18 @@
 						snippet= "";
 						rank = $(this).parent().attr('rank');
 					}
-				}
-				else
-				{
-					// some other link on the page...
-					title = '';
-					snippet = '';
-					rank = '';
-				}
 
-				var request = $.ajax({
-				  type: 'POST',
-				  url: 'Log.php',
-				  data: { type: 'link', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface},
-				  dataType: "html",
-				  async:false
-				});
+					var request = $.ajax({
+						type: 'POST',
+						url: 'Log.php',
+					  	data: { type: 'link', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface},
+					  	dataType: "html",
+					  	async:false
+					});
 
-				request.done(function( msg ) {
-				});
+					request.done(function( msg ) {
+					});
+				}
 			});
 
 			$(document).on('click', '#submitbutton', function()
@@ -705,6 +741,22 @@
 				}
 				window.location.href = "studyManager.php";
 			});	
+
+			function logNavigationChange(type, previousinterface, currentinterface, page)
+			{
+				console.log("logging with type: " + type + " and prev: " + previousinterface + " and current: " + currentinterface + " and page: " + page);
+				var request = $.ajax({
+				  type: 'POST',
+				  url: 'Log.php',
+				  data: { type: 'nav', page: page, type: type, previousinterface: previousinterface, currentinterface: currentinterface},
+				  dataType: "html",
+				  async:false
+				});
+
+				request.done(function( msg ) {
+					console.log("msg: " + msg);
+				});
+			}
 
 			/********* End Logging *************/
 			
