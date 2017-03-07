@@ -209,10 +209,13 @@
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
+				$('#loading').show();
 
 				logNavigationChange("vertical heading", currentinterface, vertical, 1);
-
+				
 				showSingleVertical(text, vertical);
+				$('.verticalLabel.selected').removeClass('selected');
+				$('.verticalLabel#' + currentinterface).addClass('selected');
 			}
 
 			function showSingleVertical(text, vertical)
@@ -249,6 +252,7 @@
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
+				$('#loading').show();
 
 				var $active = $('.active');
 				$('.active').removeClass('active');
@@ -257,8 +261,16 @@
 				currentPage++;
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
-				logNavigationChange("show next", currentinterface, "paginated", currentPage);
-				currentinterface = "paginated";
+				var source = currentinterface;
+				console.log("Source was: " + source);
+
+				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
+				{
+					source = "Web";
+				}
+
+				logNavigationChange("show next", currentinterface, source, currentPage);
+				currentinterface = source;
 
 				if (currentPage == 2)
 				{
@@ -269,7 +281,9 @@
 					$("a.next").addClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+				console.log("SOURCE:  " + source);
+
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
 
@@ -304,6 +318,7 @@
 
 				$('.resultContainer').html("");
 				$('.footer').hide();
+				$('#loading').show();
 
 				var $active = $('.active');
 				$('.active').removeClass('active');
@@ -312,6 +327,13 @@
 				currentPage--;
 				
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
+
+				var source = currentinterface;
+
+				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
+				{
+					source = "Web";
+				}
 
 				if (currentPage == 1)
 				{
@@ -323,8 +345,8 @@
 				}
 				else
 				{
-					logNavigationChange("show previous", currentinterface, "paginated", currentPage);
-					currentinterface = "paginated";
+					logNavigationChange("show previous", currentinterface, source, currentPage);
+					currentinterface = source;
 				}
 
 				if  (currentPage == 6)
@@ -332,7 +354,7 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
 
@@ -362,10 +384,25 @@
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
+				$('#loading').show();
 
 				var numberSelected = parseInt($(el).text());
-				logNavigationChange("show specific", currentinterface, "Web", numberSelected);
-				currentinterface = "paginated";
+				var source = currentinterface;
+
+				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
+				{
+					if (numberSelected == 1)
+					{
+						javascript:window.location.reload();
+					}
+					else
+					{
+						source = "Web";
+					}
+				}
+
+				logNavigationChange("show specific", currentinterface, source, numberSelected);
+				currentinterface = source;
 				$('.active').removeClass('active');
 				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
 
@@ -382,7 +419,7 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: "Web", i:1}).done(function( returnedJSON ) {
+				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
 					
 					var data = JSON.parse(returnedJSON);
 
@@ -412,8 +449,16 @@
 			{
 				$('.resultContainer').html("");
 				$('.footer').hide();
+				$('#loading').show();
+				
+				// go to first page no matter what
+				currentPage = 1;
+				$('.active').removeClass('active');
+				$('ul.pagination').children().eq(1).find('a').first().addClass('active');
+				$("a.prev").addClass('disabled');
+				$("a.next").removeClass('disabled');
 
-				logNavigationChange("single vertical", currentinterface, vertical, 1);
+				logNavigationChange("single vertical", currentinterface, vertical, currentPage);
 				showSingleVertical(text, vertical);
 			}
 
@@ -529,6 +574,7 @@
 					}
 				}
 
+				$('#loading').hide();
 				$('.resultContainer').show();
 				$('.footer').show();
 			}
@@ -676,14 +722,14 @@
 				
 				setCookie("basket", "", 365);
 				setCookie("basket", json_strings, 365);
-				
-				var json_interface = JSON.stringify(currentinterface);
-				setCookie("currentInterface", "", 365);
-				setCookie("currentInterface", json_interface, 365);
 
 				if(vertical != undefined)
 				{
 					// know its a result link
+					var json_interface = JSON.stringify(currentinterface);
+					setCookie("currentInterface", "", 365);
+					setCookie("currentInterface", json_interface, 365);
+
 					if (vertical == "Web" || vertical == "News")
 					{
 						title = $(this).text();
@@ -847,6 +893,8 @@
 					</div>
 				</form>
 			</div>
+			<img id="loading" src="ajax-loader.gif"/>
+
 			<div class='resultContainer'>
 				<?php
 					for($i=1; $i<5; $i++)
@@ -886,7 +934,7 @@
 		<div class="footer">
 			<ul class="pagination">
 			  <li><a class="prev disabled" onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')" >«</a></li>
-			  <li><a class="active" onclick="javascript:window.location.reload();">1</a></li>
+			  <li><a class="active" onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">1</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">2</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">3</a></li>
 			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">4</a></li>
