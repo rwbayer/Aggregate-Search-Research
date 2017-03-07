@@ -65,17 +65,16 @@
 	{
 		$QueryId = $_SESSION['current_query'];
 		$page = mysql_real_escape_string ($_REQUEST["page"]);
-		$type = mysql_real_escape_string ($_REQUEST["type"]);
+		$navType = mysql_real_escape_string ($_REQUEST["navType"]);
 		$previousinterface = $_REQUEST["previousinterface"];
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaNavLog (User_ID, Interface, Previous_Interface, Current_Interface, Query_ID, Page, Type, Timestamp) VALUES ('" . $userID . "','" . $interface . "','" . $previousinterface . "','" . $currentinterface . "','" . $QueryId . "','" . $page . "','" . $type . "' , NOW());";
+		$query = "INSERT INTO AggSeaNavLog (User_ID, Interface, Previous_Interface, Current_Interface, Query_ID, Page, Type, Timestamp) VALUES ('" . $userID . "','" . $interface . "','" . $previousinterface . "','" . $currentinterface . "','" . $QueryId . "','" . $page . "','" . $navType . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
 		}
-		echo $query;
 	}
 	else if ($type == 'favorite')
 	{
@@ -98,6 +97,6 @@
 			$query .= mysql_error();
 		}
 	}
-
+	  
 	mysql_close($con);
 ?>

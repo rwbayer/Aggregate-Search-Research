@@ -748,13 +748,12 @@
 				var request = $.ajax({
 				  type: 'POST',
 				  url: 'Log.php',
-				  data: { type: 'nav', page: page, type: type, previousinterface: previousinterface, currentinterface: currentinterface},
+				  data: { type: 'nav', page: page, navType: type, previousinterface: previousinterface, currentinterface: currentinterface},
 				  dataType: "html",
 				  async:false
 				});
 
 				request.done(function( msg ) {
-					console.log("msg: " + msg);
 				});
 			}
 
