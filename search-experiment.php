@@ -210,9 +210,15 @@
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
-				logNavigationChange("vertical heading", currentinterface, vertical.toLowerCase(), 1);
+				logNavigationChange("vertical heading", currentinterface, vertical, 1);
 
-				currentinterface = vertical.toLowerCase();
+				showSingleVertical(text, vertical);
+			}
+
+			function showSingleVertical(text, vertical)
+			{
+				currentinterface = vertical;
+				console.log("vertical here: " + vertical);
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					var data = JSON.parse(returnedJSON);
@@ -358,7 +364,7 @@
 				$('.footer').hide();
 
 				var numberSelected = parseInt($(el).text());
-				logNavigationChange("show specific", currentinterface, "web", numberSelected);
+				logNavigationChange("show specific", currentinterface, "Web", numberSelected);
 				currentinterface = "paginated";
 				$('.active').removeClass('active');
 				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
@@ -407,32 +413,8 @@
 				$('.resultContainer').html("");
 				$('.footer').hide();
 
-				logNavigationChange("single vertical", currentinterface, vertical.toLowerCase(), 1);
-				currentinterface = vertical.toLowerCase();
-
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
-					var data = JSON.parse(returnedJSON);
-
-					if (data.source == "Web")
-					{
-						var divIdentifier = "webResults";
-					}
-					else if (data.source == "Image")
-					{
-						var divIdentifier = "imageResults";
-					}
-					else if (data.source == "Video")
-					{
-						var divIdentifier = "videoResults";
-					}
-					else if (data.source == "News")
-					{
-						var divIdentifier = "newsResults";
-					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
-
-					showResults();
-				});
+				logNavigationChange("single vertical", currentinterface, vertical, 1);
+				showSingleVertical(text, vertical);
 			}
 
 			function clickedSearchSuggestion(selectedText)
@@ -526,7 +508,7 @@
 					console.log()
 					for (var k = 0; k < favoriteBasket.length; k++) 
 					{
-						if ($(favs[d]).attr('vertical') == "web" || $(favs[d]).attr('vertical') == "news")
+						if ($(favs[d]).attr('vertical') == "Web" || $(favs[d]).attr('vertical') == "News")
 						{
 							if ($(favs[d]).parent().children('a.title').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
 							{
@@ -535,7 +517,7 @@
 								break;
 							}
 						}
-						else if ($(favs[d]).attr('vertical') == "image" || $(favs[d]).attr('vertical') == "video")
+						else if ($(favs[d]).attr('vertical') == "Image" || $(favs[d]).attr('vertical') == "Video")
 						{
 							if ($(favs[d]).parent().children('a.image').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
 							{
@@ -564,8 +546,28 @@
 				{
 					favoriteBasket = JSON.parse(json_string);
 				}
-				
-				translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+
+				var selectedInterfaceJSON = getCookie("currentInterface");
+				if (!(selectedInterfaceJSON === ""))
+				{
+					selectedInterface = JSON.parse(selectedInterfaceJSON);
+					console.log("selected interface: " + selectedInterface);
+					setCookie("currentInterface", "", 365);
+					if (!(selectedInterface == "panel" || selectedInterface == "blended" || selectedInterface == "tabbed"))
+					{
+						$('.verticalLabel.selected').removeClass('selected');
+						$('.verticalLabel#' + selectedInterface).addClass('selected');
+						showSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', selectedInterface);
+					}
+					else
+					{
+						translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+					}
+				}
+				else
+				{
+					translateAndSearch('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+				}
 			
 				$("body").on('click', '.verticalLabel', function()
 				{
@@ -579,8 +581,6 @@
 					clickedSearchSuggestion($(this).text());
 				});
 			});
-
-
 
 			function showResult(str)
 			{
@@ -612,14 +612,14 @@
 			{
 				vertical = $(this).attr('vertical');
 
-				if (vertical == "web" || vertical == "news")
+				if (vertical == "Web" || vertical == "News")
 				{
 					link = $(this).parent().children('a.title').attr('href');
 					title = $(this).parent().children('a.title').text();
 					snippet= $(this).parent().parent().children('.snippet').text();
 					rank = $(this).parent().parent().attr('rank');
 				}
-				else if (vertical == "image" || vertical == "video")
+				else if (vertical == "Image" || vertical == "Video")
 				{
 					link = $(this).parent().children('a.image').attr('href');
 					title = $(this).parent().children('a.image').children('img').attr('src');
@@ -640,14 +640,14 @@
 			{
 				vertical = $(this).attr('vertical');
 
-				if (vertical == "web" || vertical == "news")
+				if (vertical == "Web" || vertical == "News")
 				{
 					link = $(this).parent().children('a.title').attr('href');
 					title = $(this).parent().children('a.title').text();
 					snippet= $(this).parent().parent().children('.snippet').text();
 					rank = $(this).parent().parent().attr('rank');
 				}
-				else if (vertical == "image" || vertical == "video")
+				else if (vertical == "Image" || vertical == "Video")
 				{
 					link = $(this).parent().children('a.image').attr('href');
 					title = $(this).parent().children('a.image').children('img').attr('src');
@@ -673,19 +673,24 @@
 
 				var json_strings = JSON.stringify(favoriteBasket);
 				console.log("Link: " + link + " Vertical: " + vertical + " JSON: " + json_strings);
+				
 				setCookie("basket", "", 365);
 				setCookie("basket", json_strings, 365);
+				
+				var json_interface = JSON.stringify(currentinterface);
+				setCookie("currentInterface", "", 365);
+				setCookie("currentInterface", json_interface, 365);
 
 				if(vertical != undefined)
 				{
 					// know its a result link
-					if (vertical == "web" || vertical == "news")
+					if (vertical == "Web" || vertical == "News")
 					{
 						title = $(this).text();
 						snippet= $(this).parent().parent().children('.snippet').text();
 						rank = $(this).parent().parent().attr('rank');
 					}
-					else if (vertical == "image" || vertical == "video")
+					else if (vertical == "Image" || vertical == "Video")
 					{
 						title = $(this).children('img').attr('src');
 						snippet= "";
@@ -834,10 +839,10 @@
 									echo('<input type="submit" class="verticalLabel selected" value="All">');
 								}
 							?>
-							<input type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Web')">
-							<input type="button" name="source1" class="verticalLabel" value="Image" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Image')">
-							<input type="button" name="source1" class="verticalLabel" value="Video" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Video')">
-							<input type="button" name="source1" class="verticalLabel" value="News" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'News')">
+							<input id="Web" type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Web')">
+							<input id="Image" type="button" name="source1" class="verticalLabel" value="Image" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Image')">
+							<input id="Video" type="button" name="source1" class="verticalLabel" value="Video" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Video')">
+							<input id="News" type="button" name="source1" class="verticalLabel" value="News" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'News')">
 						</div>
 					</div>
 				</form>
@@ -856,19 +861,19 @@
 			
 						if ($currentSource == "Web")
 						{
-							echo "<div id='box" . $i . "' class='webResults vertical' vertical='web'></div>";
+							echo "<div id='box" . $i . "' class='webResults vertical' vertical='Web'></div>";
 						}
 						else if ($currentSource == "Image")
 						{
-							echo "<div id='box" . $i . "' class='imageResults vertical' vertical='image'></div>";
+							echo "<div id='box" . $i . "' class='imageResults vertical' vertical='Image'></div>";
 						}
 						else if ($currentSource == "Video")
 						{
-							echo "<div id='box" . $i . "' class='videoResults vertical' vertical='video'></div>";
+							echo "<div id='box" . $i . "' class='videoResults vertical' vertical='Video'></div>";
 						}
 						else if ($currentSource == "News")
 						{
-							echo "<div id='box" . $i . "' class='newsResults vertical' vertical='news'></div>";
+							echo "<div id='box" . $i . "' class='newsResults vertical' vertical='News'></div>";
 						}
 					}
 				?>

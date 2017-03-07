@@ -41,15 +41,15 @@
 	        {
 	        	if ($_REQUEST["source"]=="Image")
 	        	{
-	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '" vertical="image">';
+	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '" vertical="Image">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="150">';
-	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="image">Relevant</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="Image">Relevant</a></div>';
 	        	}
 	        	else if ($_REQUEST["source"]=="Video")
 	        	{
-	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '" vertical="video">';
+	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '" vertical="Video">';
 	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="160">';
-	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="video">Relevant</a></div>';
+	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="Video">Relevant</a></div>';
 	        	}
 	        	else
 	        	{
@@ -58,10 +58,10 @@
 				
 					if($_REQUEST["source"]=="News")
 					{
-						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="news">';
+						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="News">';
 	            		$data .= strip_tags($value->Title);
 	            		$data .= '</a>';
-						$data .= '<a href="javascript:;" class="favButton" vertical="news">Relevant</a>';
+						$data .= '<a href="javascript:;" class="favButton" vertical="News">Relevant</a>';
 	            		$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Source);
 						$news_date = urldecode($value->Date);
@@ -73,10 +73,10 @@
 					}
 					else
 					{
-						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="web">';
+						$data .= '<a class="title" href="' . $value->Url . '" target="' . $target . '" vertical="Web">';
 	            		$data .= strip_tags($value->Title);
 	            		$data .= '</a>';
-						$data .= '<a href="javascript:;" class="favButton" vertical="web">Relevant</a>';
+						$data .= '<a href="javascript:;" class="favButton" vertical="Web">Relevant</a>';
 						$data .= '</div>';
 						$data .= '<div class=\'url\'>' . urldecode($value->Url) . '</div>';
 					}
