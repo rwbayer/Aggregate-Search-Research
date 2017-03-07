@@ -17,18 +17,21 @@
 		}
 		$query = "UPDATE AggSeaUserLog SET Study_Id= '" .$_SESSION['studyId'] ."' WHERE User_Rd ='".$_SESSION['userId']."' ";
 		mysql_query($query);
-  }
+  	}
 
-	if ($_SESSION['studyId'] != -1 && $_SESSION['studyPhase'] != -1) {
+	if ($_SESSION['studyId'] != -1 && $_SESSION['studyPhase'] != -1) 
+	{
 		mysql_query("
 		    UPDATE AggSeaTaskPerformance SET
 				  Task_End = NOW()
 			  WHERE User_ID = " . $_SESSION['userId'] . " AND Study_ID = " .
 			    $_SESSION['studyId'] . " AND Task_ID = " . $_SESSION['taskId'] . ";");
 		$_SESSION['studyPhase'] = $_SESSION['studyPhase'] + 1;
-	} else {
-    $_SESSION['studyPhase'] = 1;
-  }
+	} 
+	else 
+	{
+    	$_SESSION['studyPhase'] = 1;
+  	}
 
 	$result = mysql_query(
 	    "SELECT * FROM AggSeaStudy WHERE Study_ID = " . $_SESSION['studyId'] .
@@ -53,13 +56,16 @@
 					$_SESSION['taskId'] . ", NOW());");
 		if ($row['Task_Type'] == "survey") 
 		{
+			// dont think check in will be used...
 			if ($_SESSION['taskId'] == CHECK_IN) 
 			{
+				$_SESSION['recent_interface'] = 
 				header("Location: CheckIn.php");
 				die();
 			} 
 			else if($_SESSION['taskId'] == CONSENT)
 			{
+				$_SESSION['recent_interface'] = 0;
 				header("Location: consentForm.php");
 				die();
 			} 

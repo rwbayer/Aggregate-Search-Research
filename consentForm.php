@@ -1,13 +1,14 @@
 <?php
 	include "config.php";
 	include 'localise.php';
+	include "constants.php";
 	session_start();
 	if(!$_SESSION['userId'])
 	{
 		echo "Please set userId first";
 		die();
 	}
-	$message ='';
+	$message = '';
 	$con = mysql_connect($_DATABASEHOST, $_DATABASEUSER, $_DATABASEPASSWORD);
 	mysql_select_db($_DATABASE);
 
@@ -16,12 +17,9 @@
 		$userId = $_SESSION['userId'];
 		$questionId = 1;
 		$response = "Agree";
-		$taskid = 14;
-		//$question = $row['question_text'];
-		//echo $i . " " . $question . " ". $response . "; ";
-		// $system = $_SESSION['recent_interface'];
+		$taskid = CONSENT;
 
-		$query = "INSERT INTO `AnswersEx` (`id`, `UserId`, `QuestionId`, `Response`, `TaskID`, `System`) VALUES (NULL, '$userId', '$questionId', '$response', '$taskid', '0')";
+		$query = "INSERT INTO `AggSeaAnswers` (`User_ID`, `Question_ID`, `Response`, `Task_ID`, `System`) VALUES ('$userId', '$questionId', '$response', '$taskid', '0')";
 		if (!mysql_query($query)) 
 		{
 			$message = mysql_error();
@@ -74,7 +72,6 @@
 
 		<form>
 		<input type="checkbox" name="agree" value="agree" required>I have read and understood the above consent form. I certify that I am 18 years of age or older and, by checking the below checkbox and clicking the submit button to enter the study, I indicate my willingness to voluntarily take part in the study.<br><br>
-		<!-- <input type="submit" value="Submit"><br> -->
 		<input type="hidden" name="submitted" value="true">
 		<input type="submit"  value="Submit" action="">
 		</form>
