@@ -7,4 +7,6 @@
 	define('DEMOGRAPHICS', '15');
 	define('SYSTEM_QUESTIONNAIRE', '16');
 	define('LOCUS_OF_CONTROL', '17');
+	define('EXIT_QUESTIONNAIRE', '18');
+	define('GEFT', '19');
 ?>

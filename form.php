@@ -97,41 +97,40 @@
 					{
 						echo "<p>Locus of Control</p>";
 					}
-					else if ($taskid == 18) 
+					else if ($taskid == GEFT) 
 					{
 						echo "Please create an account at Mind Garden following the link. Then complete the Group Embedded Figures Test (GEFT).";
 						echo "<br><br><a href='https://transform.mindgarden.com/login'>GEFT</a>";
-						//echo "<p>For each of the 44 questions below select either 'a' or 'b' to indicate your answer. Please choose only one answer for each question. If both 'a' and 'b' seem to apply to you, choose the one that applies more frequently. When you are finished selecting answers to each question please select the submit button at the end of the form.</p>";
 					} 
 					else if ($taskid == SYSTEM_QUESTIONNAIRE) 
 					{
 						echo "<p>Please indicate your level of agreement with the items (1 = strongly disagree; 5 = strongly agree)</p>";
 					} 
-					// else if ($taskid == 17) 
-					// {
-					// 	echo "<div><p>Please nominate a single system for each.</p></div>";
-					// 	echo "<p>Click to see larger images.</p>";
+					else if ($taskid == EXIT_QUESTIONNAIRE) 
+					{
+						echo "<div><p>Please nominate a single system for each.</p></div>";
+						echo "<p>Click to see larger images.</p>";
 
-					// 	echo "<div id='images'>";
-					// 	echo "<div class='image'>";
-					// 	echo "<a href='images/Non-blended-panel.png' data-lightbox='image1' data-title='Panel'>";
-					// 	echo "<img src='images/Non-blended-panel.png' width='100px'/></a></div>";
-					// 	echo "<div class='image'>";
-					// 	echo "<a href='images/Tabbed.png' data-lightbox='image2' data-title='Tabbed'>";
-					// 	echo "<img src='images/Tabbed.png' width='100px'/></a></div>";
-					// 	echo "<div class='image'>";
-					// 	echo "<a href='images/Interleaved.png' data-lightbox='image3' data-title='Interleaved'>";
-					// 	echo "<img src='images/Interleaved.png' width='100px'/></a></div>";
-					// 	echo "<div class='image'>";
-					// 	echo "<a href='images/Non-blended-vertical.png' data-lightbox='image4' data-title='Universal'>";
-					// 	echo "<img src='images/Non-blended-vertical.png' width='100px'/></a></div><br><br><br><br></div>";
+						echo "<div id='images'>";
+						echo "<div class='image'>";
+						echo "<a href='images/Non-blended-panel.png' data-lightbox='image1' data-title='Panel'>";
+						echo "<img src='images/Non-blended-panel.png' width='100px'/></a></div>";
+						echo "<div class='image'>";
+						echo "<a href='images/Tabbed.png' data-lightbox='image2' data-title='Tabbed'>";
+						echo "<img src='images/Tabbed.png' width='100px'/></a></div>";
+						echo "<div class='image'>";
+						echo "<a href='images/Interleaved.png' data-lightbox='image3' data-title='Interleaved'>";
+						echo "<img src='images/Interleaved.png' width='100px'/></a></div>";
+						echo "<div class='image'>";
+						echo "<a href='images/Non-blended-vertical.png' data-lightbox='image4' data-title='Universal'>";
+						echo "<img src='images/Non-blended-vertical.png' width='100px'/></a></div><br><br><br><br></div>";
 
-					// 	echo "<div><label for='panel'>Panel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
-					// 	echo "<label for='panel'>Tabbed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
-					// 	echo "<label for='panel'>Interleaved&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
-					// 	echo "<label for='panel'>Universal</label></div>";
+						echo "<div><label for='panel'>Panel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
+						echo "<label for='panel'>Tabbed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
+						echo "<label for='panel'>Interleaved&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
+						echo "<label for='panel'>Universal</label></div>";
 
-					// }
+					}
 				?>
 			</div>
 			<div class='mainContainer'>
@@ -228,10 +227,8 @@
 					<input type="hidden" name="submitted" value="true">
 					<?php
 						$taskid = $_REQUEST['taskid'];
-						//if ($taskid == 18) {
-						//	echo "<input type='submit' value='Submit Survey and All Done!' action=''>";
-						//} 
-						if ($taskid != 18) {
+						if ($taskid != GEFT) 
+						{
 							echo "<input type='submit' value='Submit Survey' action=''>";
 						}
 					?>
