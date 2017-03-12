@@ -21,27 +21,17 @@
 	{
 		$searchQuery = mysql_real_escape_string ($_REQUEST["searchQuery"]);
 		$currentinterface = $_REQUEST["currentinterface"];
+		$suggestion = ($_REQUEST["suggestion"] == "true") ? 1 : 0;
 
-		$query = "INSERT INTO AggSeaQueryLog (User_ID, Interface, Current_Interface, Search_Query, Time) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "' , NOW());";
+		$query = "INSERT INTO AggSeaQueryLog (User_ID, Interface, Current_Interface, Search_Query, Suggestion, Time) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "','" . $suggestion . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
+			// $response_array['query'] = $query;
 		}
 		else
 		{
 			$_SESSION['current_query'] = mysql_insert_id();
-		}
-	}
-	else if($type=='edit')
-	{
-		$QueryId = $_SESSION['current_query'];
-		$editedQuery = mysql_real_escape_string ($_REQUEST["editedQuery"]);
-		$language = $_REQUEST["language"];
-
-		//Save query
-		$query = "Insert into EditLogEx (userID, interface, QueryId, editedQuery, language, timestamp) Values('" . $userID . "','" . $interface . "','" . $QueryId . "','" . $editedQuery . "','" . $language . "' , NOW())";
-		if (!mysql_query($query)) {
-			$query .= mysql_error();
 		}
 	}
 	else if ($type == 'link')
@@ -99,4 +89,6 @@
 	}
 	  
 	mysql_close($con);
+	// echo json_encode($response_array);
+
 ?>

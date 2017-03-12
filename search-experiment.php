@@ -464,6 +464,7 @@
 
 			function clickedSearchSuggestion(selectedText)
 			{
+				logQuery(selectedText, true);
     			document.getElementById('searchText').value = selectedText;
     			document.getElementById("searchForm").submit();
 			}
@@ -478,6 +479,8 @@
 				numberOfSourcesRequested = parseInt(numberOfSourcesRequestedInit);
 				if(text!='')
 				{
+					$("#loading").show();
+
 					for (var i=1; i<5; i++)
 					{
 						var sourceString = "source".concat(i);
@@ -758,21 +761,9 @@
 
 			$(document).on('click', '#submitbutton', function()
 			{
-
 				searchQuery = $('#searchText').val();
 				
-				var request = $.ajax({
-				  type: 'POST',
-				  url: 'Log.php',
-				  data: { type: 'query', searchQuery: searchQuery, currentinterface: currentinterface},
-				  dataType: "html",
-				  async: false
-				});
-
-				request.done(function( msg ) {
-					;
-				});
-
+				logQuery(searchQuery, false);
 			});
 
 			$(document).on('click', '#finish', function()
@@ -802,6 +793,21 @@
 				  data: { type: 'nav', page: page, navType: type, previousinterface: previousinterface, currentinterface: currentinterface},
 				  dataType: "html",
 				  async:false
+				});
+
+				request.done(function( msg ) {
+				});
+			}
+
+			function logQuery(searchQuery, isSuggestion)
+			{
+				
+				var request = $.ajax({
+				  type: 'POST',
+				  url: 'Log.php',
+				  data: { type: 'query', searchQuery: searchQuery, currentinterface: currentinterface, suggestion: isSuggestion},
+				  dataType: "html",
+				  async: false
 				});
 
 				request.done(function( msg ) {
@@ -893,7 +899,7 @@
 					</div>
 				</form>
 			</div>
-			<img id="loading" src="ajax-loader.gif"/>
+			<img id="loading" src="ajax-loader.gif" style="display: none;"/>
 
 			<div class='resultContainer'>
 				<?php
