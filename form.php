@@ -95,7 +95,8 @@
 					} 
 					else if ($taskid == LOCUS_OF_CONTROL)
 					{
-						echo "<p>Locus of Control</p>";
+						echo "<div><p>Locus of Control</p></div>";
+						echo "<p><strong>Instructions: </strong> For each couple of statements, click on the button next to the one statement that best describes how you feel.</p>";
 					}
 					else if ($taskid == GEFT) 
 					{
