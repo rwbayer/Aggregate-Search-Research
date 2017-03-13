@@ -180,6 +180,7 @@
 			var favoriteBasket = [];
 
 			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
+			var currentRequest;
 
 			function setCookie(cname, cvalue, exdays) 
 			{
@@ -633,13 +634,18 @@
 
 			function showResult(str)
 			{
+				if (currentRequest)
+				{
+					currentRequest.abort();
+				}
+
 				if (str.length==0)
 				{ 
 					document.getElementById("livesearch").innerHTML="";
 				    document.getElementById("livesearch").style.border="0px";
 				    return;
 				}
-				$.post("suggestions.php", { searchText: str }).done(function( responseText ) {
+				currentRequest = $.post("suggestions.php", { searchText: str }).done(function( responseText ) {
 					document.getElementById("livesearch").innerHTML=  responseText;
       				document.getElementById("livesearch").style.border = "2px solid #333";
 				});
@@ -761,8 +767,11 @@
 
 			$(document).on('click', '#submitbutton', function()
 			{
+				if (currentRequest)
+				{
+					currentRequest.abort();
+				}
 				searchQuery = $('#searchText').val();
-				
 				logQuery(searchQuery, false);
 			});
 
@@ -801,7 +810,6 @@
 
 			function logQuery(searchQuery, isSuggestion)
 			{
-				
 				var request = $.ajax({
 				  type: 'POST',
 				  url: 'Log.php',
