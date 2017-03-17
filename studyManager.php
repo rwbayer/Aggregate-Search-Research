@@ -38,15 +38,14 @@
       " AND Task_Order = " . $_SESSION['studyPhase'] .
 			" ORDER BY Task_Order ASC");
   if (!mysql_num_rows($result)) {
-		//echo $_SESSION['userId'] . " " . $_SESSION['studyId'] . " " .
-		     //$_SESSION['studyPhase'] . " " . $_SESSION['taskId'] . " ALL DONE";
+
+
   		header("Location: studyStart.php");
 		die();
   }
 
 	while ($row = mysql_fetch_assoc($result)) {
 		$_SESSION['taskId'] = $row['Task_ID'];
-		// echo "\nRunning task #" . $_SESSION['taskId'] . " (type=" . $row['task_type'] . ").";
 		mysql_query("
 		    INSERT INTO AggSeaTaskPerformance
 				  (User_ID, Study_ID, Task_ID, Task_Start)
@@ -80,7 +79,7 @@
 			if ($row['System'] == PANEL) 
 			{
 				$_SESSION['recent_interface'] = PANEL;
-				header("Location: search-experiment.php?interface=panel&source1=Web&source2=Image&numResults2=6&source3=Web&numResults3=4&source4=News&numResults4=2&numResults1=5&taskId=" . $_SESSION['taskId']);
+				header("Location: search-experiment.php?interface=panel&source1=Web&source2=Image&numResults2=6&source3=Web&numResults3=5&source4=News&numResults4=3&numResults1=5&taskId=" . $_SESSION['taskId']);
 				die();
 			} 
 			else if ($row['System'] == TABBED)
@@ -92,7 +91,7 @@
 			else if ($row['System'] == BLENDED)
 			{
 				$_SESSION['recent_interface'] = BLENDED;
-				header("Location: search-experiment.php?interface=blended&source1=Web&source2=Image&numResults2=4&source3=News&numResults3=2&source4=Web&numResults4=4&numResults1=2&taskId=" . $_SESSION['taskId']);
+				header("Location: search-experiment.php?interface=blended&source1=Web&source2=Image&numResults2=6&source3=News&numResults3=3&source4=Web&numResults4=8&numResults1=2&taskId=" . $_SESSION['taskId']);
 				die();
 			} 
 		}

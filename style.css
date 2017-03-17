@@ -560,6 +560,12 @@ div.title a.title
 div.image a.image, div.video a.image
 {
 	display: block;
+	width: 155px;
+	height: 100px;
+	overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 div.url
@@ -585,5 +591,10 @@ div.url
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+#searchForm
+{
+	clear: both;
 }
 

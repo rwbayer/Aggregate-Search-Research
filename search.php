@@ -41,14 +41,12 @@
 	        {
 	        	if ($_REQUEST["source"]=="Image")
 	        	{
-	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '" vertical="Image">';
-	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="150">';
+	        		$data .= '<div class=\'image\' rank="rank' . $i . '"><a class="image" href="' . $value->SourceUrl . '" vertical="Image" style="background-image: url(' . $value->Thumbnail->MediaUrl . ');">';
 	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="Image">Relevant</a></div>';
 	        	}
 	        	else if ($_REQUEST["source"]=="Video")
 	        	{
-	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '" vertical="Video">';
-	            	$data .= '<img src="' . $value->Thumbnail->MediaUrl . '" height="auto" width="160">';
+	        		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="' . $value->MediaUrl . '" vertical="Video" style="background-image: url(' . $value->Thumbnail->MediaUrl . ');">';
 	            	$data .= '</a><a href="javascript:;" class="favButton" vertical="Video">Relevant</a></div>';
 	        	}
 	        	else

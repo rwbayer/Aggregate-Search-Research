@@ -14,6 +14,7 @@
 
 	$userID = $_SESSION['userId'];
 	$interface = $_SESSION['interface'];
+	$taskId = $_SESSION['taskId'];
 
 	$type = $_REQUEST["type"];
 
@@ -23,7 +24,7 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 		$suggestion = ($_REQUEST["suggestion"] == "true") ? 1 : 0;
 
-		$query = "INSERT INTO AggSeaQueryLog (User_ID, Interface, Current_Interface, Search_Query, Suggestion, Time) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "','" . $suggestion . "' , NOW());";
+		$query = "INSERT INTO AggSeaQueryLog (User_ID, Task_ID, Interface, Current_Interface, Search_Query, Suggestion, Time) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "','" . $suggestion . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
@@ -45,7 +46,7 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaLinkLog (User_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" . $userID . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
+		$query = "INSERT INTO AggSeaLinkLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
@@ -60,7 +61,7 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaNavLog (User_ID, Interface, Previous_Interface, Current_Interface, Query_ID, Page, Type, Timestamp) VALUES ('" . $userID . "','" . $interface . "','" . $previousinterface . "','" . $currentinterface . "','" . $QueryId . "','" . $page . "','" . $navType . "' , NOW());";
+		$query = "INSERT INTO AggSeaNavLog (User_ID, Task_ID, Interface, Previous_Interface, Current_Interface, Query_ID, Page, Type, Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $previousinterface . "','" . $currentinterface . "','" . $QueryId . "','" . $page . "','" . $navType . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
@@ -77,8 +78,8 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES (" .
-		    $userID . ",'" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
+		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES (" .
+		    $userID . "','" . $taskId . ",'" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
 				$link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
 				$rank . "', NOW())";
 		

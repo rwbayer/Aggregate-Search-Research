@@ -95,7 +95,6 @@
 					} 
 					else if ($taskid == LOCUS_OF_CONTROL)
 					{
-						echo "<div><p>Locus of Control</p></div>";
 						echo "<p><strong>Instructions: </strong> For each couple of statements, click on the button next to the one statement that best describes how you feel.</p>";
 					}
 					else if ($taskid == GEFT) 
@@ -120,17 +119,12 @@
 						echo "<a href='images/Tabbed.png' data-lightbox='image2' data-title='Tabbed'>";
 						echo "<img src='images/Tabbed.png' width='100px'/></a></div>";
 						echo "<div class='image'>";
-						echo "<a href='images/Interleaved.png' data-lightbox='image3' data-title='Interleaved'>";
-						echo "<img src='images/Interleaved.png' width='100px'/></a></div>";
-						echo "<div class='image'>";
 						echo "<a href='images/Non-blended-vertical.png' data-lightbox='image4' data-title='Universal'>";
 						echo "<img src='images/Non-blended-vertical.png' width='100px'/></a></div><br><br><br><br></div>";
 
-						echo "<div><label for='panel'>Panel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
+						echo "<div><label for='panel'>Panelled&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
 						echo "<label for='panel'>Tabbed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
-						echo "<label for='panel'>Interleaved&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
-						echo "<label for='panel'>Universal</label></div>";
-
+						echo "<label for='panel'>Blended&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
 					}
 				?>
 			</div>
