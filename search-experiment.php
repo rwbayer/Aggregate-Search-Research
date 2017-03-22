@@ -181,6 +181,7 @@
 
 			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 			var currentRequest;
+			var timer = 0;
 
 			function setCookie(cname, cvalue, exdays) 
 			{
@@ -222,7 +223,6 @@
 			function showSingleVertical(text, vertical)
 			{
 				currentinterface = vertical;
-				console.log("vertical here: " + vertical);
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
 					var data = JSON.parse(returnedJSON);
@@ -263,7 +263,6 @@
 				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
 				var source = currentinterface;
-				console.log("Source was: " + source);
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
 				{
@@ -281,8 +280,6 @@
 				{
 					$("a.next").addClass('disabled');
 				}
-
-				console.log("SOURCE:  " + source);
 
 				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
 					
@@ -511,7 +508,6 @@
 			var parseResponse = function(returnedJSON) {
 				var data = JSON.parse(returnedJSON);
 				
-				console.log(data);
 				if (data.source == "Web")
 				{
 					var divIdentifier = "#box".concat(data.i).concat(".webResults");
@@ -549,12 +545,7 @@
 			var showResults = function()
 			{
 				var favs = $('.favButton');
-				console.log("favs: ");
-				console.log(favs);
-				console.log("fav basket: ");
-				console.log(favoriteBasket);
 				for (var d = 0; d < favs.length; d++) {
-					console.log()
 					for (var k = 0; k < favoriteBasket.length; k++) 
 					{
 						if ($(favs[d]).attr('vertical') == "Web" || $(favs[d]).attr('vertical') == "News")
@@ -601,7 +592,6 @@
 				if (!(selectedInterfaceJSON === ""))
 				{
 					selectedInterface = JSON.parse(selectedInterfaceJSON);
-					console.log("selected interface: " + selectedInterface);
 					setCookie("currentInterface", "", 365);
 					if (!(selectedInterface == "panel" || selectedInterface == "blended" || selectedInterface == "tabbed"))
 					{
@@ -632,7 +622,7 @@
 				});
 			});
 
-			function showResult(str)
+			function showSuggestionResult(str)
 			{
 				if (currentRequest)
 				{
@@ -649,6 +639,19 @@
 					document.getElementById("livesearch").innerHTML=  responseText;
       				document.getElementById("livesearch").style.border = "2px solid #333";
 				});
+			}
+
+			function showResult(str)
+			{
+				if (timer)
+				{
+					window.clearTimeout(timer);
+				}
+
+				timer = window.setTimeout(function()
+				{
+					showSuggestionResult(str);
+				}, 1000);
 			}
 
 			//helper methods
@@ -686,9 +689,6 @@
 
 				$(this).addClass("unFavButton");
 				$(this).removeClass("favButton");
-
-				console.log(favoriteBasket);
-
 			});
 
 			$(document).on('click', '.unFavButton', function()
@@ -715,8 +715,6 @@
 
 				$(this).addClass("favButton");
 				$(this).removeClass("unFavButton");
-
-				console.log(favoriteBasket);
 			});
 
 			/************* Logging ***************/
@@ -727,7 +725,6 @@
 				vertical = $(this).attr('vertical');
 
 				var json_strings = JSON.stringify(favoriteBasket);
-				console.log("Link: " + link + " Vertical: " + vertical + " JSON: " + json_strings);
 				
 				setCookie("basket", "", 365);
 				setCookie("basket", json_strings, 365);
@@ -772,7 +769,10 @@
 					currentRequest.abort();
 				}
 				searchQuery = $('#searchText').val();
+
 				logQuery(searchQuery, false);
+				document.getElementById("searchForm").submit();
+
 			});
 
 			$(document).on('click', '#finish', function()
@@ -795,7 +795,6 @@
 
 			function logNavigationChange(type, previousinterface, currentinterface, page)
 			{
-				console.log("logging with type: " + type + " and prev: " + previousinterface + " and current: " + currentinterface + " and page: " + page);
 				var request = $.ajax({
 				  type: 'POST',
 				  url: 'Log.php',
@@ -815,7 +814,7 @@
 				  url: 'Log.php',
 				  data: { type: 'query', searchQuery: searchQuery, currentinterface: currentinterface, suggestion: isSuggestion},
 				  dataType: "html",
-				  async: false
+				  // async: false
 				});
 
 				request.done(function( msg ) {
