@@ -456,8 +456,16 @@
 				$("a.prev").addClass('disabled');
 				$("a.next").removeClass('disabled');
 
-				logNavigationChange("single vertical", currentinterface, vertical, currentPage);
-				showSingleVertical(text, vertical);
+				if (vertical == "All")
+				{
+					logNavigationChange("Show All", currentinterface, vertical, currentPage);
+					document.getElementById("searchForm").submit();
+				}
+				else
+				{
+					logNavigationChange("single vertical", currentinterface, vertical, currentPage);
+					showSingleVertical(text, vertical);
+				}
 			}
 
 			function clickedSearchSuggestion(selectedText)
@@ -724,13 +732,13 @@
 				link = $(this).attr('href');
 				vertical = $(this).attr('vertical');
 
-				var json_strings = JSON.stringify(favoriteBasket);
-				
-				setCookie("basket", "", 365);
-				setCookie("basket", json_strings, 365);
-
-				if(vertical != undefined)
+				if(vertical != undefined && !($(this).hasClass('relevant')))
 				{
+					var json_strings = JSON.stringify(favoriteBasket);
+				
+					setCookie("basket", "", 365);
+					setCookie("basket", json_strings, 365);
+
 					// know its a result link
 					var json_interface = JSON.stringify(currentinterface);
 					setCookie("currentInterface", "", 365);
@@ -778,6 +786,7 @@
 			$(document).on('click', '#finish', function()
 			{
 				setCookie("basket", "", 365);
+				console.log("got finish click with fav basket length: " + favoriteBasket.length);
 				for (var i = 0; i < favoriteBasket.length; i++) 
 				{
 					var request = $.ajax({
@@ -785,11 +794,13 @@
 					  url: 'Log.php',
 					  data: { type: favoriteBasket[i].type, link: favoriteBasket[i].link, vertical: favoriteBasket[i].vertical, title: favoriteBasket[i].title, snippet: favoriteBasket[i].snippet, rank: favoriteBasket[i].rank, currentinterface: favoriteBasket[i].currentinterface, queryId: favoriteBasket[i].queryId},
 					  dataType: "html",
-					  async:false
+					  async: false
 					});
 					request.done(function( msg ) {
+					
 					});
 				}
+				console.log("About to go to study manager");
 				window.location.href = "studyManager.php";
 			});	
 
@@ -895,7 +906,7 @@
 								// || !($_SESSION['interface'] == 'blended')
 								if (!($_SESSION['interface'] == 'tabbed'))
 								{
-									echo('<input type="submit" class="verticalLabel selected" value="All">');
+									echo('<input type="button" class="verticalLabel selected" value="All" onclick="clickedSingleVertical(\'' . htmlspecialchars($text, ENT_QUOTES) . '\', \'All\')">');
 									echo('<input id="Web" type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical(\'' . htmlspecialchars($text, ENT_QUOTES) . '\', \'Web\')">');
 								}
 								else

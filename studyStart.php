@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-$initialStudyId = -1;
 
 if(isset($_REQUEST["submitted"])) 
 {
@@ -28,7 +27,7 @@ if(isset($_REQUEST["submitted"]))
 			<script src="Javascript/additional-methods.min.js" type="text/javascript"></script>
 			<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
 			<title>
-				PerMIA
+				Aggregated Search
 			</title>
 		</head>
 		<body>
@@ -37,9 +36,9 @@ if(isset($_REQUEST["submitted"]))
 					<div class='mainContainer'>
 						<form>
 							<p> Welcome to Aggregated Search study!</p>
-						  Enter StudyId (50), or -1 to choose automatically:</br>
-							<input id = "studyIdBox" name='study' type= "studyId" style='width:150px;' value="<?php echo $initialStudyId; ?>"/></br></br>
-							Enter Password: (hint: 8899)</br>
+						  Enter Study Id:</br>
+							<input id = "studyIdBox" name='study' type= "studyId" style='width:150px;' value=""/></br></br>
+							Enter Password:</br>
 							<input id = "pwdBox" name='password' type= "password" style='width:150px;' value=""/></br></br>
 								<input type="hidden" name="submitted" value="true">
 								<input type="submit" value="Save and get started!" action="">

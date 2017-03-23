@@ -501,6 +501,7 @@ ul.pagination li a:hover:not(.active):not(.disabled) {background-color: #ddd; cu
 	font-size: 15px;
 	width: auto;
 	float: left;
+	max-width: 840px;
 }
 
 .practiceTaskDisplay

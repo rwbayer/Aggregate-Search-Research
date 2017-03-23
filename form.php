@@ -35,7 +35,7 @@
 		{
 			if (isset($_REQUEST[$i])) 
 			{
-				$response = $_REQUEST[$i];
+				$response = urldecode($_REQUEST[$i]);
 				$userId = $_SESSION['userId'];
 				$questionId = $value;
 				$system = $_SESSION['recent_interface'];
@@ -80,7 +80,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
 
 	<title>
-		AggSea
+		Aggregated Search
 	</title>
 </head>
 <body>
@@ -183,8 +183,9 @@
 								$_id = $row['ID'];
 								echo $row['Question_Text'];
 								$_option = htmlentities($row['Q_Option'], ENT_QUOTES);
+								$_url = urlencode($_option);
 								echo "<br/>";
-								echo "<input type='radio' id='$_id' name='$question_id' value='$_option' class='css-radio2'>";
+								echo "<input type='radio' id='$_id' name='$question_id' value='$_url' class='css-radio2'>";
 								echo "<label for='$_id' class='css-radio2-label'></label>";
 								echo " " . $_option . "&nbsp;&nbsp;";
 								if ($row['Size'] == "large") {
@@ -194,7 +195,8 @@
 							} else if ($row['Type'] == 'radio' && $row['Q_Order'] != 1) {
 								$_id = $row['ID'];
 								$_option = htmlentities($row['Q_Option'], ENT_QUOTES);
-								echo "<input type='radio' id='$_id' name='$question_id' value='$_option' class='css-radio2'>";
+								$_url = urlencode($_option);
+								echo "<input type='radio' id='$_id' name='$question_id' value='$_url' class='css-radio2'>";
 								echo "<label for='$_id' class='css-radio2-label'></label>";
 								echo " " . $_option . "&nbsp;&nbsp;";
 								if ($row['Q_Order'] == 5) {
@@ -224,7 +226,7 @@
 						$taskid = $_REQUEST['taskid'];
 						if ($taskid != GEFT) 
 						{
-							echo "<input type='submit' value='Submit Survey' action=''>";
+							echo "<input type='submit' value='Submit Survey' action='' style='margin-bottom: 100px;'>";
 						}
 					?>
 					<br>

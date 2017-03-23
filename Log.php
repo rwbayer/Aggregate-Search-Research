@@ -78,8 +78,8 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES (" .
-		    $userID . "','" . $taskId . ",'" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
+		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" .
+		    $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
 				$link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
 				$rank . "', NOW())";
 		
