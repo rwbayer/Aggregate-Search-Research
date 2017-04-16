@@ -505,7 +505,7 @@
 
 						if (source != null && source != "")
 						{
-							$.post("search.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+							$.post("newsearch.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
 								parseResponse(data);
 							}); 
 						}
