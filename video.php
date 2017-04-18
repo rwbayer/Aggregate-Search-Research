@@ -46,7 +46,7 @@
 
         		foreach($jsonobj->value as $value)
         		{
-            		$data .= '<div class=\'video\' rank="rank' . $i . '"><a class="image" href="www.' . $value->hostPageDisplayUrl . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
+            		$data .= '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
                 	$data .= '</a><a href="javascript:;" class="favButton relevant" vertical="Video">Relevant</a></div>';
             		$i++;
             	}

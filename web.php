@@ -47,7 +47,7 @@
 	    		foreach($jsonobj->webPages->value as $value)
 	    		{
 					$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
-					$data .= '<a class="title" href="' . $value->displayUrl . '" target="' . $target . '" vertical="Web">';
+					$data .= '<a class="title" href="' . $value->url . '" target="' . $target . '" vertical="Web">';
 	        		$data .= strip_tags($value->name);
 	        		$data .= '</a>';
 					$data .= '<a href="javascript:;" class="favButton relevant" vertical="Web">Relevant</a>';
