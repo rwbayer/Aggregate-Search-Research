@@ -224,29 +224,134 @@
 			{
 				currentinterface = vertical;
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}).done(function( returnedJSON ) {
-					var data = JSON.parse(returnedJSON);
+				if (vertical == "Image")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "image.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
 
-					if (data.source == "Web")
-					{
-						var divIdentifier = "webResults";
-					}
-					else if (data.source == "Image")
-					{
-						var divIdentifier = "imageResults";
-					}
-					else if (data.source == "Video")
-					{
-						var divIdentifier = "videoResults";
-					}
-					else if (data.source == "News")
-					{
-						var divIdentifier = "newsResults";
-					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-					showResults();
-				});
+						showResults();
+					}); 
+				}
+				else if (vertical == "News")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "news.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else if (vertical == "Video")
+				{
+					console.log("In here with video vertical");
+					$.ajax({
+						type: 'POST',
+						url: "video.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						console.log("returnedJSON:");
+						console.log(returnedJSON);
+
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else
+				{
+					$.ajax({
+						type: 'POST',
+						url: "web.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					});
+				}
 			}
 
 			function showNextWebResults(text)
@@ -281,30 +386,130 @@
 					$("a.next").addClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
-					
-					var data = JSON.parse(returnedJSON);
+				if (source == "Image")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "image.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
 
-					if (data.source == "Web")
-					{
-						var divIdentifier = "webResults";
-					}
-					else if (data.source == "Image")
-					{
-						var divIdentifier = "imageResults";
-					}
-					else if (data.source == "Video")
-					{
-						var divIdentifier = "videoResults";
-					}
-					else if (data.source == "News")
-					{
-						var divIdentifier = "newsResults";
-					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-					showResults();
-				});
+						showResults();
+					}); 
+				}
+				else if (source == "News")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "news.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else if (source == "Video")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "video.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else
+				{
+					$.ajax({
+						type: 'POST',
+						url: "web.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					});
+				}
 			}
 
 			function showPreviousWebResults(text)
@@ -352,30 +557,130 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
-					
-					var data = JSON.parse(returnedJSON);
+				if (source == "Image")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "image.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
 
-					if (data.source == "Web")
-					{
-						var divIdentifier = "webResults";
-					}
-					else if (data.source == "Image")
-					{
-						var divIdentifier = "imageResults";
-					}
-					else if (data.source == "Video")
-					{
-						var divIdentifier = "videoResults";
-					}
-					else if (data.source == "News")
-					{
-						var divIdentifier = "newsResults";
-					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-					showResults();
-				});
+						showResults();
+					}); 
+				}
+				else if (source == "News")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "news.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else if (source == "Video")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "video.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else
+				{
+					$.ajax({
+						type: 'POST',
+						url: "web.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					});
+				}
 			}
 
 			function showPageOfWebResults(text, el)
@@ -389,18 +694,23 @@
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
 				{
-					if (numberSelected == 1)
-					{
-						javascript:window.location.reload();
-					}
-					else
-					{
-						source = "Web";
-					}
+					source = "Web";
 				}
 
-				logNavigationChange("show specific", currentinterface, source, numberSelected);
-				currentinterface = source;
+				if (numberSelected == 1)
+				{
+					logNavigationChange("show previous", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
+					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
+
+					javascript:window.location.reload();
+					$("a.prev").addClass('disabled');
+				}
+				else
+				{
+
+					logNavigationChange("show specific", currentinterface, source, numberSelected);
+					currentinterface = source;
+				}
 				$('.active').removeClass('active');
 				$('ul.pagination').children().eq(numberSelected).find('a').first().addClass('active');
 
@@ -417,30 +727,130 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				$.post("search.php", { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}).done(function( returnedJSON ) {
-					
-					var data = JSON.parse(returnedJSON);
+				if (source == "Image")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "image.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
 
-					if (data.source == "Web")
-					{
-						var divIdentifier = "webResults";
-					}
-					else if (data.source == "Image")
-					{
-						var divIdentifier = "imageResults";
-					}
-					else if (data.source == "Video")
-					{
-						var divIdentifier = "videoResults";
-					}
-					else if (data.source == "News")
-					{
-						var divIdentifier = "newsResults";
-					}
-					$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '">' + data.data + '</div>');
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-					showResults();
-				});
+						showResults();
+					}); 
+				}
+				else if (source == "News")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "news.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else if (source == "Video")
+				{
+					$.ajax({
+						type: 'POST',
+						url: "video.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					}); 
+				}
+				else
+				{
+					$.ajax({
+						type: 'POST',
+						url: "web.php",
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
+						async: false
+					}).done(function( returnedJSON ) {
+						var data = JSON.parse(returnedJSON);
+
+						if (data.source == "Web")
+						{
+							var divIdentifier = "webResults";
+						}
+						else if (data.source == "Image")
+						{
+							var divIdentifier = "imageResults";
+						}
+						else if (data.source == "Video")
+						{
+							var divIdentifier = "videoResults";
+						}
+						else if (data.source == "News")
+						{
+							var divIdentifier = "newsResults";
+						}
+						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+
+						showResults();
+					});
+				}
 			}
 
 			function clickedSingleVertical(text, vertical)
@@ -505,15 +915,75 @@
 
 						if (source != null && source != "")
 						{
-							$.post("newsearch.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
-								parseResponse(data);
-							}); 
+							if (source == "Image")
+							{
+								console.log("startin image");
+								$.ajax({
+									type: 'POST',
+									url: "image.php",
+									data: { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i},
+									async: false
+								}).done(function( data ) {
+									parseResponse(data);
+								}); 
+							// }
+								// $.post("image.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+								// 	parseResponse(data);
+								// }); 
+							}
+							else if (source == "News")
+							{
+								console.log("Starting news");
+								$.ajax({
+									type: 'POST',
+									url: "news.php",
+									data: { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i},
+									async: false
+								}).done(function( data ) {
+									parseResponse(data);
+								}); 
+
+								// $.post("news.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+								// 	parseResponse(data);
+								// }); 
+							}
+							else if (source == "Video")
+							{
+								console.log("starting video");
+								$.ajax({
+									type: 'POST',
+									url: "video.php",
+									data: { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i},
+									async: false
+								}).done(function( data ) {
+									parseResponse(data);
+								}); 
+								// $.post("video.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+								// 	parseResponse(data);
+								// }); 
+							}
+							else
+							{
+								console.log("starting web");
+								$.ajax({
+									type: 'POST',
+									url: "web.php",
+									data: { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i},
+									async: false
+								}).done(function( data ) {
+									parseResponse(data);
+								});
+								// $.post("web.php", { searchText: text, market: "en-US", results: numResults, offset: offset, source: source, i:i}).done(function( data ) {
+								// 	parseResponse(data);
+								// }); 
+							}
 						}
 					}	
 				}
 			}
 
 			var parseResponse = function(returnedJSON) {
+				console.log(returnedJSON);
 				var data = JSON.parse(returnedJSON);
 				
 				if (data.source == "Web")
@@ -595,6 +1065,7 @@
 				{
 					favoriteBasket = JSON.parse(json_string);
 				}
+				console.log(favoriteBasket);
 
 				var selectedInterfaceJSON = getCookie("currentInterface");
 				if (!(selectedInterfaceJSON === ""))
@@ -688,7 +1159,7 @@
 				else if (vertical == "Image" || vertical == "Video")
 				{
 					link = $(this).parent().children('a.image').attr('href');
-					title = $(this).parent().children('a.image').children('img').attr('src');
+					title = $(this).parent().children('a.image').attr('title');
 					snippet= "";
 					rank = $(this).parent().attr('rank');
 				}
@@ -772,6 +1243,10 @@
 
 			$(document).on('click', '#submitbutton', function()
 			{
+				$('.resultContainer').html("");
+				$('.footer').hide();
+				$('#loading').show();
+
 				if (currentRequest)
 				{
 					currentRequest.abort();
@@ -806,6 +1281,7 @@
 
 			function logNavigationChange(type, previousinterface, currentinterface, page)
 			{
+				console.log("Started logging nav change");
 				var request = $.ajax({
 				  type: 'POST',
 				  url: 'Log.php',
@@ -815,6 +1291,7 @@
 				});
 
 				request.done(function( msg ) {
+					console.log("request done: " + msg);
 				});
 			}
 
