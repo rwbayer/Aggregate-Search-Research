@@ -45,7 +45,8 @@ DROP TABLE IF EXISTS `AggSeaFavoriteLog`;
 CREATE TABLE `AggSeaFavoriteLog` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Query_ID` int(11) NOT NULL,
-  `Link` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  `Link` varchar(1000) DEFAULT NULL,
+  `Unique_ID` varchar(200) DEFAULT NULL,
   `Vertical` varchar(20) DEFAULT NULL,
   `Title` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `Snippet` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
