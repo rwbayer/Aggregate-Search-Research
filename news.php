@@ -49,7 +49,7 @@
 	    		{
 					$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
 
-					$data .= '<a class="title" href="' . $value->url . '" target="' . $target . '" vertical="News">';
+					$data .= '<a class="title fancybox fancybox.iframe" href="' . $value->url . '" target="' . $target . '" vertical="News">';
 	        		$data .= strip_tags($value->name);
 	        		$data .= '</a>';
 					$data .= '<a href="javascript:;" class="favButton relevant" vertical="News">Relevant</a>';

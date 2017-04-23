@@ -174,7 +174,10 @@
 		<link rel="stylesheet" type="text/css" href="styleResultPage.css">
 		<link rel="stylesheet" type="text/css" href="styleResultPageRight.css">
 		<link rel="stylesheet" type="text/css" href="styleResultPageHeader<?php echo $interface_direction;?>.css">
-		<script src="Javascript/jquery-1.11.0.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+		<link rel="stylesheet" href="fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+		<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 		<script type="text/javascript">
 			
 			var favoriteBasket = [];
@@ -1091,6 +1094,58 @@
 					event.preventDefault();
 					clickedSearchSuggestion($(this).text());
 				});
+
+				$(document).ready(function() {
+				
+				$(".fancybox").fancybox({
+							overlay: {
+								locked : false
+							},
+							iframe: {
+								preload : false
+							},
+							width: 1000,
+							height: 1000,
+							beforeShow: function(){
+			        		//Check for X-Frames
+								iframe = document.getElementsByTagName('iframe')[0];
+								url = iframe.src;
+							
+								iframe.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-same-origin allow-scripts");
+							
+								// $.ajax({url: "check-x-frame.php", data: {url: url }, success: function(result){
+							
+								//If X-Frames restriction, route through YQL
+									// if(result.trim()=="true"){
+								console.log("this: " + this);
+										iframe.src = "about:blank";
+						
+										getData = function (data) {
+											if (data && data.query && data.query.results && data.query.results.resources && data.query.results.resources.content && data.query.results.resources.status == 200) loadHTML(data.query.results.resources.content);
+											else if (data && data.error && data.error.description) loadHTML(data.error.description);
+											else loadHTML('Error: Cannot load ' + url);
+										};
+
+										loadURL = function (src) {
+											url = src;
+											var script = document.createElement('script');
+											script.src = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.headers%20where%20url%3D%22' + encodeURIComponent(url) + '%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=getData';
+											document.body.appendChild(script);
+										};
+
+										loadHTML = function (html) {
+											iframe.src = 'about:blank';
+											iframe.contentWindow.document.open();				
+											iframe.contentWindow.document.write(html.replace(/<head>/i, '<head><base href="' + url + '"><scr' + 'ipt>document.addEventListener("click", function(e) { if(e.target && e.target.nodeName == "A") { e.preventDefault(); parent.loadURL(e.target.href); } });</scr' + 'ipt>'));
+											iframe.contentWindow.document.close();
+										}
+
+										loadURL(url);
+									// }
+								// }});	
+			    		}
+			        })
+			    });
 			});
 
 			function showSuggestionResult(str)

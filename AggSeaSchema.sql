@@ -200,7 +200,7 @@ VALUES
 	(194,9,17,5,'5.','radio','large','Capable people who fail to become leaders have not taken advantage of their opportunities.',2),
 	(195,10,17,6,'6.','radio','large','No matter how hard you try, some people just don\'t like you.',1),
 	(196,10,17,6,'6.','radio','large','People who can\'t get others to like them don\'t understand how to get along with others.',2),
-	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happens',1),
+	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happen.',1),
 	(198,11,17,7,'7.','radio','large','Trusting to fate has never turned out as well for me as making a decision to take a definite course of action.',2),
 	(199,12,17,8,'8.','radio','large','In the case of the well prepared student, there is rarely, if ever, such a thing as an unfair test.',1),
 	(200,12,17,8,'8.','radio','large','Many times exam questions tend to be so unrelated to course work that studying is really useless.',2),
