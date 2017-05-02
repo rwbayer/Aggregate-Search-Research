@@ -159,7 +159,7 @@
 		<link rel="stylesheet" type="text/css" href="styleResultPage.css">
 		<link rel="stylesheet" type="text/css" href="styleResultPageRight.css">
 		<link rel="stylesheet" type="text/css" href="styleResultPageHeader<?php echo $interface_direction;?>.css">
-		<script type="text/javascript" src="Javascript/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 		<link rel="stylesheet" href="fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 		<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
@@ -217,8 +217,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -248,8 +247,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -279,8 +277,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -310,8 +307,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: 0, source: vertical, i:1}
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -345,7 +341,16 @@
 					return;
 				}
 
-				$('.resultContainer').html("");
+				// 	if (currentRequest)
+				// 	{
+				// 		currentRequest.abort();
+				// 	}
+				// 	searchQuery = $('#searchText').val();
+
+				// 	logQuery(searchQuery, false);
+				// 	search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
+
+				$('.resultContainer').hide();
 				$('.footer').hide();
 				$('#loading').show();
 
@@ -377,104 +382,23 @@
 
 				if (source == "Image")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
-
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
-
-						showResults();
-					}); 
+					
 				}
 				else if (source == "News")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
-
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
-
-						showResults();
-					}); 
+					
 				}
 				else if (source == "Video")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
-
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
-
-						showResults();
-					}); 
+					
 				}
 				else
 				{
 					$.ajax({
 						type: 'POST',
 						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -551,8 +475,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -582,8 +506,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -613,8 +537,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -644,8 +568,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -721,8 +645,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -744,7 +668,8 @@
 						}
 						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-						showResults();
+							$('.resultContainer').show();
+							$('.footer').show();
 					}); 
 				}
 				else if (source == "News")
@@ -752,8 +677,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -783,8 +708,8 @@
 					$.ajax({
 						type: 'POST',
 						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
+						// async: false
 					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
@@ -814,9 +739,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1},
-						async: false
-					}).done(function( returnedJSON ) {
+						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}					}).done(function( returnedJSON ) {
 						var data = JSON.parse(returnedJSON);
 
 						if (data.source == "Web")
@@ -881,15 +804,15 @@
 
 			function search(text)
 			{
-				console.log("In search: " + text);
+				numberOfSourcesReturned = 0;
+				currentPage = 1;
 
 				if(text!='')
 				{
 					$.ajax({
 						type: 'POST',
 						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 70, offset: 0},
-						async: false
+						data: { searchText: text, market: "en-US", results: 70, offset: 0}
 					}).done(function( data ) {
 						parseResponse(data);
 					}); 
@@ -897,8 +820,7 @@
 					$.ajax({
 						type: 'POST',
 						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 70, offset: 0},
-						async: false
+						data: { searchText: text, market: "en-US", results: 70, offset: 0}
 					}).done(function( data ) {
 						parseResponse(data);
 					}); 
@@ -906,18 +828,15 @@
 					$.ajax({
 						type: 'POST',
 						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 70, offset: 0},
-						async: false
+						data: { searchText: text, market: "en-US", results: 70, offset: 0}
 					}).done(function( data ) {
 						parseResponse(data);
 					}); 
-				
 			
 					$.ajax({
 						type: 'POST',
 						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 100, offset: 0},
-						async: false
+						data: { searchText: text, market: "en-US", results: 70, offset: 0}
 					}).done(function( data ) {
 						parseResponse(data);
 					});					
@@ -927,43 +846,27 @@
 			var parseResponse = function(returnedJSON) {
 				var data = JSON.parse(returnedJSON);
 				
-				console.log(data);
-
 				if (data.source == "Web")
 				{
 					webResults = data.data;
-					console.log(webResults);
 				}
 				else if (data.source == "Image")
 				{
 					imageResults = data.data;
-					console.log(imageResults);
 				}
 				else if (data.source == "Video")
 				{
 					videoResults = data.data;
-					console.log(videoResults);
 				}
 				else if (data.source == "News")
 				{
 					newsResults = data.data;
-					console.log(newsResults);
 				}
-
-				// if (data.source != "Web")
-				// {
-				// 	$(divIdentifier).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" +  data.searchText + "', '" + data.source + "')\">" + data.source + " results for <strong>" + data.searchText + "</strong></a></h1>" + data.data);
-				// }
-				// else
-				// {
-				// 	$(divIdentifier).html(data.data);
-				// }
 
 				numberOfSourcesReturned++;
 
 				if (numberOfSourcesReturned == 4)
 				{
-					console.log("About to show results");
 					showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
 				}
 			};
@@ -1005,6 +908,8 @@
 
 				for (var i = 1; i <= number_of_sources_requested; i++)
 				{
+					$("#box"+i).html("");
+
 					var sourceString = "source".concat(i);
 					var source = eval(sourceString);
 
@@ -1013,64 +918,49 @@
 
 					if (source == "Web")
 					{
-						// numberOfWebResultsRequested += parseInt(numResults);
-						// offset = parseInt(numberOfWebResultsRequested);
-						console.log("here with:");
-						console.log(webResults);
-						console.log(webResults.length);
 						for (var j=webOffset; j<(numResults+webOffset); j++)
 						{
-							console.log(webResults[j]);
 							$("#box"+i).append(webResults[j]);
 						}
+
+						numberOfWebResultsRequested += numResults;
+
 						webOffset += numResults;
-						// $("#box"+i).html(data.data);
 					}
 					else if (source == "News")
 					{
-						console.log("here with:");
-						console.log(newsResults);
-						console.log(newsResults.length);
-
-						$("box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>");
+						
 						for (var j=newsOffset; j<(numResults+newsOffset); j++)
 						{
-							console.log(newsResults[j]);
 							$("#box"+i).append(newsResults[j]);
 						}
+
 						newsOffset += numResults;
-							// /$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" +  data.searchText + "', '" + data.source + "')\">" + data.source + " results for <strong>" + data.searchText + "</strong></a></h1>" + data.data);
 					}
 					else if (source == "Image")
 					{
-						console.log("here with:");
-						console.log(imageResults);
-						console.log(imageResults.length);
-
-						$("box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						
 						for (var j=imageOffset; j<(numResults+imageOffset); j++)
 						{
-							console.log(imageResults[j]);
 							$("#box"+i).append(imageResults[j]);
 						}
+
 						imageOffset += numResults;
 					}
 					else if (source == "Video")
 					{
-						console.log("here with:");
-						console.log(videoResults);
-						console.log(videoResults.length);
-
-						$("box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						
 						for (var j=videoOffset; j<(numResults+videoOffset); j++)
 						{
-							console.log(videoResults[j]);
 							$("#box"+i).append(videoResults[j]);
 						}
+
 						videoOffset += numResults;
 					}
 				}
-				// show layout specified by php vars including adding <div class="resultContainer">
 
 				$('#loading').hide();
 				$('.resultContainer').show();
@@ -1125,7 +1015,25 @@
 					clickedSearchSuggestion($(this).text());
 				});
 
-				$(document).ready(function() {
+				$("body").on('click', '#submitbutton', function(event)
+				{
+					console.log("In submit button click");
+					event.preventDefault();
+					$('.resultContainer').hide();
+					$('.footer').hide();
+					$('#loading').show();
+					console.log("Loading should be shown");
+
+					if (currentRequest)
+					{
+						currentRequest.abort();
+					}
+					searchQuery = $('#searchText').val();
+
+					logQuery(searchQuery, false);
+					search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
+				});
+
 				
 				$(".fancybox").fancybox({
 							overlay: {
@@ -1174,8 +1082,7 @@
 									// }
 								// }});	
 			    		}
-			        })
-			    });
+			        });
 			});
 
 			function showSuggestionResult(str)
@@ -1314,31 +1221,12 @@
 						type: 'POST',
 						url: 'Log.php',
 					  	data: { type: 'link', link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface},
-					  	dataType: "html",
-					  	async:false
+					  	dataType: "html"
 					});
 
 					request.done(function( msg ) {
 					});
 				}
-			});
-
-			$(document).on('click', '#submitbutton', function(e)
-			{
-				e.preventDefault();
-				// $('.resultContainer').html("");
-				$('.footer').hide();
-				$('#loading').show();
-
-				if (currentRequest)
-				{
-					currentRequest.abort();
-				}
-				searchQuery = $('#searchText').val();
-
-				logQuery(searchQuery, false);
-				// translateAndSearch(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
-				search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
 			});
 
 			$(document).on('click', '#finish', function()
@@ -1351,8 +1239,7 @@
 					  type: 'POST',
 					  url: 'Log.php',
 					  data: { type: "favorite", link: favoriteBasket[i].link, uID: favoriteBasket[i].uId, vertical: favoriteBasket[i].vertical, title: favoriteBasket[i].title, snippet: favoriteBasket[i].snippet, rank: favoriteBasket[i].rank, currentinterface: favoriteBasket[i].currentinterface, queryId: favoriteBasket[i].queryId},
-					  dataType: "html",
-					  async: false
+					  dataType: "html"
 					});
 					request.done(function( msg ) {
 						console.log("response: " + msg);
@@ -1367,8 +1254,7 @@
 				  type: 'POST',
 				  url: 'Log.php',
 				  data: { type: 'nav', page: page, navType: type, previousinterface: previousinterface, currentinterface: currentinterface},
-				  dataType: "html",
-				  async:false
+				  dataType: "html"
 				});
 
 				request.done(function( msg ) {
