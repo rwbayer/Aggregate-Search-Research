@@ -43,40 +43,38 @@
 			if (is_array($jsonobj->value) || is_object($jsonobj->value))
 			{
 				$received = true;
-				$data = '<div ID="resultList">';
+				$data = array();
 
 	    		foreach($jsonobj->value as $value)
 	    		{
-					$data .= '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
+					$item = '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
 
-					$data .= '<a class="title fancybox fancybox.iframe" href="' . $value->url . '" target="' . $target . '" vertical="News">';
-	        		$data .= strip_tags($value->name);
-	        		$data .= '</a>';
-					$data .= '<a href="javascript:;" class="favButton relevant" vertical="News">Relevant</a>';
-	        		$data .= '</div>';
-					$data .= '<div class=\'url\'>' . urldecode($value->provider[0]->name);
+					$item .= '<a class="title fancybox fancybox.iframe" href="' . $value->url . '" target="' . $target . '" vertical="News">';
+	        		$item .= strip_tags($value->name);
+	        		$item .= '</a>';
+					$item .= '<a href="javascript:;" class="favButton relevant" vertical="News">Relevant</a>';
+	        		$item .= '</div>';
+					$item .= '<div class=\'url\'>' . urldecode($value->provider[0]->name);
 					$news_date = urldecode($value->datePublished);
 					$year = substr($news_date,0, 4);
 					$month = substr($news_date,5,2);
 					$day = substr($news_date,8,2);
 
-					$data .= ' - ' . $month . '/' . $day . '/' . $year  . '</div>';
+					$item .= ' - ' . $month . '/' . $day . '/' . $year  . '</div>';
 
 
-					$data .= '<div class=\'snippet\'>' . strip_tags($value->description) . '</div>';
-					$data .= '</div>';
+					$item .= '<div class=\'snippet\'>' . strip_tags($value->description) . '</div>';
+					$item .= '</div>';
+					array_push($data, $item);
 					$i++;
 				}
-
-				$data .= "</div>";
 			}
 		}
 	}
 
 	$returnObject = (object) [
 	    'data' => $data,
-	    'source' => $_REQUEST["source"],
-	    'i' => $_REQUEST["i"],
+	    'source' => "News",
 	    'searchText' => $_REQUEST["searchText"]
 	  ];
 

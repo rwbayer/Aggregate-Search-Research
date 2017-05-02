@@ -42,24 +42,22 @@
     		if (is_array($jsonobj->value) || is_object($jsonobj->value))
     		{
                 $received = true;
-    			$data = '<div ID="resultList">';
+    			$data = array();
 
         		foreach($jsonobj->value as $value)
         		{
-            		$data .= '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
-                	$data .= '</a><a href="javascript:;" class="favButton relevant" vertical="Video">Relevant</a></div>';
-            		$i++;
+            		$item = '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
+                	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Video">Relevant</a></div>';
+            		array_push($data, $item);
+                    $i++;
             	}
-
-        		$data .= "</div>";
         	}
         }
 	}
 
 	$returnObject = (object) [
 	    'data' => $data,
-	    'source' => $_REQUEST["source"],
-	    'i' => $_REQUEST["i"],
+	    'source' => "Video",
 	    'searchText' => $_REQUEST["searchText"]
 	  ];
 

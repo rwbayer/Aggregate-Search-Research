@@ -79,19 +79,19 @@
 			if ($row['System'] == PANEL) 
 			{
 				$_SESSION['recent_interface'] = PANEL;
-				header("Location: search-experiment.php?interface=panel&source1=Web&source2=Image&numResults2=6&source3=Web&numResults3=5&source4=News&numResults4=3&numResults1=5&taskId=" . $_SESSION['taskId']);
+				header("Location: aggsearch.php?interface=panel&source1=Web&source2=Image&numResults2=6&source3=Web&numResults3=5&source4=News&numResults4=3&numResults1=5&taskId=" . $_SESSION['taskId']);
 				die();
 			} 
 			else if ($row['System'] == TABBED)
 			{
 				$_SESSION['recent_interface'] = TABBED;
-				header("Location: search-experiment.php?interface=tabbed&source1=Web&source2=&numResults2=&source3=&numResults3=&source4=&numResults4=&numResults1=10&taskId=" . $_SESSION['taskId']);
+				header("Location: aggsearch.php?interface=tabbed&source1=Web&source2=&numResults2=&source3=&numResults3=&source4=&numResults4=&numResults1=10&taskId=" . $_SESSION['taskId']);
 				die();
 			} 
 			else if ($row['System'] == BLENDED)
 			{
 				$_SESSION['recent_interface'] = BLENDED;
-				header("Location: search-experiment.php?interface=blended&source1=Web&source2=Image&numResults2=6&source3=News&numResults3=3&source4=Web&numResults4=8&numResults1=2&taskId=" . $_SESSION['taskId']);
+				header("Location: aggsearch.php?interface=blended&source1=Web&source2=Image&numResults2=6&source3=News&numResults3=3&source4=Web&numResults4=8&numResults1=2&taskId=" . $_SESSION['taskId']);
 				die();
 			} 
 		}

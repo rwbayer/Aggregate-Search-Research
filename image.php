@@ -39,24 +39,21 @@
 
 		if (is_array($jsonobj->value) || is_object($jsonobj->value))
 		{
-			$data = '<div ID="resultList">';
+			$data = array();
 
 			foreach($jsonobj->value as $value)
     		{
-
-        		$data .= '<div class=\'image \' rank="rank' . $i . '"><a uniqueid="' . $value->imageId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Image" style="background-image: url(' . $value->thumbnailUrl . ');">';
-            	$data .= '</a><a href="javascript:;" class="favButton relevant" vertical="Image">Relevant</a></div>';
+        		$item = '<div class=\'image \' rank="rank' . $i . '"><a uniqueid="' . $value->imageId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Image" style="background-image: url(' . $value->thumbnailUrl . ');">';
+            	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Image">Relevant</a></div>';
+        		array_push($data, $item);
         		$i++;
         	}
-
-        	$data .= "</div>";
 		}
 	}
 
 	$returnObject = (object) [
 	    'data' => $data,
-	    'source' => $_REQUEST["source"],
-	    'i' => $_REQUEST["i"],
+	    'source' => "Image",
 	    'searchText' => $_REQUEST["searchText"]
 	  ];
 
