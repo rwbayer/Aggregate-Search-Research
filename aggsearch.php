@@ -170,6 +170,7 @@
 			var currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 			var currentRequest;
 			var timer = 0;
+			var initialBoxes;
 
 			function setCookie(cname, cvalue, exdays) 
 			{
@@ -341,25 +342,13 @@
 					return;
 				}
 
-				// 	if (currentRequest)
-				// 	{
-				// 		currentRequest.abort();
-				// 	}
-				// 	searchQuery = $('#searchText').val();
-
-				// 	logQuery(searchQuery, false);
-				// 	search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
-
-				$('.resultContainer').hide();
-				$('.footer').hide();
-				$('#loading').show();
+				hideContent();
 
 				var $active = $('.active');
 				$('.active').removeClass('active');
 				$active.parent().next().find('a').first().addClass('active');
 
 				currentPage++;
-				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
 				var source = currentinterface;
 
@@ -380,49 +369,73 @@
 					$("a.next").addClass('disabled');
 				}
 
+				var dataToShow = "";
+				var divIdentifier = "";
+
 				if (source == "Image")
 				{
-					
+					var offset = numberOfImageResultsRequested + ((currentPage-2) * 10);
+
+					divIdentifier = "imageResults";	
+
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += imageResults[i];
+					}	
 				}
 				else if (source == "News")
 				{
-					
+					var offset = numberOfNewsResultsRequested + ((currentPage-2) * 10);
+
+					divIdentifier = "newsResults";	
+
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += newsResults[i];
+					}	
 				}
 				else if (source == "Video")
 				{
-					
+					var offset = numberOfVideoResultsRequested + ((currentPage-2) * 10);
+
+					divIdentifier = "videoResults";	
+
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += videoResults[i];
+					}	
 				}
 				else
 				{
-					$.ajax({
-						type: 'POST',
-						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
-						// async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
+					var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
 
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+					divIdentifier = "webResults";
 
-						showResults();
-					});
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += webResults[i];
+					}
 				}
+
+				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + dataToShow + '</div>');
+				showFavorites();
+
+				showContent();
+			}
+
+			function hideContent()
+			{
+				hideSuggestions();
+				$('.resultContainer').hide();
+				$('.footer').hide();
+				$('#loading').show();
+			}
+
+			function showContent()
+			{
+				$('#loading').hide();
+				$('.footer').show();
+				$('.resultContainer').show();
 			}
 
 			function showPreviousWebResults(text)
@@ -432,9 +445,7 @@
 					return;
 				}
 
-				$('.resultContainer').html("");
-				$('.footer').hide();
-				$('#loading').show();
+				hideContent();
 
 				var $active = $('.active');
 				$('.active').removeClass('active');
@@ -442,8 +453,6 @@
 
 				currentPage--;
 				
-				var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
-
 				var source = currentinterface;
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
@@ -455,8 +464,8 @@
 				{
 					logNavigationChange("show previous", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
 					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
-
-					javascript:window.location.reload();
+					rebuildInitialBoxes();
+					showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
 					return;
 				}
 				else
@@ -470,130 +479,62 @@
 					$("a.next").removeClass('disabled');
 				}
 
+				var dataToShow = "";
+				var divIdentifier = "";
+
 				if (source == "Image")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "image.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
-						// async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
+					var offset = numberOfImageResultsRequested + ((currentPage-2) * 10);	
 
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+					divIdentifier = "imageResults";	
 
-						showResults();
-					}); 
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += imageResults[i];
+					}	
 				}
 				else if (source == "News")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "news.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
-						// async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
+					var offset = numberOfNewsResultsRequested + ((currentPage-2) * 10);	
 
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+					divIdentifier = "newsResults";	
 
-						showResults();
-					}); 
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += newsResults[i];
+					}
 				}
 				else if (source == "Video")
 				{
-					$.ajax({
-						type: 'POST',
-						url: "video.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
-						// async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
+					var offset = numberOfVideoResultsRequested + ((currentPage-2) * 10);	
 
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+					divIdentifier = "videoResults";	
 
-						showResults();
-					}); 
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += videoResults[i];
+					}
 				}
 				else
 				{
-					$.ajax({
-						type: 'POST',
-						url: "web.php",
-						data: { searchText: text, market: "en-US", results: 10, offset: offset, source: source, i:1}
-						// async: false
-					}).done(function( returnedJSON ) {
-						var data = JSON.parse(returnedJSON);
+					var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);	
 
-						if (data.source == "Web")
-						{
-							var divIdentifier = "webResults";
-						}
-						else if (data.source == "Image")
-						{
-							var divIdentifier = "imageResults";
-						}
-						else if (data.source == "Video")
-						{
-							var divIdentifier = "videoResults";
-						}
-						else if (data.source == "News")
-						{
-							var divIdentifier = "newsResults";
-						}
-						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
+					divIdentifier = "webResults";	
 
-						showResults();
-					});
+					for (var i=offset; i<(offset+10); i++)
+					{
+						dataToShow += webResults[i];
+					}
 				}
+
+				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + dataToShow + '</div>');
+				showFavorites();
+				showContent();
+			}
+
+			function rebuildInitialBoxes()
+			{
+				$('.resultContainer').html(initialBoxes);
 			}
 
 			function showPageOfWebResults(text, el)
@@ -668,8 +609,7 @@
 						}
 						$('.resultContainer').html('<div id="box' + data.i + '" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + data.data + '</div>');
 
-							$('.resultContainer').show();
-							$('.footer').show();
+						showResults();
 					}); 
 				}
 				else if (source == "News")
@@ -792,14 +732,21 @@
 
 			function clickedSearchSuggestion(selectedText)
 			{
+				hideContent();
+
 				logQuery(selectedText, true);
-    			document.getElementById('searchText').value = selectedText;
-    			document.getElementById("searchForm").submit();
+    			$('#searchText').val(selectedText);
+				search(selectedText, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
 			}
 
 			var numberOfSourcesReturned = 0;
 			var numberOfSourcesRequested = 0;
+
 			var numberOfWebResultsRequested = 0;
+			var numberOfImageResultsRequested = 0;
+			var numberOfNewsResultsRequested = 0;
+			var numberOfVideoResultsRequested = 0;
+
 			var currentPage = 1;
 
 			function search(text)
@@ -875,6 +822,76 @@
 			{
 				// if any favs, add them
 				console.log(searchText + ", " + number_of_results1 + ", " + number_of_results2 + ", " + number_of_results3 + ", " + number_of_results4 + ", " + source1 + ", " + source2 + ", " + source3 + ", " + source4 + ", " + number_of_sources_requested);
+				showFavorites();
+
+				var webOffset = 0;
+				var imageOffset = 0;
+				var newsOffset = 0;
+				var videoOffset = 0;
+
+				for (var i = 1; i <= number_of_sources_requested; i++)
+				{
+					$("#box"+i).html("");
+
+					var sourceString = "source".concat(i);
+					var source = eval(sourceString);
+
+					var numResultsString = "number_of_results".concat(i);
+					var numResults = parseInt(eval(numResultsString));
+
+					if (source == "Web")
+					{
+						for (var j=webOffset; j<(numResults+webOffset); j++)
+						{
+							$("#box"+i).append(webResults[j]);
+						}
+
+						numberOfWebResultsRequested += numResults;
+						webOffset += numResults;
+					}
+					else if (source == "News")
+					{
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>");
+						
+						for (var j=newsOffset; j<(numResults+newsOffset); j++)
+						{
+							$("#box"+i).append(newsResults[j]);
+						}
+
+						numberOfNewsResultsRequested += numResults;
+						newsOffset += numResults;
+					}
+					else if (source == "Image")
+					{
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						
+						for (var j=imageOffset; j<(numResults+imageOffset); j++)
+						{
+							$("#box"+i).append(imageResults[j]);
+						}
+
+						numberOfImageResultsRequested += numResults;
+						imageOffset += numResults;
+					}
+					else if (source == "Video")
+					{
+						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
+						
+						for (var j=videoOffset; j<(numResults+videoOffset); j++)
+						{
+							$("#box"+i).append(videoResults[j]);
+						}
+
+						numberOfVideoResultsRequested += numResults;
+						videoOffset += numResults;
+					}
+				}
+
+				showContent();
+			}
+
+			var showFavorites = function()
+			{
 				var favs = $('.favButton');
 				for (var d = 0; d < favs.length; d++) {
 					for (var k = 0; k < favoriteBasket.length; k++) 
@@ -900,76 +917,13 @@
 						}
 					}
 				}
-
-				var webOffset = 0;
-				var imageOffset = 0;
-				var newsOffset = 0;
-				var videoOffset = 0;
-
-				for (var i = 1; i <= number_of_sources_requested; i++)
-				{
-					$("#box"+i).html("");
-
-					var sourceString = "source".concat(i);
-					var source = eval(sourceString);
-
-					var numResultsString = "number_of_results".concat(i);
-					var numResults = parseInt(eval(numResultsString));
-
-					if (source == "Web")
-					{
-						for (var j=webOffset; j<(numResults+webOffset); j++)
-						{
-							$("#box"+i).append(webResults[j]);
-						}
-
-						numberOfWebResultsRequested += numResults;
-
-						webOffset += numResults;
-					}
-					else if (source == "News")
-					{
-						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>");
-						
-						for (var j=newsOffset; j<(numResults+newsOffset); j++)
-						{
-							$("#box"+i).append(newsResults[j]);
-						}
-
-						newsOffset += numResults;
-					}
-					else if (source == "Image")
-					{
-						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
-						
-						for (var j=imageOffset; j<(numResults+imageOffset); j++)
-						{
-							$("#box"+i).append(imageResults[j]);
-						}
-
-						imageOffset += numResults;
-					}
-					else if (source == "Video")
-					{
-						$("#box"+i).html("<h1><a class=\"verticalLink\" onclick=\"clickedVerticalHeading('" + searchText + "', '" + source + "')\">" + source + " results for <strong>" + searchText + "</strong></a></h1>" );
-						
-						for (var j=videoOffset; j<(numResults+videoOffset); j++)
-						{
-							$("#box"+i).append(videoResults[j]);
-						}
-
-						videoOffset += numResults;
-					}
-				}
-
-				$('#loading').hide();
-				$('.resultContainer').show();
-				$('.footer').show();
 			}
 			
 			$(document).ready(function() 
 			{
 				$('.footer').hide();
+
+				initialBoxes = $('.resultContainer').html();
 
 				var json_string = getCookie("basket");
 				if (json_string === "") 
@@ -980,7 +934,6 @@
 				{
 					favoriteBasket = JSON.parse(json_string);
 				}
-				// console.log(favoriteBasket);
 
 				var selectedInterfaceJSON = getCookie("currentInterface");
 				if (!(selectedInterfaceJSON === ""))
@@ -1017,23 +970,18 @@
 
 				$("body").on('click', '#submitbutton', function(event)
 				{
-					console.log("In submit button click");
 					event.preventDefault();
-					$('.resultContainer').hide();
-					$('.footer').hide();
-					$('#loading').show();
-					console.log("Loading should be shown");
 
+					hideContent();
 					if (currentRequest)
 					{
 						currentRequest.abort();
 					}
-					searchQuery = $('#searchText').val();
+					var searchQuery = $('#searchText').val();
 
 					logQuery(searchQuery, false);
 					search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
 				});
-
 				
 				$(".fancybox").fancybox({
 							overlay: {
@@ -1094,14 +1042,19 @@
 
 				if (str.length==0)
 				{ 
-					document.getElementById("livesearch").innerHTML="";
-				    document.getElementById("livesearch").style.border="0px";
+					hideSuggestions();
 				    return;
 				}
 				currentRequest = $.post("suggestions.php", { searchText: str }).done(function( responseText ) {
 					document.getElementById("livesearch").innerHTML=  responseText;
       				document.getElementById("livesearch").style.border = "2px solid #333";
 				});
+			}
+
+			function hideSuggestions()
+			{
+				document.getElementById("livesearch").innerHTML="";
+				document.getElementById("livesearch").style.border="0px";
 			}
 
 			function showResult(str)
@@ -1396,9 +1349,6 @@
 						}
 					}
 				?>
-				
-				
-				
 			</div>
 		</div>
 
