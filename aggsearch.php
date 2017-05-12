@@ -181,6 +181,7 @@
 			var numberOfVideoResultsRequested = 0;
 
 			var currentPage = 1;
+			var openLink = {};
 
 			function setCookie(cname, cvalue, exdays) 
 			{
@@ -771,7 +772,11 @@
 										loadURL(url);
 									// }
 								// }});	
-			    		}
+			    			},
+			    			afterClose: function()
+			    			{
+			    				logResultIFrameClosed();
+			    			}
 			        });
 			});
 
@@ -918,7 +923,11 @@
 						rank = $(this).parent().attr('rank');
 					}
 
-					console.log("About to post to log with: " + link + "vertical: " + vertical + " title: " + title + " snippet: " + snippet + " rank: " + rank + " currentinterface:" + currentinterface);
+					openLink["link"] = link;
+					openLink["vertical"] = vertical;
+					openLink["title"] = title;
+					openLink["snippet"] = snippet;
+
 					var request = $.ajax({
 						type: 'POST',
 						url: 'Log.php',
@@ -928,7 +937,6 @@
 
 					request.done(function( msg ) 
 					{
-						console.log("think is was success?" + msg);
 					});
 				}
 			});
@@ -951,6 +959,28 @@
 				}
 				window.location.href = "studyManager.php";
 			});	
+
+			function logResultIFrameClosed()
+			{
+				link = openLink["link"];
+				vertical = openLink["vertical"];
+				title = openLink["title"];
+				snippet= openLink["snippet"];
+
+				var request = $.ajax({
+					type: 'POST',
+					url: 'Log.php',
+				  	data: { type: 'link_close', link: link, vertical: vertical, title: title, snippet: snippet},
+				  	dataType: "html"
+				});
+
+				request.done(function( msg ) 
+				{
+					console.log("Logged close with: " + msg);
+					openLink = {};
+					console.log("here:" + openLink["link"]);
+				});
+			}
 
 			function logNavigationChange(type, previousinterface, currentinterface, page)
 			{

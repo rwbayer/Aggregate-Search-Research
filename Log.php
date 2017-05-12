@@ -57,16 +57,14 @@
 	{
 		// this should add a new closed timestamp
 
-		// $QueryId = $_SESSION['current_query'];
-		// $link = mysql_real_escape_string ($_REQUEST["link"]);
-		// $vertical = $_REQUEST["vertical"];
-		// $title = mysql_real_escape_string ($_REQUEST["title"]);
-		// $snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
-		// $rank = $_REQUEST["rank"];
-		// $currentinterface = $_REQUEST["currentinterface"];
+		$QueryId = $_SESSION['current_query'];
+		$link = mysql_real_escape_string ($_REQUEST["link"]);
+		$vertical = $_REQUEST["vertical"];
+		$title = mysql_real_escape_string ($_REQUEST["title"]);
+		$snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
 
-		// //Save query
-		$query = "UPDATE AggSeaLinkLog SET Close_Timestamp = NOW() WHERE User_ID = " . $userID . " AND Task_ID = " . $taskId . " AND Query_ID = " . $QueryId . "Link, Vertical, Title, Snippet, Rank, Open_Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
+		//Save query
+		$query = "UPDATE AggSeaLinkLog SET Close_Timestamp = NOW() WHERE User_ID = " . $userID . "AND Task_ID = " . $taskId . " AND Query_ID = " . $QueryId . " AND Link = '" . $link . "' AND Vertical = '" . $vertical . "' AND Title = '" . $title . "' AND Snippet = '" . $snippet . "';";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
