@@ -69,7 +69,7 @@ DROP TABLE IF EXISTS `AggSeaLinkLog`;
 CREATE TABLE `AggSeaLinkLog` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Query_ID` int(11) DEFAULT NULL,
-  `Link` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  `Link` varchar(1000) CHARACTER SET utf8 DEFAULT NULL,
   `Vertical` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `Title` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `Snippet` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
@@ -240,7 +240,7 @@ VALUES
 	(1,0,'Learning','Find documents that describe or discuss the impact of consumer boycotts.'),
 	(2,1,'Learning','Look for information on the existence and/or the discovery of remains of the seven wonders of the ancient world.'),
 	(3,2,'Learning','Find publications providing general introductions to food allergies and the prevention of such allergies.'),
-	(4,3,'Learning','We seek any information on human cloning including claims of the production of the first human clone.'),
+	(4,3,'Learning','Look for information on human cloning, including claims of the production of the first human clone.'),
 	(5,4,'Learning','In what sports are drugs used illegally?'),
 	(6,5,'Doing','You want to buy Yves Saint Laurent boots.\nYou want to find places to buy, reviews, etc.'),
 	(7,6,'Doing','Find recipes for chocolate puddings.'),
@@ -248,8 +248,8 @@ VALUES
 	(9,8,'Doing','Rock Climbing for Beginners-Only publications which specifically provide information on climbs that are not difficult or give instructions on rock climbing for beginners are of interest.'),
 	(10,9,'FactFinding','What is the current price of oil?'),
 	(11,10,'FactFinding','Give the names and/or location of places that have been designated as UNESCO World Heritage Sites of outstanding beauty or importance.'),
-	(12,11,'FactFinding','What conditions can trigger asthma in children?'),
-	(13,12,'FactFinding','How high above ground level is the ozone layer?');
+	(12,11,'FactFinding','How high above ground level is the ozone layer?'),
+	(13,12,'FactFinding','What conditions can trigger asthma in children?');
 
 /*!40000 ALTER TABLE `AggSeaSearches` ENABLE KEYS */;
 UNLOCK TABLES;

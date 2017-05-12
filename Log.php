@@ -46,10 +46,31 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaLinkLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
+		$query = "INSERT INTO AggSeaLinkLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Open_Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
+			$response_array['query'] = $query;
+		}
+	}
+	else if ($type == 'link_close')
+	{
+		// this should add a new closed timestamp
+
+		// $QueryId = $_SESSION['current_query'];
+		// $link = mysql_real_escape_string ($_REQUEST["link"]);
+		// $vertical = $_REQUEST["vertical"];
+		// $title = mysql_real_escape_string ($_REQUEST["title"]);
+		// $snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
+		// $rank = $_REQUEST["rank"];
+		// $currentinterface = $_REQUEST["currentinterface"];
+
+		// //Save query
+		$query = "UPDATE AggSeaLinkLog SET Close_Timestamp = NOW() WHERE User_ID = " . $userID . " AND Task_ID = " . $taskId . " AND Query_ID = " . $QueryId . "Link, Vertical, Title, Snippet, Rank, Open_Timestamp) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $QueryId . "','" . $link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" . $rank . "' , NOW());";
+		if (!mysql_query($query)) 
+		{
+			$query .= mysql_error();
+			$response_array['query'] = $query;
 		}
 	}
 	else if ($type == 'nav')
@@ -65,6 +86,7 @@
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
+			$response_array['query'] = $query;
 		}
 	}
 	else if ($type == 'favorite')

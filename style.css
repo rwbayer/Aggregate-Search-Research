@@ -439,6 +439,7 @@ h1
 {
 	font-weight: normal;
 	color: #001ba0;
+	margin-bottom: 0px;
 }
 
 h1 a
@@ -450,6 +451,11 @@ h1 a:hover
 {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+hr
+{
+	margin-bottom: 25px;
 }
 
 .footer

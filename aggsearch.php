@@ -888,20 +888,22 @@
 			
 			$(document).on('click contextmenu', 'a', function()
 			{
+				console.log("In click");
 				link = $(this).attr('href');
 				vertical = $(this).attr('vertical');
 
 				if(vertical != undefined && !($(this).hasClass('relevant')))
 				{
-					var json_strings = JSON.stringify(favoriteBasket);
+					console.log("vertical and not relevant button");
+					// var json_strings = JSON.stringify(favoriteBasket);
 				
-					setCookie("basket", "", 365);
-					setCookie("basket", json_strings, 365);
+					// setCookie("basket", "", 365);
+					// setCookie("basket", json_strings, 365);
 
 					// know its a result link
-					var json_interface = JSON.stringify(currentinterface);
-					setCookie("currentInterface", "", 365);
-					setCookie("currentInterface", json_interface, 365);
+					// var json_interface = JSON.stringify(currentinterface);
+					// setCookie("currentInterface", "", 365);
+					// setCookie("currentInterface", json_interface, 365);
 
 					if (vertical == "Web" || vertical == "News")
 					{
@@ -916,6 +918,7 @@
 						rank = $(this).parent().attr('rank');
 					}
 
+					console.log("About to post to log with: " + link + "vertical: " + vertical + " title: " + title + " snippet: " + snippet + " rank: " + rank + " currentinterface:" + currentinterface);
 					var request = $.ajax({
 						type: 'POST',
 						url: 'Log.php',
@@ -923,7 +926,9 @@
 					  	dataType: "html"
 					});
 
-					request.done(function( msg ) {
+					request.done(function( msg ) 
+					{
+						console.log("think is was success?" + msg);
 					});
 				}
 			});
