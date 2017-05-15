@@ -163,6 +163,7 @@
 
 		<link rel="stylesheet" href="fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 		<script type="text/javascript" src="fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+		<script type="text/javascript" src="Javascript/jquery.waitforimages.min.js"></script>
 		<script type="text/javascript">
 			
 			var favoriteBasket = [];
@@ -220,7 +221,7 @@
 				$('.verticalLabel#' + currentinterface).addClass('selected');
 			}
 
-			function clickedSingleVertical(text, vertical)
+			function clickedSingleVertical(vertical)
 			{
 				hideContent();
 				
@@ -254,7 +255,7 @@
 				showSinglePageOfResults(vertical);
 			}
 
-			function showNextWebResults(text)
+			function showNextWebResults()
 			{
 				if (currentPage == 7)
 				{
@@ -292,7 +293,7 @@
 				showSinglePageOfResults(source);
 			}
 
-			function showPreviousWebResults(text)
+			function showPreviousWebResults()
 			{
 				if (currentPage == 1)
 				{
@@ -413,9 +414,12 @@
 
 			function showContent()
 			{
-				$('#loading').hide();
-				$('.footer').show();
-				$('.resultContainer').show();
+				$('.resultContainer').waitForImages(function() {
+				    // All descendant images have loaded
+				    $('#loading').hide();
+					$('.footer').show();
+				    $('.resultContainer').show();
+				});
 			}
 
 			function rebuildInitialBoxes()
@@ -423,7 +427,7 @@
 				$('.resultContainer').html(initialBoxes);
 			}
 
-			function showPageOfWebResults(text, el)
+			function showPageOfWebResults(el)
 			{
 				hideContent();
 
@@ -486,7 +490,7 @@
 
 				numberOfSourcesReturned = 0;
 				currentPage = 1;
-
+				console.log("in search");
 				if(text!='')
 				{
 					$.ajax({
@@ -525,6 +529,7 @@
 
 			function parseResponse(returnedJSON) 
 			{
+				console.log(returnedJSON);
 				var data = JSON.parse(returnedJSON);
 				
 				if (data.source == "Web")
@@ -635,6 +640,7 @@
 
 				showFavorites();
 				showContent();
+				logInitialResultShown();
 			}
 
 			function showFavorites()
@@ -674,6 +680,7 @@
 
 				initialBoxes = $('.resultContainer').html();
 
+				// favorites
 				var json_string = getCookie("basket");
 				if (json_string === "") 
 				{
@@ -684,20 +691,53 @@
 					favoriteBasket = JSON.parse(json_string);
 				}
 
+				// current interface
+				var selectedInterfaceJSON = getCookie("currentInterface");
+				if (!(selectedInterfaceJSON === ""))
+				{
+					selectedInterface = JSON.parse(selectedInterfaceJSON);
+					setCookie("currentInterface", "", 365);
+					
+					if (!(selectedInterface == "panel" || selectedInterface == "blended" || selectedInterface == "tabbed"))
+					{
+						$('.verticalLabel.selected').removeClass('selected');
+						$('.verticalLabel#' + selectedInterface).addClass('selected');
+						showSingleVertical(selectedInterface);
+					}
+				}
 
-				// TODO
-				// var selectedInterfaceJSON = getCookie("currentInterface");
-				// if (!(selectedInterfaceJSON === ""))
-				// {
-				// 	selectedInterface = JSON.parse(selectedInterfaceJSON);
-				// 	setCookie("currentInterface", "", 365);
-				// 	if (!(selectedInterface == "panel" || selectedInterface == "blended" || selectedInterface == "tabbed"))
-				// 	{
-				// 		$('.verticalLabel.selected').removeClass('selected');
-				// 		$('.verticalLabel#' + selectedInterface).addClass('selected');
-				// 		showSingleVertical(selectedInterface);
-				// 	}
-				// }
+				// search text
+				var searchJSON = getCookie("searchText");
+				if (searchJSON !== "") 
+				{
+					var searchText = JSON.parse(searchJSON);
+					$('#searchText').val(searchText);
+
+					hideContent();
+					if (currentRequest)
+					{
+						currentRequest.abort();
+					}
+
+					logQuery(searchText, false);
+					search(searchText, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
+				}
+
+				$(window).bind('beforeunload', function(){
+					// store cookies
+
+					var json_strings = JSON.stringify(favoriteBasket);
+					setCookie("basket", "", 365);
+					setCookie("basket", json_strings, 365);
+
+					var json_interface = JSON.stringify(currentinterface);
+					setCookie("currentInterface", "", 365);
+					setCookie("currentInterface", json_interface, 365);
+
+					var json_search = JSON.stringify($('#searchText').val());
+					setCookie("searchText", "", 365);
+					setCookie("searchText", json_search, 365);
+				});
 			
 				$("body").on('click', '.verticalLabel', function()
 				{
@@ -739,14 +779,13 @@
 			        		//Check for X-Frames
 								iframe = document.getElementsByTagName('iframe')[0];
 								url = iframe.src;
-							
+
 								iframe.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-same-origin allow-scripts");
 							
-								// $.ajax({url: "check-x-frame.php", data: {url: url }, success: function(result){
-							
+								$.ajax({url: "check-x-frame.php", data: {url: url }, success: function(result){
+									console.log(result +": "+ url);
 								//If X-Frames restriction, route through YQL
-									// if(result.trim()=="true"){
-								console.log("this: " + this);
+									if(result.trim()=="true"){
 										iframe.src = "about:blank";
 						
 										getData = function (data) {
@@ -770,8 +809,8 @@
 										}
 
 										loadURL(url);
-									// }
-								// }});	
+									}
+								}});	
 			    			},
 			    			afterClose: function()
 			    			{
@@ -782,6 +821,7 @@
 
 			function showSuggestionResult(str)
 			{
+				console.log("showSuggestionResult");
 				if (currentRequest)
 				{
 					currentRequest.abort();
@@ -792,14 +832,19 @@
 					hideSuggestions();
 				    return;
 				}
-				currentRequest = $.post("suggestions.php", { searchText: str }).done(function( responseText ) 
-				{ 
-					if (responseText.length != 0)
-					{
-						document.getElementById("livesearch").innerHTML=  responseText;
-      					document.getElementById("livesearch").style.border = "2px solid #333";
-					}
-				});
+				// only send the request if the text field is in focus
+				if($('#searchText').is(":focus"))
+				{
+					console.log("Think search text is focus");
+					currentRequest = $.post("suggestions.php", { searchText: str }).done(function( responseText ) 
+					{ 
+						if (responseText.length != 0 && $('#searchText').is(":focus"))
+						{
+							document.getElementById("livesearch").innerHTML=  responseText;
+	      					document.getElementById("livesearch").style.border = "2px solid #333";
+						}
+					});
+				}
 			}
 
 			function hideSuggestions()
@@ -810,11 +855,12 @@
 
 			function showResult(str)
 			{
+				console.log("showResult");
 				if (timer)
 				{
 					window.clearTimeout(timer);
 				}
-
+				
 				timer = window.setTimeout(function()
 				{
 					showSuggestionResult(str);
@@ -899,17 +945,6 @@
 
 				if(vertical != undefined && !($(this).hasClass('relevant')))
 				{
-					console.log("vertical and not relevant button");
-					// var json_strings = JSON.stringify(favoriteBasket);
-				
-					// setCookie("basket", "", 365);
-					// setCookie("basket", json_strings, 365);
-
-					// know its a result link
-					// var json_interface = JSON.stringify(currentinterface);
-					// setCookie("currentInterface", "", 365);
-					// setCookie("currentInterface", json_interface, 365);
-
 					if (vertical == "Web" || vertical == "News")
 					{
 						title = $(this).text();
@@ -943,7 +978,11 @@
 
 			$(document).on('click', '#finish', function()
 			{
+				// clear cookies
 				setCookie("basket", "", 365);
+				setCookie("currentInterface", "", 365);
+				setCookie("searchText", "", 365);
+
 				console.log("got finish click with fav basket length: " + favoriteBasket.length);
 				for (var i = 0; i < favoriteBasket.length; i++) 
 				{
@@ -1005,6 +1044,21 @@
 				});
 
 				request.done(function( msg ) {
+					console.log("Log query: " + msg);
+				});
+			}
+
+			function logInitialResultShown()
+			{
+				var request = $.ajax({
+				  type: 'POST',
+				  url: 'Log.php',
+				  data: { type: 'results_shown'},
+				  dataType: "html"
+				});
+
+				request.done(function( msg ) {
+					console.log("in done with: " + msg);
 				});
 			}
 
@@ -1068,7 +1122,7 @@
 						<input type="hidden" name="interface" value="<?php echo $_SESSION['interface']?>">
 						<input type="hidden" name="numResults1" value="<?php echo $_SESSION['numResults1']?>">
 
-						<input type="text" style="width:500px;" id="searchText" autocomplete="off" name="searchText" value="<?php echo htmlspecialchars($text,ENT_QUOTES)?>" onkeyup="showResult(this.value)">
+						<input type="text" style="width:500px;" id="searchText" autocomplete="off" name="searchText" onkeyup="showResult(this.value)">
 						<input type="submit" id='submitbutton' value="Search" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 						<div id="livesearch"></div>
 
@@ -1077,17 +1131,17 @@
 							<?php
 								if (!($_SESSION['interface'] == 'tabbed'))
 								{
-									echo('<input type="button" class="verticalLabel selected" value="All" onclick="clickedSingleVertical(\'' . htmlspecialchars($text, ENT_QUOTES) . '\', \'All\')">');
-									echo('<input id="Web" type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical(\'' . htmlspecialchars($text, ENT_QUOTES) . '\', \'Web\')">');
+									echo('<input type="button" class="verticalLabel selected" value="All" onclick="clickedSingleVertical(\'All\')">');
+									echo('<input id="Web" type="button" name="source1" class="verticalLabel" value="Web" onclick="clickedSingleVertical(\'Web\')">');
 								}
 								else
 								{
-									echo('<input id="Web" type="button" name="source1" class="verticalLabel selected" value="Web" onclick="clickedSingleVertical(\'' . htmlspecialchars($text, ENT_QUOTES) . '\', \'Web\')">');
+									echo('<input id="Web" type="button" name="source1" class="verticalLabel selected" value="Web" onclick="clickedSingleVertical(\'Web\')">');
 								}
 							?>
-							<input id="Image" type="button" name="source1" class="verticalLabel" value="Image" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Image')">
-							<input id="Video" type="button" name="source1" class="verticalLabel" value="Video" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'Video')">
-							<input id="News" type="button" name="source1" class="verticalLabel" value="News" onclick="clickedSingleVertical('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', 'News')">
+							<input id="Image" type="button" name="source1" class="verticalLabel" value="Image" onclick="clickedSingleVertical('Image')">
+							<input id="Video" type="button" name="source1" class="verticalLabel" value="Video" onclick="clickedSingleVertical('Video')">
+							<input id="News" type="button" name="source1" class="verticalLabel" value="News" onclick="clickedSingleVertical('News')">
 						</div>
 					</div>
 				</form>
@@ -1129,15 +1183,15 @@
 
 		<div class="footer">
 			<ul class="pagination">
-			  <li><a class="prev disabled" onclick="showPreviousWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')" >«</a></li>
-			  <li><a class="active" onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">1</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">2</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">3</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">4</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">5</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">6</a></li>
-			  <li><a onclick="showPageOfWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>', this)">7</a></li>
-			  <li><a class="next" onclick="showNextWebResults('<?php echo htmlspecialchars($text, ENT_QUOTES); ?>')">»</a></li>
+			  <li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>
+			  <li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">2</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">3</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">4</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">5</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">6</a></li>
+			  <li><a onclick="showPageOfWebResults(this)">7</a></li>
+			  <li><a class="next" onclick="showNextWebResults()">»</a></li>
 			</ul>
 		</div>
 	</body>

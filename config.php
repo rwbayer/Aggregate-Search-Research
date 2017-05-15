@@ -8,4 +8,5 @@
 	// $_DATABASE = "sdb_hccweb";
 	// $_DATABASEUSER = "hccweb";
 	// $_DATABASEPASSWORD = "Ba2eebaipeeg";
+	$_MSAZUREACCOUNTKEY = "163adcf8de32408e8014a85e2838e6e2";
 ?>

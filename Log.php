@@ -24,7 +24,21 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 		$suggestion = ($_REQUEST["suggestion"] == "true") ? 1 : 0;
 
-		$query = "INSERT INTO AggSeaQueryLog (User_ID, Task_ID, Interface, Current_Interface, Search_Query, Suggestion, Time) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "','" . $suggestion . "' , NOW());";
+		$query = "INSERT INTO AggSeaQueryLog (User_ID, Task_ID, Interface, Current_Interface, Search_Query, Suggestion, Submit_Time) VALUES ('" . $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "','" . $searchQuery . "','" . $suggestion . "' , NOW());";
+		if (!mysql_query($query)) 
+		{
+			$query .= mysql_error();
+			$response_array['query'] = $query;
+		}
+		else
+		{
+			$_SESSION['current_query'] = mysql_insert_id();
+		}
+	}
+	else if ($type == 'results_shown')
+	{
+		$query = "UPDATE AggSeaQueryLog SET Initial_Results_Shown = NOW() WHERE ID = " . $_SESSION['current_query'] . ";";
+
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();
@@ -64,7 +78,7 @@
 		$snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
 
 		//Save query
-		$query = "UPDATE AggSeaLinkLog SET Close_Timestamp = NOW() WHERE User_ID = " . $userID . "AND Task_ID = " . $taskId . " AND Query_ID = " . $QueryId . " AND Link = '" . $link . "' AND Vertical = '" . $vertical . "' AND Title = '" . $title . "' AND Snippet = '" . $snippet . "';";
+		$query = "UPDATE AggSeaLinkLog SET Close_Timestamp = NOW() WHERE User_ID = " . $userID . " AND Task_ID = " . $taskId . " AND Query_ID = " . $QueryId . " AND Link = '" . $link . "' AND Vertical = '" . $vertical . "' AND Title = '" . $title . "' AND Snippet = '" . $snippet . "';";
 		if (!mysql_query($query)) 
 		{
 			$query .= mysql_error();

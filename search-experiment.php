@@ -157,15 +157,6 @@
 		$source4 = '';
 		$number_of_results4 = 0;
 	}
-	
-	if(isset($_REQUEST["searchText"]))
-	{
-		$text = $_REQUEST["searchText"];
-	}
-	else
-	{
-		$text = '';
-	}
 ?>
 
 <html>

@@ -8,13 +8,15 @@
 	header('Content-Type: text/html; charset=utf-8');
 
 	include 'date.php';
+	include 'config.php';
+	include 'redirect.php';
 
 	if($_REQUEST["searchText"]!='')
 	{
 		$received = false;
 		while (!$received)
 		{
-	        $accountKey = '7b9cec439fc24fbeaafa5349ad4a2105';
+	        $accountKey = $_MSAZUREACCOUNTKEY;
 	        
 	        $ServiceRootURL =  "https://api.cognitive.microsoft.com/bing/v5.0/news/search";
 
@@ -47,9 +49,11 @@
 
 	    		foreach($jsonobj->value as $value)
 	    		{
+	    			$finalURL = get_redirect_url($value->url);
+
 					$item = '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
 
-					$item .= '<a class="title fancybox fancybox.iframe" href="' . $value->url . '" target="' . $target . '" vertical="News">';
+					$item .= '<a class="title fancybox fancybox.iframe" href="' . $finalURL . '" target="' . $target . '" vertical="News">';
 	        		$item .= strip_tags($value->name);
 	        		$item .= '</a>';
 					$item .= '<a href="javascript:;" class="favButton relevant" vertical="News">Relevant</a>';

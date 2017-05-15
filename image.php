@@ -8,10 +8,12 @@
 	header('Content-Type: text/html; charset=utf-8');
 
 	include 'date.php';
+    include 'config.php';
+    include 'redirect.php';
 
 	if($_REQUEST["searchText"]!='')
 	{
-        $accountKey = '7b9cec439fc24fbeaafa5349ad4a2105';
+        $accountKey = $_MSAZUREACCOUNTKEY;
 
         $ServiceRootURL =  "https://api.cognitive.microsoft.com/bing/v5.0/images/search";
 
@@ -43,7 +45,8 @@
 
 			foreach($jsonobj->value as $value)
     		{
-        		$item = '<div class=\'image \' rank="rank' . $i . '"><a uniqueid="' . $value->imageId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Image" style="background-image: url(' . $value->thumbnailUrl . ');">';
+                $finalURL = get_redirect_url($value->hostPageUrl);
+        		$item = '<div class=\'image \' rank="rank' . $i . '"><a uniqueid="' . $value->imageId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $finalURL . '" vertical="Image" style="background-image: url(' . $value->thumbnailUrl . ');">';
             	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Image">Relevant</a></div>';
         		array_push($data, $item);
         		$i++;

@@ -8,13 +8,15 @@
 	header('Content-Type: text/html; charset=utf-8');
 
 	include 'date.php';
+    include 'config.php';
+    include 'redirect.php';
 
 	if($_REQUEST["searchText"]!='')
 	{
         $received = false;
         while(!$received)
         {
-            $accountKey = '7b9cec439fc24fbeaafa5349ad4a2105';
+            $accountKey = $_MSAZUREACCOUNTKEY;
 
             $ServiceRootURL =  "https://api.cognitive.microsoft.com/bing/v5.0/videos/search";
 
@@ -46,7 +48,8 @@
 
         		foreach($jsonobj->value as $value)
         		{
-            		$item = '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $value->hostPageUrl . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
+                    $finalURL = get_final_url($value->hostPageUrl);
+            		$item = '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $finalURL . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
                 	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Video">Relevant</a></div>';
             		array_push($data, $item);
                     $i++;
