@@ -312,10 +312,10 @@
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
 				{
-					source = "Web";
+					source = "All";
 				}
 
-				if (currentPage == 1)
+				if (currentPage == 1 && source == "All")
 				{
 					logNavigationChange("show previous", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
 					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
@@ -401,7 +401,7 @@
 
 				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + dataToShow + '</div>');
 				showFavorites();
-				showContent();
+				showContent(source);
 			}
 
 			function hideContent()
@@ -412,14 +412,91 @@
 				$('#loading').show();
 			}
 
-			function showContent()
+			function showContent(source)
 			{
 				$('.resultContainer').waitForImages(function() {
 				    // All descendant images have loaded
 				    $('#loading').hide();
-					$('.footer').show();
+				    showCorrectPagination(source);
 				    $('.resultContainer').show();
 				});
+			}
+
+			function showCorrectPagination(source)
+			{
+				if (source == "Image")
+				{
+					$('ul.pagination').html("");
+
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
+
+				  	for (var i = 0; i < Math.ceil((imageResults.length-10)/10); i++)
+				  	{
+				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  	}
+					
+					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				}
+				else if (source == "News")
+				{
+					$('ul.pagination').html("");
+
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
+
+				  	for (var i = 0; i < Math.ceil((newsResults.length-10)/10); i++)
+				  	{
+				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  	}
+					
+					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				}
+				else if (source == "Video")
+				{
+					$('ul.pagination').html("");
+
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
+
+				  	for (var i = 0; i < Math.ceil((videoResults.length-10)/10); i++)
+				  	{
+				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  	}
+					
+					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				}
+				else if (source == "Web")
+				{
+					$('ul.pagination').html("");
+
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
+
+				  	for (var i = 0; i < Math.ceil((webResults.length-10)/10); i++)
+				  	{
+				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  	}
+					
+					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				}
+				else
+				{
+					// All - use web results length
+					$('ul.pagination').html("");
+
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
+
+				  	for (var i = 0; i < Math.ceil((webResults.length-numberOfWebResultsRequested)/10); i++)
+				  	{
+				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  	}
+					
+					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				}
+
+				$('.footer').show();
 			}
 
 			function rebuildInitialBoxes()
@@ -436,10 +513,10 @@
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
 				{
-					source = "Web";
+					source = "All";
 				}
 
-				if (numberSelected == 1)
+				if (numberSelected == 1 && source == "All")
 				{
 					logNavigationChange("show specific", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
 					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
@@ -639,7 +716,7 @@
 				}
 
 				showFavorites();
-				showContent();
+				showContent("All");
 				logInitialResultShown();
 			}
 
@@ -706,23 +783,6 @@
 					}
 				}
 
-				// search text
-				var searchJSON = getCookie("searchText");
-				if (searchJSON !== "") 
-				{
-					var searchText = JSON.parse(searchJSON);
-					$('#searchText').val(searchText);
-
-					hideContent();
-					if (currentRequest)
-					{
-						currentRequest.abort();
-					}
-
-					logQuery(searchText, false);
-					search(searchText, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
-				}
-
 				$(window).bind('beforeunload', function(){
 					// store cookies
 
@@ -766,57 +826,71 @@
 					search(searchQuery, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
 				});
 				
-				$(".fancybox").fancybox({
-							overlay: {
-								locked : false
-							},
-							iframe: {
-								preload : false
-							},
-							width: 1000,
-							height: 1000,
-							beforeShow: function(){
-			        		//Check for X-Frames
-								iframe = document.getElementsByTagName('iframe')[0];
-								url = iframe.src;
+				$(".fancybox").fancybox(
+				{
+					overlay: 
+					{
+						locked : false
+					},
+					iframe: 
+					{
+						preload : false
+					},
+					width: 1000,
+					height: 1000,
+					beforeShow: function()
+					{
+	        			//Check for X-Frames
+						iframe = document.getElementsByTagName('iframe')[0];
+						url = iframe.src;
 
-								iframe.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-same-origin allow-scripts");
-							
-								$.ajax({url: "check-x-frame.php", data: {url: url }, success: function(result){
-									console.log(result +": "+ url);
-								//If X-Frames restriction, route through YQL
-									if(result.trim()=="true"){
-										iframe.src = "about:blank";
-						
-										getData = function (data) {
-											if (data && data.query && data.query.results && data.query.results.resources && data.query.results.resources.content && data.query.results.resources.status == 200) loadHTML(data.query.results.resources.content);
-											else if (data && data.error && data.error.description) loadHTML(data.error.description);
-											else loadHTML('Error: Cannot load ' + url);
-										};
+						iframe.setAttribute("sandbox", "allow-forms allow-pointer-lock allow-same-origin allow-scripts");
+					
+						$.ajax({url: "check-x-frame.php", data: {url: url }, success: function(result)
+						{
+							console.log(result +": "+ url);
+							//If X-Frames restriction, route through YQL
+							if(result.trim()=="true")
+							{
+								iframe.src = "about:blank";
+				
+								getData = function (data) {
+									if (data && data.query && data.query.results && data.query.results.resources && data.query.results.resources.content && data.query.results.resources.status == 200) loadHTML(data.query.results.resources.content);
+									else if (data && data.error && data.error.description) loadHTML(data.error.description);
+									else loadHTML('Error: Cannot load ' + url);
+								};
 
-										loadURL = function (src) {
-											url = src;
-											var script = document.createElement('script');
-											script.src = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.headers%20where%20url%3D%22' + encodeURIComponent(url) + '%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=getData';
-											document.body.appendChild(script);
-										};
+								loadURL = function (src) {
+									url = src;
+									var script = document.createElement('script');
+									script.src = 'http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20data.headers%20where%20url%3D%22' + encodeURIComponent(url) + '%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=getData';
+									document.body.appendChild(script);
+								};
 
-										loadHTML = function (html) {
-											iframe.src = 'about:blank';
-											iframe.contentWindow.document.open();				
-											iframe.contentWindow.document.write(html.replace(/<head>/i, '<head><base href="' + url + '"><scr' + 'ipt>document.addEventListener("click", function(e) { if(e.target && e.target.nodeName == "A") { e.preventDefault(); parent.loadURL(e.target.href); } });</scr' + 'ipt>'));
-											iframe.contentWindow.document.close();
-										}
+								loadHTML = function (html) {
+									iframe.src = 'about:blank';
+									iframe.contentWindow.document.open();				
+									iframe.contentWindow.document.write(html.replace(/<head>/i, '<head><base href="' + url + '"><scr' + 'ipt>document.addEventListener("click", function(e) { if(e.target && e.target.nodeName == "A") { e.preventDefault(); parent.loadURL(e.target.href); } });</scr' + 'ipt>'));
+									iframe.contentWindow.document.close();
+								}
 
-										loadURL(url);
-									}
-								}});	
-			    			},
-			    			afterClose: function()
-			    			{
-			    				logResultIFrameClosed();
-			    			}
-			        });
+								loadURL(url);
+							}
+						}});	
+	    			},
+	    			afterClose: function()
+	    			{
+	    				logResultIFrameClosed();
+	    			}
+			   	});
+
+				// search text
+				var searchJSON = getCookie("searchText");
+				if (searchJSON !== "") 
+				{
+					var searchText = JSON.parse(searchJSON);
+					$('#searchText').val(searchText);
+				}
 			});
 
 			function showSuggestionResult(str)

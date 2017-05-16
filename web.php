@@ -35,7 +35,7 @@
 
 			$request = $WebSearchURL . '?q=' . urlencode( $_REQUEST["searchText"] ) . '&mkt=' . urlencode( $_REQUEST["market"]  ) . '&count=' . $_REQUEST["results"] . '&offset=' . $_REQUEST["offset"] . "&responsefilter=webpages";
 
-	        $response = file_get_contents($request, 0, $context);
+	        $response = @file_get_contents($request, 0, $context);
 	    
 	        $jsonobj = json_decode($response);
 	    
