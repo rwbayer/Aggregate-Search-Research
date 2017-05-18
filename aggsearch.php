@@ -257,15 +257,41 @@
 
 			function showNextWebResults()
 			{
-				if (currentPage == 7)
+				if (currentinterface == "Image")
 				{
-					return;
+					if (currentPage == Math.ceil(imageResults.length/10))
+					{
+						return;
+					}
+				}
+				else if (currentinterface == "Video")
+				{
+					if (currentPage == Math.ceil(videoResults.length/10))
+					{
+						return;
+					}
+				}
+				else if (currentinterface == "News")
+				{
+					if (currentPage == Math.ceil(newsResults.length/10))
+					{
+						return;
+					}
+				}
+				else
+				{
+					if (currentPage == Math.ceil(webResults.length/10))
+					{
+						return;
+					}
 				}
 
 				hideContent();
 
 				var $active = $('.active');
 				$('.active').removeClass('active');
+				console.log($active);
+				console.log($active.parent().next().find('a').first());
 				$active.parent().next().find('a').first().addClass('active');
 
 				currentPage++;
@@ -274,7 +300,7 @@
 
 				if (!(source == "Web" || source == "Image" || source == "Video" || source == "News"))
 				{
-					source = "Web";
+					source = "All";
 				}
 
 				logNavigationChange("show next", currentinterface, source, currentPage);
@@ -344,7 +370,7 @@
 
 				if (source == "Image")
 				{
-					var offset = numberOfImageResultsRequested + ((currentPage-2) * 10);
+					var offset = ((currentPage-1) * 10);
 
 					divIdentifier = "imageResults";	
 
@@ -358,7 +384,7 @@
 				}
 				else if (source == "News")
 				{
-					var offset = numberOfNewsResultsRequested + ((currentPage-2) * 10);
+					var offset = ((currentPage-1) * 10);
 
 					divIdentifier = "newsResults";	
 
@@ -372,7 +398,7 @@
 				}
 				else if (source == "Video")
 				{
-					var offset = numberOfVideoResultsRequested + ((currentPage-2) * 10);
+					var offset = ((currentPage-1) * 10);
 
 					divIdentifier = "videoResults";	
 
@@ -424,76 +450,132 @@
 
 			function showCorrectPagination(source)
 			{
+				$('ul.pagination').html("");
+
+				if (currentPage == 1)
+				{
+					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
+				}
+				else
+				{
+					$('ul.pagination').append('<li><a class="prev" onclick="showPreviousWebResults()" >«</a></li>');
+				}
+
 				if (source == "Image")
 				{
-					$('ul.pagination').html("");
-
-					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
-				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
-
-				  	for (var i = 0; i < Math.ceil((imageResults.length-10)/10); i++)
+				  	for (var i = 0; i < Math.ceil(imageResults.length/10); i++)
 				  	{
-				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  		if (currentPage == (i+1))
+				  		{
+				  			$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">' + (i+1) + '</a></li>');
+				  		}
+				  		else
+				  		{
+				  			$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 1) + '</a></li>');
+				  		}
 				  	}
-					
-					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+
+				  	if (currentPage == Math.ceil(imageResults.length/10))
+					{
+						$('ul.pagination').append('<li><a class="next disabled" onclick="showNextWebResults()">»</a></li> ');
+					}
+					else
+					{
+						$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+					}
 				}
 				else if (source == "News")
 				{
-					$('ul.pagination').html("");
-
-					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
-				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
-
-				  	for (var i = 0; i < Math.ceil((newsResults.length-10)/10); i++)
+					for (var i = 0; i < Math.ceil(newsResults.length/10); i++)
 				  	{
-				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  		if (currentPage == (i+1))
+				  		{
+				  			$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">' + (i+1) + '</a></li>');
+				  		}
+				  		else
+				  		{
+				  			$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 1) + '</a></li>');
+				  		}
 				  	}
-					
-					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+
+				  	if (currentPage == Math.ceil(newsResults.length/10))
+					{
+						$('ul.pagination').append('<li><a class="next disabled" onclick="showNextWebResults()">»</a></li> ');
+					}
+					else
+					{
+						$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+					}
 				}
 				else if (source == "Video")
 				{
-					$('ul.pagination').html("");
-
-					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
-				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
-
-				  	for (var i = 0; i < Math.ceil((videoResults.length-10)/10); i++)
+					for (var i = 0; i < Math.ceil(videoResults.length/10); i++)
 				  	{
-				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  		if (currentPage == (i+1))
+				  		{
+				  			$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">' + (i+1) + '</a></li>');
+				  		}
+				  		else
+				  		{
+				  			$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 1) + '</a></li>');
+				  		}
 				  	}
-					
-					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+				  	if (currentPage == Math.ceil(videoResults.length/10))
+					{
+						$('ul.pagination').append('<li><a class="next disabled" onclick="showNextWebResults()">»</a></li> ');
+					}
+					else
+					{
+						$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+					}
 				}
 				else if (source == "Web")
 				{
-					$('ul.pagination').html("");
-
-					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
-				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
-
-				  	for (var i = 0; i < Math.ceil((webResults.length-10)/10); i++)
+				  	for (var i = 0; i < Math.ceil(webResults.length/10); i++)
 				  	{
-				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  		if (currentPage == (i+1))
+				  		{
+				  			$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">' + (i+1) + '</a></li>');
+				  		}
+				  		else
+				  		{
+				  			$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 1) + '</a></li>');
+				  		}
 				  	}
-					
-					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+
+				  	if (currentPage == Math.ceil(webResults.length/10))
+					{
+						$('ul.pagination').append('<li><a class="next disabled" onclick="showNextWebResults()">»</a></li> ');
+					}
+					else
+					{
+						$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+					}
 				}
 				else
 				{
 					// All - use web results length
-					$('ul.pagination').html("");
-
-					$('ul.pagination').append('<li><a class="prev disabled" onclick="showPreviousWebResults()" >«</a></li>');
-				  	$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">1</a></li>');
-
-				  	for (var i = 0; i < Math.ceil((webResults.length-numberOfWebResultsRequested)/10); i++)
+					for (var i = 0; i < Math.ceil(webResults.length/10); i++)
 				  	{
-				  		$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 2) + '</a></li>');
+				  		if (currentPage == (i+1))
+				  		{
+				  			$('ul.pagination').append('<li><a class="active" onclick="showPageOfWebResults(this)">' + (i+1) + '</a></li>');
+				  		}
+				  		else
+				  		{
+				  			$('ul.pagination').append('<li><a onclick="showPageOfWebResults(this)">' + (i + 1) + '</a></li>');
+				  		}
 				  	}
+
+				  	if (currentPage == Math.ceil(webResults.length/10))
+					{
+						$('ul.pagination').append('<li><a class="next disabled" onclick="showNextWebResults()">»</a></li> ');
+					}
+					else
+					{
+						$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
+					}
 					
-					$('ul.pagination').append('<li><a class="next" onclick="showNextWebResults()">»</a></li> ');
 				}
 
 				$('.footer').show();
@@ -1013,7 +1095,7 @@
 			
 			$(document).on('click contextmenu', 'a', function()
 			{
-				console.log("In click");
+				// console.log("In click");
 				link = $(this).attr('href');
 				vertical = $(this).attr('vertical');
 
