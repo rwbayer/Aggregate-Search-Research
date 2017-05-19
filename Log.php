@@ -44,10 +44,6 @@
 			$query .= mysql_error();
 			$response_array['query'] = $query;
 		}
-		else
-		{
-			$_SESSION['current_query'] = mysql_insert_id();
-		}
 	}
 	else if ($type == 'link')
 	{
@@ -106,6 +102,7 @@
 		$QueryId = $_REQUEST['queryId'];
 		$link = mysql_real_escape_string ($_REQUEST["link"]);
 		$uID = mysql_real_escape_string ($_REQUEST["uID"]);
+		$time = mysql_real_escape_string ($_REQUEST["time"]);
 		$vertical = $_REQUEST["vertical"];
 		$title = mysql_real_escape_string ($_REQUEST["title"]);
 		$snippet = mysql_real_escape_string ($_REQUEST["snippet"]);
@@ -113,9 +110,9 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Unique_ID, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" .
+		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" .
 		    $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
-				$link . "','" . $uID . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
+				$link . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
 				$rank . "', NOW())";
 		
 		if (!mysql_query($query)) 

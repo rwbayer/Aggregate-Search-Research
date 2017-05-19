@@ -11,7 +11,7 @@
     include 'config.php';
     include 'redirect.php';
 
-	if($_REQUEST["searchText"]!='')
+	if($_REQUEST["searchText"] != '')
 	{
         $accountKey = $_MSAZUREACCOUNTKEY;
 
@@ -53,6 +53,10 @@
         	}
 		}
 	}
+    else
+    {
+        $data = "not getting searchText";
+    }
 
 	$returnObject = (object) [
 	    'data' => $data,

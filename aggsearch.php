@@ -649,7 +649,7 @@
 
 				numberOfSourcesReturned = 0;
 				currentPage = 1;
-				console.log("in search");
+				console.log("in search: " + text);
 				if(text!='')
 				{
 					$.ajax({
@@ -876,9 +876,9 @@
 					setCookie("currentInterface", "", 365);
 					setCookie("currentInterface", json_interface, 365);
 
-					var json_search = JSON.stringify($('#searchText').val());
-					setCookie("searchText", "", 365);
-					setCookie("searchText", json_search, 365);
+					// var json_search = JSON.stringify($('#searchText').val());
+					// setCookie("searchText", "", 365);
+					// setCookie("searchText", json_search, 365);
 				});
 			
 				$("body").on('click', '.verticalLabel', function()
@@ -967,12 +967,12 @@
 			   	});
 
 				// search text
-				var searchJSON = getCookie("searchText");
-				if (searchJSON !== "") 
-				{
-					var searchText = JSON.parse(searchJSON);
-					$('#searchText').val(searchText);
-				}
+				// var searchJSON = getCookie("searchText");
+				// if (searchJSON !== "") 
+				// {
+				// 	var searchText = JSON.parse(searchJSON);
+				// 	$('#searchText').val(searchText);
+				// }
 			});
 
 			function showSuggestionResult(str)
