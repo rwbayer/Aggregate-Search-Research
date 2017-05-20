@@ -1,9 +1,9 @@
 <?php
 
-	if(!isset($_SESSION)) 
-    { 
-        session_start(); 
-    } 
+	// if(!isset($_SESSION)) 
+ //    { 
+ //        session_start(); 
+ //    } 
 
 	header('Content-Type: text/html; charset=utf-8');
 
@@ -11,7 +11,7 @@
 	include 'config.php';
 	include 'redirect.php';
 
-	if($_REQUEST["searchText"]!='')
+	if($_POST["searchText"]!='')
 	{
 		$received = false;
 		while (!$received)
@@ -33,7 +33,7 @@
 					)
 	        ));
 
-			$request = $WebSearchURL . '?q=' . urlencode( $_REQUEST["searchText"] ) . '&mkt=' . urlencode( $_REQUEST["market"]  ) . '&count=' . $_REQUEST["results"] . '&offset=' . $_REQUEST["offset"];
+			$request = $WebSearchURL . '?q=' . urlencode( $_POST["searchText"] ) . '&mkt=' . urlencode( $_POST["market"]  ) . '&count=' . $_POST["results"] . '&offset=' . $_POST["offset"];
 
 	        $response = @file_get_contents($request, 0, $context);
 	    
@@ -79,7 +79,7 @@
 	$returnObject = (object) [
 	    'data' => $data,
 	    'source' => "News",
-	    'searchText' => $_REQUEST["searchText"]
+	    'searchText' => $_POST["searchText"]
 	  ];
 
 	exit(json_encode($returnObject));
