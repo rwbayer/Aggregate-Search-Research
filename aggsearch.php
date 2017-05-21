@@ -1061,11 +1061,14 @@
 
 				timeOfClick = Date.now();
 
-				console.log("Before add: ");
-				console.log(favoriteBasket);
+				// console.log("Before add: ");
+				// console.log(favoriteBasket);
+				
 				favoriteBasket.push({ type: 'favorite', uID: uniqueIdentifier, time: timeOfClick, link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
-				console.log("After add: ");
-				console.log(favoriteBasket);
+				
+				// console.log("After add: ");
+				// console.log(favoriteBasket);
+				
 				$(this).addClass("unFavButton");
 				$(this).removeClass("favButton");
 			});
@@ -1087,11 +1090,15 @@
 				else if (vertical == "Image" || vertical == "Video")
 				{
 					link = $(this).parent().children('a.image').attr('href');
-					title = $(this).parent().children('a.image').children('img').attr('src');
+					title = $(this).parent().children('a.image').attr('title');
 					snippet= "";
 					rank = $(this).parent().attr('rank');
 					uniqueIdentifier = $(this).parent().children('a.image').attr('uniqueid'); 
 				}
+
+				// console.log("Before: ");
+				// console.log(favoriteBasket);
+				// console.log("removing w/ link: " + link + ", uId: " + uniqueIdentifier + ", vertical: " + vertical + ", title: " + title + ", snippet: " + snippet + ", rank: " + rank);
 
 				$(favoriteBasket).each(function(i, el)
 				{
@@ -1100,6 +1107,9 @@
 						favoriteBasket.splice(i, 1);
 					}
 				});
+
+				// console.log("After: ");
+				// console.log(favoriteBasket);
 
 				$(this).addClass("favButton");
 				$(this).removeClass("unFavButton");
