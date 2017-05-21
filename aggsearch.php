@@ -825,7 +825,7 @@
 						}
 						else if ($(favs[d]).attr('vertical') == "Image" || $(favs[d]).attr('vertical') == "Video")
 						{
-							if ($(favs[d]).parent().children('a.image').attr('uniqueid') === favoriteBasket[k].uID && $favs[d].parent().children('a.image').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
+							if ($(favs[d]).parent().children('a.image').attr('uniqueid') === favoriteBasket[k].uID && $(favs[d]).parent().children('a.image').attr('href') === favoriteBasket[k].link && $(favs[d]).attr('vertical') === favoriteBasket[k].vertical) 
 							{
 								$(favs[d]).addClass("unFavButton");
 								$(favs[d]).removeClass("favButton");
@@ -1092,7 +1092,7 @@
 					rank = $(this).parent().attr('rank');
 					uniqueIdentifier = $(this).parent().children('a.image').attr('uniqueid'); 
 				}
-				
+
 				$(favoriteBasket).each(function(i, el)
 				{
 					if (el.type == "favorite" && el.link == link && el.uID == uniqueIdentifier && el.vertical == vertical && el.title == title && el.snippet == snippet && el.rank == rank)
