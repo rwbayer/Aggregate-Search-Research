@@ -1049,6 +1049,7 @@
 					snippet= $(this).parent().parent().children('.snippet').text();
 					rank = $(this).parent().parent().attr('rank');
 					uniqueIdentifier = "N/A";
+					thumbnailLink = "N/A";
 				}
 				else if (vertical == "Image" || vertical == "Video")
 				{
@@ -1057,6 +1058,7 @@
 					snippet= "";
 					rank = $(this).parent().attr('rank');
 					uniqueIdentifier = $(this).parent().children('a.image').attr('uniqueid'); 
+					thumbnailLink = $(this).parent().children('a.image').css('background-image');
 				}
 
 				timeOfClick = Date.now();
@@ -1064,7 +1066,7 @@
 				// console.log("Before add: ");
 				// console.log(favoriteBasket);
 				
-				favoriteBasket.push({ type: 'favorite', uID: uniqueIdentifier, time: timeOfClick, link: link, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
+				favoriteBasket.push({ type: 'favorite', uID: uniqueIdentifier, time: timeOfClick, link: link, thumbnailLink: thumbnailLink, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
 				
 				// console.log("After add: ");
 				// console.log(favoriteBasket);
@@ -1158,24 +1160,29 @@
 
 			$(document).on('click', '#finish', function()
 			{
-				// clear cookies
-				setCookie("basket", "", 365);
-				setCookie("currentInterface", "", 365);
-				setCookie("searchText", "", 365);
-
 				console.log("got finish click with fav basket length: " + favoriteBasket.length);
 				for (var i = 0; i < favoriteBasket.length; i++) 
 				{
 					var request = $.ajax({
 					  type: 'POST',
 					  url: 'Log.php',
-					  data: { type: "favorite", link: favoriteBasket[i].link, uID: favoriteBasket[i].uID, time: favoriteBasket[i].time, vertical: favoriteBasket[i].vertical, title: favoriteBasket[i].title, snippet: favoriteBasket[i].snippet, rank: favoriteBasket[i].rank, currentinterface: favoriteBasket[i].currentinterface, queryId: favoriteBasket[i].queryId},
+					  data: { type: "favorite", link: favoriteBasket[i].link, thumbnailLink: favoriteBasket[i].thumbnailLink, uID: favoriteBasket[i].uID, time: favoriteBasket[i].time, vertical: favoriteBasket[i].vertical, title: favoriteBasket[i].title, snippet: favoriteBasket[i].snippet, rank: favoriteBasket[i].rank, currentinterface: favoriteBasket[i].currentinterface, queryId: favoriteBasket[i].queryId},
 					  dataType: "html"
 					});
-					request.done(function( msg ) {
+					request.done(function( msg ) 
+					{
 						console.log("response: " + msg);
 					});
 				}
+
+				// clear cookies & variable to avoid 'beforeunload' resetting the cookies
+				favoriteBasket = [];
+				currentinterface = "";
+
+				setCookie("basket", favoriteBasket, 365);
+				setCookie("currentInterface", currentinterface, 365);
+				// setCookie("searchText", "", 365);
+				
 				window.location.href = "studyManager.php";
 			});	
 

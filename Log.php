@@ -101,6 +101,7 @@
 	{
 		$QueryId = $_REQUEST['queryId'];
 		$link = mysql_real_escape_string ($_REQUEST["link"]);
+		$thumbnailLink = mysql_real_escape_string ($_REQUEST["thumbnailLink"]);
 		$time = mysql_real_escape_string ($_REQUEST["time"]);
 		$uID = mysql_real_escape_string ($_REQUEST["uID"]);
 		$vertical = $_REQUEST["vertical"];
@@ -110,10 +111,10 @@
 		$currentinterface = $_REQUEST["currentinterface"];
 
 		//Save query
-		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Unique_Media_ID, Favorite_Time_JS, Vertical, Title, Snippet, Rank, Timestamp) VALUES ('" .
+		$query = "INSERT INTO AggSeaFavoriteLog (User_ID, Task_ID, Interface, Current_Interface, Query_ID, Link, Unique_Media_ID, Favorite_Time_JS, Vertical, Title, Snippet, Rank, Insert_Timestamp, Thumbnail_Link) VALUES ('" .
 		    $userID . "','" . $taskId . "','" . $interface . "','" . $currentinterface . "'," . $QueryId . ",'" .
 				$link . "','" . $uID . "','" . $time . "','" . $vertical . "','" . $title . "','" . $snippet . "','" .
-				$rank . "', NOW())";
+				$rank . "', NOW(), '" . $thumbnailLink . "')";
 		
 		if (!mysql_query($query)) 
 		{
