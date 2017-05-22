@@ -112,15 +112,15 @@
 						echo "<p>Click to see larger images.</p>";
 
 						echo "<div id='images'>";
-						echo "<div class='image'>";
-						echo "<a href='images/Non-blended-panel.png' data-lightbox='image1' data-title='Panel'>";
-						echo "<img src='images/Non-blended-panel.png' width='100px'/></a></div>";
-						echo "<div class='image'>";
-						echo "<a href='images/Tabbed.png' data-lightbox='image2' data-title='Tabbed'>";
-						echo "<img src='images/Tabbed.png' width='100px'/></a></div>";
-						echo "<div class='image'>";
-						echo "<a href='images/Non-blended-vertical.png' data-lightbox='image4' data-title='Universal'>";
-						echo "<img src='images/Non-blended-vertical.png' width='100px'/></a></div><br><br><br><br></div>";
+						echo "<div class='image' style='margin-left: 0px; margin-right:55px; border: 1px solid black;'>";
+						echo "<a href='images/panelled.png' data-lightbox='image1' data-title='Panelled'>";
+						echo "<img src='images/panelled.png' width='100px'/></a></div>";
+						echo "<div class='image' style='margin-left: 55px; margin-right:45px; border: 1px solid black;'>";
+						echo "<a href='images/tabbed.png' data-lightbox='image2' data-title='Tabbed'>";
+						echo "<img src='images/tabbed.png' width='100px'/></a></div>";
+						echo "<div class='image' style='margin-left: 45px; margin-right:0px; border: 1px solid black;'>";
+						echo "<a href='images/blended.png' data-lightbox='image4' data-title='Blended'>";
+						echo "<img src='images/blended.png' width='100px'/></a></div><br><br><br><br></div>";
 
 						echo "<div><label for='panel'>Panelled&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
 						echo "<label for='panel'>Tabbed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>";
