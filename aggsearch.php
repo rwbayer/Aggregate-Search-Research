@@ -183,6 +183,7 @@
 
 			var currentPage = 1;
 			var openLink = {};
+			var wasFinishClicked = false;
 
 			function setCookie(cname, cvalue, exdays) 
 			{
@@ -716,7 +717,14 @@
 
 				if (numberOfSourcesReturned == 4)
 				{
-					showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+					if (currentinterface == "Image" || currentinterface == "News" || currentinterface == "Video" || currentinterface == "Web")
+					{
+						showSinglePageOfResults(currentinterface);
+					}
+					else
+					{
+						showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+					}
 				}
 			};
 
@@ -855,6 +863,7 @@
 
 				// current interface
 				var selectedInterfaceJSON = getCookie("currentInterface");
+				console.log(selectedInterfaceJSON);
 				if (!(selectedInterfaceJSON === ""))
 				{
 					selectedInterface = JSON.parse(selectedInterfaceJSON);
@@ -870,15 +879,17 @@
 
 				$(window).bind('beforeunload', function(){
 					// store cookies
+					if (!wasFinishClicked)
+					{
+						var json_strings = JSON.stringify(favoriteBasket);
+						setCookie("basket", "", 365);
+						setCookie("basket", json_strings, 365);
 
-					var json_strings = JSON.stringify(favoriteBasket);
-					setCookie("basket", "", 365);
-					setCookie("basket", json_strings, 365);
-
-					var json_interface = JSON.stringify(currentinterface);
-					setCookie("currentInterface", "", 365);
-					setCookie("currentInterface", json_interface, 365);
-
+						var json_interface = JSON.stringify(currentinterface);
+						setCookie("currentInterface", "", 365);
+						setCookie("currentInterface", json_interface, 365);
+					}
+					
 					// var json_search = JSON.stringify($('#searchText').val());
 					// setCookie("searchText", "", 365);
 					// setCookie("searchText", json_search, 365);
@@ -899,7 +910,7 @@
 				$("body").on('click', '#submitbutton', function(event)
 				{
 					event.preventDefault();
-
+					currentPage = 1;
 					hideContent();
 					if (currentRequest)
 					{
@@ -1175,12 +1186,9 @@
 					});
 				}
 
-				// clear cookies & variable to avoid 'beforeunload' resetting the cookies
-				favoriteBasket = [];
-				currentinterface = "";
-
-				setCookie("basket", favoriteBasket, 365);
-				setCookie("currentInterface", currentinterface, 365);
+				wasFinishClicked = true;
+				setCookie("basket", "", 365);
+				setCookie("currentInterface", "", 365);
 				// setCookie("searchText", "", 365);
 				
 				window.location.href = "studyManager.php";
