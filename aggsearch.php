@@ -239,7 +239,15 @@
 					logNavigationChange("Show All", currentinterface, vertical, currentPage);
 					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 					rebuildInitialBoxes();
-					showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+
+					if (typeof webResults !== "undefined")
+					{
+						showInitialResults($('#searchText').val(), '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');
+					}
+					else
+					{
+						$('#loading').hide();
+					}
 					return;
 				}
 				else
@@ -253,7 +261,14 @@
 			{
 				currentinterface = vertical;
 
-				showSinglePageOfResults(vertical);
+				if (typeof webResults !== "undefined")
+				{
+					showSinglePageOfResults(vertical, false);
+				}
+				else
+				{
+					$('#loading').hide();
+				}
 			}
 
 			function showNextWebResults()
@@ -317,7 +332,7 @@
 					$("a.next").addClass('disabled');
 				}
 
-				showSinglePageOfResults(source);
+				showSinglePageOfResults(source, false);
 			}
 
 			function showPreviousWebResults()
@@ -361,10 +376,10 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				showSinglePageOfResults(source);
+				showSinglePageOfResults(source, false);
 			}
 
-			function showSinglePageOfResults(source)
+			function showSinglePageOfResults(source, isInitial)
 			{
 				var dataToShow = "";
 				var divIdentifier = "";
@@ -429,6 +444,11 @@
 				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + dataToShow + '</div>');
 				showFavorites();
 				showContent(source);
+				
+				if (isInitial)
+				{
+					logInitialResultShown();
+				}
 			}
 
 			function hideContent()
@@ -629,7 +649,7 @@
 					$("a.next").removeClass('disabled');
 				}
 
-				showSinglePageOfResults(source);
+				showSinglePageOfResults(source, false);
 			}
 
 			function clickedSearchSuggestion(selectedText)
@@ -719,7 +739,7 @@
 				{
 					if (currentinterface == "Image" || currentinterface == "News" || currentinterface == "Video" || currentinterface == "Web")
 					{
-						showSinglePageOfResults(currentinterface);
+						showSinglePageOfResults(currentinterface, true);
 					}
 					else
 					{
@@ -1008,6 +1028,7 @@
 					console.log("Think search text is focus");
 					currentRequest = $.post("suggestions.php", { searchText: str }).done(function( responseText ) 
 					{ 
+						console.log(responseText);
 						if (responseText.length != 0 && $('#searchText').is(":focus"))
 						{
 							document.getElementById("livesearch").innerHTML=  responseText;
@@ -1069,18 +1090,29 @@
 					snippet= "";
 					rank = $(this).parent().attr('rank');
 					uniqueIdentifier = $(this).parent().children('a.image').attr('uniqueid'); 
-					thumbnailLink = $(this).parent().children('a.image').css('background-image');
+					thumbnailLink = $(this).parent().children('a.image').css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 				}
 
 				timeOfClick = Date.now();
 
-				// console.log("Before add: ");
-				// console.log(favoriteBasket);
+				console.log("Before add: ");
+				console.log(favoriteBasket);
+
+				$.ajax({
+					type: 'POST',
+					url: "currentQuery.php",
+					data: {uID: uniqueIdentifier, time: timeOfClick, link: link, thumbnailLink: thumbnailLink, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface}
+				}).done(function( returnedJSON ) 
+				{
+					var data = JSON.parse(returnedJSON);
+					favoriteBasket.push({ type: 'favorite', uID: data.uID, time: data.time, link: data.link, thumbnailLink: data.thumbnailLink, vertical: data.vertical, title: data.title, snippet: data.snippet, rank: data.rank, currentinterface: data.currentinterface, queryId: data.currentQuery});
+
+					console.log("After add in the ajax return: ");
+					console.log(favoriteBasket);
+				}); 
 				
-				favoriteBasket.push({ type: 'favorite', uID: uniqueIdentifier, time: timeOfClick, link: link, thumbnailLink: thumbnailLink, vertical: vertical, title: title, snippet: snippet, rank: rank, currentinterface: currentinterface, queryId: "<?php echo $_SESSION['current_query'];?>"});
-				
-				// console.log("After add: ");
-				// console.log(favoriteBasket);
+				console.log("After add: ");
+				console.log(favoriteBasket);
 				
 				$(this).addClass("unFavButton");
 				$(this).removeClass("favButton");

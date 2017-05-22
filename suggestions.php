@@ -8,7 +8,7 @@
 
 	include 'date.php';
 
-	if($_REQUEST["searchText"]!='')
+	if($_POST["searchText"]!='')
 	{
 	    $accountKey = 'cae409a141334c12803754295da9a25b';
 	    $ServiceRootURL =  "https://api.cognitive.microsoft.com/bing/v5.0/suggestions/";
@@ -26,7 +26,7 @@
 				)
 	    ));
 
-		$request = $WebSearchURL . '?q=' . urlencode('\'' . $_REQUEST["searchText"] . '\'');
+		$request = $WebSearchURL . '?q=' . urlencode('\'' . $_POST["searchText"] . '\'');
 
 	    $response = file_get_contents($request, 0, $context);
 
