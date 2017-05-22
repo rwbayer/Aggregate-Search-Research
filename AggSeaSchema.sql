@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.9)
 # Database: permia
-# Generation Time: 2017-03-23 02:05:37 +0000
+# Generation Time: 2017-05-22 03:10:50 +0000
 # ************************************************************
 
 
@@ -46,7 +46,7 @@ CREATE TABLE `AggSeaFavoriteLog` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Query_ID` int(11) NOT NULL,
   `Link` varchar(1000) DEFAULT NULL,
-  `Unique_ID` varchar(200) DEFAULT NULL,
+  `Favorite_Time_JS` varchar(200) DEFAULT NULL,
   `Vertical` varchar(20) DEFAULT NULL,
   `Title` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `Snippet` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
@@ -55,7 +55,9 @@ CREATE TABLE `AggSeaFavoriteLog` (
   `Task_ID` int(11) NOT NULL,
   `Interface` varchar(20) DEFAULT NULL,
   `Current_Interface` varchar(20) DEFAULT NULL,
-  `Timestamp` timestamp NULL DEFAULT NULL,
+  `Insert_Timestamp` timestamp NULL DEFAULT NULL,
+  `Unique_Media_ID` varchar(200) DEFAULT NULL,
+  `Thumbnail_Link` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -69,7 +71,7 @@ DROP TABLE IF EXISTS `AggSeaLinkLog`;
 CREATE TABLE `AggSeaLinkLog` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Query_ID` int(11) DEFAULT NULL,
-  `Link` varchar(1000) CHARACTER SET utf8 DEFAULT NULL,
+  `Link` varchar(1000) DEFAULT NULL,
   `Vertical` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `Title` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `Snippet` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
@@ -78,7 +80,8 @@ CREATE TABLE `AggSeaLinkLog` (
   `Task_ID` int(11) NOT NULL,
   `Interface` varchar(20) DEFAULT NULL,
   `Current_Interface` varchar(20) DEFAULT NULL,
-  `Timestamp` timestamp NULL DEFAULT NULL,
+  `Open_Timestamp` timestamp NULL DEFAULT NULL,
+  `Close_Timestamp` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -118,7 +121,8 @@ CREATE TABLE `AggSeaQueryLog` (
   `Interface` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `Current_Interface` varchar(20) CHARACTER SET utf8 DEFAULT NULL,
   `Suggestion` tinyint(1) NOT NULL DEFAULT '0',
-  `Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Submit_Time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Initial_Results_Shown` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -200,7 +204,7 @@ VALUES
 	(194,9,17,5,'5.','radio','large','Capable people who fail to become leaders have not taken advantage of their opportunities.',2),
 	(195,10,17,6,'6.','radio','large','No matter how hard you try, some people just don\'t like you.',1),
 	(196,10,17,6,'6.','radio','large','People who can\'t get others to like them don\'t understand how to get along with others.',2),
-	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happen.',1),
+	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happens',1),
 	(198,11,17,7,'7.','radio','large','Trusting to fate has never turned out as well for me as making a decision to take a definite course of action.',2),
 	(199,12,17,8,'8.','radio','large','In the case of the well prepared student, there is rarely, if ever, such a thing as an unfair test.',1),
 	(200,12,17,8,'8.','radio','large','Many times exam questions tend to be so unrelated to course work that studying is really useless.',2),
@@ -238,16 +242,16 @@ LOCK TABLES `AggSeaSearches` WRITE;
 INSERT INTO `AggSeaSearches` (`ID`, `Task_ID`, `Type`, `Description`)
 VALUES
 	(1,0,'Learning','Find documents that describe or discuss the impact of consumer boycotts.'),
-	(2,1,'Learning','Look for information on the existence and/or the discovery of remains of the seven wonders of the ancient world.'),
-	(3,2,'Learning','Find publications providing general introductions to food allergies and the prevention of such allergies.'),
-	(4,3,'Learning','Look for information on human cloning, including claims of the production of the first human clone.'),
+	(2,1,'Learning','Find information about food allergies and the prevention of such allergies.'),
+	(3,2,'Learning','Find information about the French presidential election.'),
+	(4,3,'Learning','Find information about UNESCO World Heritage Sites of outstanding beauty.'),
 	(5,4,'Learning','In what sports are drugs used illegally?'),
 	(6,5,'Doing','You want to buy Yves Saint Laurent boots.\nYou want to find places to buy, reviews, etc.'),
-	(7,6,'Doing','Find recipes for chocolate puddings.'),
-	(8,7,'Doing','You want to know how a .csv file can be imported in excel.'),
-	(9,8,'Doing','Rock Climbing for Beginners-Only publications which specifically provide information on climbs that are not difficult or give instructions on rock climbing for beginners are of interest.'),
+	(7,6,'Doing','Gather ideas for a workout routine.'),
+	(8,7,'Doing','Gather activity ideas for this year\'s Fourth of July.'),
+	(9,8,'Doing','Gather ideas for designing a living room.'),
 	(10,9,'FactFinding','What is the current price of oil?'),
-	(11,10,'FactFinding','Give the names and/or location of places that have been designated as UNESCO World Heritage Sites of outstanding beauty or importance.'),
+	(11,10,'FactFinding','What countries are closest to the deepest point in the ocean?'),
 	(12,11,'FactFinding','How high above ground level is the ozone layer?'),
 	(13,12,'FactFinding','What conditions can trigger asthma in children?');
 
