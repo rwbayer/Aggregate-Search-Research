@@ -45,7 +45,8 @@
 
 			foreach($jsonobj->value as $value)
     		{
-                $finalURL = get_redirect_url($value->hostPageUrl);
+                parse_str($value->hostPageUrl, $output);
+                $finalURL = $output['r'];
         		$item = '<div class=\'image \' rank="rank' . $i . '"><a uniqueid="' . $value->imageId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $finalURL . '" vertical="Image" style="background-image: url(' . $value->thumbnailUrl . ');">';
             	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Image">Relevant</a></div>';
         		array_push($data, $item);

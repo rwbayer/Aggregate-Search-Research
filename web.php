@@ -48,7 +48,8 @@
 
 	    		foreach($jsonobj->webPages->value as $value)
 	    		{
-	    			$finalURL = get_redirect_url($value->url);
+	    			parse_str($value->url, $output);
+	    			$finalURL = $output['r'];
 
 					$item = '<div class="resultlistitem" rank="rank' . $i . '"><div class=\'title\'>';
 					$item .= '<a class="title fancybox fancybox.iframe" href="' . $finalURL . '" target="' . $target . '" vertical="Web">';

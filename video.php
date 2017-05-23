@@ -48,7 +48,8 @@
 
         		foreach($jsonobj->value as $value)
         		{
-                    $finalURL = get_final_url($value->hostPageUrl);
+                    parse_str($value->hostPageUrl, $output);
+                    $finalURL = $output['r'];
             		$item = '<div class=\'video\' rank="rank' . $i . '"><a uniqueid="' . $value->videoId . '" class="image fancybox fancybox.iframe" title="' . $value->name . '" href="' . $finalURL . '" vertical="Video" style="background-image: url(' . $value->thumbnailUrl . ');">';
                 	$item .= '</a><a href="javascript:;" class="favButton relevant" vertical="Video">Relevant</a></div>';
             		array_push($data, $item);
