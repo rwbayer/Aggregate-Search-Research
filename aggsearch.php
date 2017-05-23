@@ -428,7 +428,7 @@
 				}
 				else
 				{
-					var offset = numberOfWebResultsRequested + ((currentPage-2) * 10);
+					var offset = ((currentPage-1) * 10);
 
 					divIdentifier = "webResults";
 
@@ -441,7 +441,7 @@
 					}
 				}
 
-				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + '" vertical="' + currentinterface + '">' + dataToShow + '</div>');
+				$('.resultContainer').html('<div id="box1" class="' + divIdentifier + ' single" vertical="' + currentinterface + '">' + dataToShow + '</div>');
 				showFavorites();
 				showContent(source);
 				
@@ -658,7 +658,7 @@
 
 				logQuery(selectedText, true);
     			$('#searchText').val(selectedText);
-				search(selectedText, '<?php echo $number_of_results1 ?>', '<?php echo $number_of_results2 ?>', '<?php echo $number_of_results3 ?>', '<?php echo $number_of_results4 ?>', '<?php echo $source1 ?>','<?php echo $source2 ?>','<?php echo $source3 ?>','<?php echo $source4 ?>', '<?php echo $number_of_sources_requested ?>');	
+				search(selectedText);	
 			}
 
 			function search(text)

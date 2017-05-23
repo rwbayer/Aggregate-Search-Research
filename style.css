@@ -605,3 +605,7 @@ div.url
 	clear: both;
 }
 
+.videoResults.single, .imageResults.single
+{
+	width: 900px;
+}
