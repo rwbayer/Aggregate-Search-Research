@@ -1178,7 +1178,7 @@
 					}
 					else if (vertical == "Image" || vertical == "Video")
 					{
-						title = $(this).children('img').attr('src');
+						title = $(this).attr('title');
 						snippet= "";
 						rank = $(this).parent().attr('rank');
 					}
