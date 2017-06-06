@@ -621,6 +621,7 @@
 
 				if (numberSelected == 1 && source == "All")
 				{
+					currentPage = numberSelected;
 					logNavigationChange("show specific", currentinterface, <?php echo json_encode($_SESSION['interface'])?>, currentPage);
 					currentinterface = <?php echo json_encode($_SESSION['interface'])?>;
 					rebuildInitialBoxes();

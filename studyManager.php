@@ -55,19 +55,19 @@
 					$_SESSION['taskId'] . ", NOW());");
 		if ($row['Task_Type'] == "survey") 
 		{
-			// dont think check in will be used...
-			if ($_SESSION['taskId'] == CHECK_IN) 
-			{
-				$_SESSION['recent_interface'] = 
-				header("Location: CheckIn.php");
-				die();
-			} 
-			else if($_SESSION['taskId'] == CONSENT)
+		
+			if($_SESSION['taskId'] == CONSENT)
 			{
 				$_SESSION['recent_interface'] = 0;
 				header("Location: consentForm.php");
 				die();
 			} 
+			else if ($_SESSION['taskId'] == EXIT_QUESTIONNAIRE)
+			{
+				$_SESSION['recent_interface'] = 0;
+				header("Location: form.php?taskid=" . $_SESSION['taskId']);
+				die();
+			}
 			else 
 			{
 				header("Location: form.php?taskid=" . $_SESSION['taskId']);
