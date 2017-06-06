@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.9)
 # Database: permia
-# Generation Time: 2017-05-22 03:10:50 +0000
+# Generation Time: 2017-06-06 22:25:13 +0000
 # ************************************************************
 
 
@@ -184,16 +184,16 @@ VALUES
 	(172,54,18,1,'1. Which interface did you find the easiest to use?','radio','large','panelled',1),
 	(173,54,18,1,'1. Which interface did you find the easiest to use?','radio','large','tabbed',2),
 	(174,54,18,1,'1. Which interface did you find the easiest to use?','radio','large','blended',3),
-	(175,54,18,1,'Why?','text','large',NULL,4),
-	(176,55,18,2,'2. Which interface did you like the most?','radio','large','panelled',1),
-	(177,55,18,2,'2. Which interface did you like the most?','radio','large','tabbed',2),
-	(178,55,18,2,'2. Which interface did you like the most?','radio','large','blended',3),
-	(179,55,18,2,'Why?','text','large',NULL,4),
-	(180,56,18,3,'3. Which interface did you like the least?','radio','large','panelled',1),
-	(181,56,18,3,'3. Which interface did you like the least?','radio','large','tabbed',2),
-	(182,56,18,3,'3. Which interface did you like the least?','radio','large','blended',3),
-	(183,56,18,3,'Why?','text','large',NULL,4),
-	(184,57,18,4,'4. Any other comments?','text','large',NULL,NULL),
+	(175,58,18,2,'Why?','text','large',NULL,NULL),
+	(176,55,18,3,'2. Which interface did you like the most?','radio','large','panelled',1),
+	(177,55,18,3,'2. Which interface did you like the most?','radio','large','tabbed',2),
+	(178,55,18,3,'2. Which interface did you like the most?','radio','large','blended',3),
+	(179,59,18,4,'Why?','text','large',NULL,NULL),
+	(180,56,18,5,'3. Which interface did you like the least?','radio','large','panelled',1),
+	(181,56,18,5,'3. Which interface did you like the least?','radio','large','tabbed',2),
+	(182,56,18,5,'3. Which interface did you like the least?','radio','large','blended',3),
+	(183,60,18,6,'Why?','text','large',NULL,NULL),
+	(184,57,18,7,'4. Any other comments?','text','large',NULL,NULL),
 	(185,6,17,2,'2.','radio','large','One of the major reasons why we have wars is because people don\'t take enough interest in politics.',1),
 	(186,6,17,2,'2.','radio','large','There will always be wars, no matter how hard people try to prevent them.',2),
 	(189,7,17,3,'3.','radio','large','In the long run, people get the respect they deserve in this world.',1),
@@ -204,7 +204,7 @@ VALUES
 	(194,9,17,5,'5.','radio','large','Capable people who fail to become leaders have not taken advantage of their opportunities.',2),
 	(195,10,17,6,'6.','radio','large','No matter how hard you try, some people just don\'t like you.',1),
 	(196,10,17,6,'6.','radio','large','People who can\'t get others to like them don\'t understand how to get along with others.',2),
-	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happens',1),
+	(197,11,17,7,'7.','radio','large','I have often found that what is going to happen will happen.',1),
 	(198,11,17,7,'7.','radio','large','Trusting to fate has never turned out as well for me as making a decision to take a definite course of action.',2),
 	(199,12,17,8,'8.','radio','large','In the case of the well prepared student, there is rarely, if ever, such a thing as an unfair test.',1),
 	(200,12,17,8,'8.','radio','large','Many times exam questions tend to be so unrelated to course work that studying is really useless.',2),
